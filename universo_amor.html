@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tú eres mi Universo ✨</title>
+
+  <!-- Tipografías elegantes para estilo cósmico y romántico -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@200;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #030308;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+
+    .font-romantic {
+      font-family: 'Great Vibes', cursive;
+    }
+
+    /* Lienzo cósmico interactivo */
+    #space-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      touch-action: none;
+    }
+
+    /* Paneles con efecto Glassmorphism espacial */
+    .glass-panel {
+      background: rgba(10, 10, 24, 0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 35px -5px rgba(139, 92, 246, 0.25),
+                  0 0 20px rgba(56, 189, 248, 0.12) inset;
+    }
+
+    /* Brillos de texto y sombras neón */
+    .glow-text-gold {
+      text-shadow: 0 0 12px rgba(251, 191, 36, 0.6), 0 0 25px rgba(245, 158, 11, 0.3);
+    }
+    .glow-text-cosmic {
+      text-shadow: 0 0 15px rgba(236, 72, 153, 0.7), 0 0 30px rgba(168, 85, 247, 0.5);
+    }
+
+    /* Animaciones suaves */
+    @keyframes pulseGlow {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+      }
+      50% {
+        transform: scale(1.04);
+        box-shadow: 0 0 35px rgba(168, 85, 247, 0.8), 0 0 50px rgba(56, 189, 248, 0.4);
+      }
+    }
+
+    .quantum-pulse {
+      animation: pulseGlow 2.8s ease-in-out infinite;
+    }
+
+    /* Fade-in y Fade-out transiciones */
+    .view-transition {
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.92) translateY(12px);
+    }
+
+    .modal-visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Puntos de constelación interactivos */
+    .star-node-label {
+      position: absolute;
+      pointer-events: none;
+      transform: translate(-50%, -130%);
+      font-size: 11px;
+      font-weight: 600;
+      color: #fef08a;
+      text-shadow: 0 0 6px rgba(0,0,0,0.8);
+      white-space: nowrap;
+      transition: opacity 0.3s ease;
+    }
+  </style>
+</head>
+<body class="relative w-full h-full select-none">
+
+  <!-- Canvas principal para estrellas, agujero negro, constelación y partículas -->
+  <canvas id="space-canvas"></canvas>
+
+  <!-- Botón de Audio Cósmico Flotante -->
+  <button id="audioBtn" class="fixed top-4 right-4 z-40 px-3.5 py-1.5 rounded-full glass-panel flex items-center gap-2 border border-violet-500/30 text-xs font-semibold text-violet-200 hover:text-white transition active:scale-95">
+    <span id="audioIcon">✨</span>
+    <span id="audioLabel">Música del Cosmos</span>
+  </button>
+
+  <!-- PANTALLA INICIAL: Portada Mística Cuántica -->
+  <section id="introView" class="view-transition absolute inset-0 z-30 flex flex-col items-center justify-center p-6 text-center bg-black/60 backdrop-blur-sm">
+    <div class="max-w-md w-full flex flex-col items-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-pink-500/40 bg-pink-950/30 text-pink-300 text-xs font-medium tracking-widest uppercase mb-4">
+        <span>🌌 Transmisión Estelar Especial</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-cinzel font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-300 to-violet-300 glow-text-cosmic mb-3">
+        Mi Universo
+      </h1>
+
+      <p class="text-sm sm:text-base font-light text-stone-300 mb-8 max-w-xs leading-relaxed">
+        Entre millones de galaxias y eones de tiempo, encontrarte es el milagro más grande de mi vida.
+      </p>
+
+      <button id="startJourneyBtn" class="quantum-pulse px-8 py-3.5 rounded-full bg-gradient-to-r from-rose-500 via-purple-600 to-indigo-600 text-white font-semibold text-sm tracking-wider uppercase border border-white/20 active:scale-95 transition-transform flex items-center gap-3">
+        <span>Explorar el Cosmos Juntos</span>
+        <span>💫</span>
+      </button>
+
+      <span class="text-[11px] text-violet-300/60 mt-4 font-light">Toca para abrir la simulación cósmica</span>
+    </div>
+  </section>
+
+  <!-- INTERFAZ PRINCIPAL HUD: Controles del Espacio y Modos -->
+  <div id="hudOverlay" class="view-transition opacity-0 pointer-events-none absolute inset-0 z-20 flex flex-col justify-between p-4 sm:p-6 pointer-events-none">
+    
+    <!-- Barra superior -->
+    <header class="flex justify-between items-start w-full pointer-events-auto">
+      <div class="glass-panel px-4 py-2.5 rounded-2xl flex flex-col">
+        <span class="text-[10px] tracking-widest uppercase text-violet-300 font-semibold flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Órbita de Amor Activa
+        </span>
+        <h2 id="hudHeading" class="text-sm sm:text-base font-cinzel text-amber-200 glow-text-gold font-semibold">
+          Centro Gravitacional
+        </h2>
+      </div>
+      
+      <!-- Contador de constelación -->
+      <div id="constellationBadge" class="hidden glass-panel px-3 py-1.5 rounded-full text-xs text-amber-300 font-semibold border-amber-400/30 flex items-center gap-1.5">
+        <span>⭐</span>
+        <span id="constellationScore">0 / 7 Conectadas</span>
+      </div>
+    </header>
+
+    <!-- Notificación / Pensamiento gravitacional en el centro inferior -->
+    <div class="w-full flex flex-col items-center pointer-events-auto mb-20 sm:mb-24">
+      <div id="thoughtToast" class="max-w-md w-full glass-panel border border-violet-400/40 rounded-2xl p-4 text-center shadow-2xl transition-all duration-500 opacity-0 transform translate-y-4 pointer-events-none">
+        <p id="thoughtText" class="text-xs sm:text-sm font-light text-rose-100 italic leading-relaxed">
+          <!-- Frase dinámica -->
+        </p>
+        <span class="text-[10px] uppercase tracking-widest text-amber-300/80 font-semibold mt-2 inline-block">
+          ❤️ Gravedad Infinita
+        </span>
+      </div>
+    </div>
+
+    <!-- Barra de Herramientas Inferior -->
+    <footer class="w-full max-w-lg mx-auto pointer-events-auto">
+      <div class="glass-panel rounded-3xl p-2 sm:p-2.5 flex items-center justify-between gap-1.5 border border-white/10 shadow-2xl">
+        
+        <button id="modeBlackHoleBtn" class="flex-1 py-2 px-2 rounded-2xl text-xs font-semibold bg-violet-600/40 text-violet-100 border border-violet-400/30 transition flex flex-col items-center gap-1 hover:bg-violet-600/60 active:scale-95">
+          <span class="text-base">🕳️</span>
+          <span>Agujero Negro</span>
+        </button>
+
+        <button id="modeConstellationBtn" class="flex-1 py-2 px-2 rounded-2xl text-xs font-semibold bg-white/5 text-stone-300 border border-transparent transition flex flex-col items-center gap-1 hover:bg-white/10 active:scale-95">
+          <span class="text-base">✨</span>
+          <span>Constelación</span>
+        </button>
+
+        <button id="spawnMeteorBtn" class="flex-1 py-2 px-2 rounded-2xl text-xs font-semibold bg-white/5 text-stone-300 border border-transparent transition flex flex-col items-center gap-1 hover:bg-white/10 active:scale-95">
+          <span class="text-base">🌠</span>
+          <span>Deseo Fugaz</span>
+        </button>
+
+        <button id="openLetterBtn" class="flex-1 py-2 px-2 rounded-2xl text-xs font-semibold bg-gradient-to-tr from-rose-500/40 to-pink-500/30 text-rose-200 border border-rose-400/30 transition flex flex-col items-center gap-1 hover:brightness-125 active:scale-95">
+          <span class="text-base">💌</span>
+          <span>Para Ti</span>
+        </button>
+
+      </div>
+      <p class="text-center text-[10px] text-stone-400 mt-2 font-light">
+        Toca o arrastra en la pantalla para interactuar con la gravedad y las estrellas
+      </p>
+    </footer>
+  </div>
+
+  <!-- MODAL / CARTA CÓSMICA "PARA TI" -->
+  <div id="cosmicLetterModal" class="modal-hidden view-transition fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+    <div class="glass-panel max-w-md w-full rounded-3xl p-6 sm:p-8 border border-pink-400/30 text-left relative overflow-hidden shadow-2xl">
+      <!-- Efecto de resplandor cósmico dentro de la carta -->
+      <div class="absolute -top-16 -right-16 w-36 h-36 bg-pink-600/30 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-16 -left-16 w-36 h-36 bg-violet-600/30 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
+        <span class="text-xs uppercase tracking-widest text-amber-300 font-semibold flex items-center gap-2">
+          <span>🌌</span> Coordenadas: Tu Corazón
+        </span>
+        <button id="closeLetterBtn" class="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 active:scale-90 transition">
+          ✕
+        </button>
+      </div>
+
+      <h3 class="text-3xl font-romantic text-rose-300 glow-text-cosmic mb-3">
+        Mi amor infinito...
+      </h3>
+
+      <div class="text-xs sm:text-sm text-stone-200 leading-relaxed font-light space-y-3 max-h-[60vh] overflow-y-auto pr-1">
+        <p>
+          Si los científicos se maravillan con la fuerza de un agujero negro que nada puede escapar, es porque nunca han sentido la forma en la que tú me atraes.
+        </p>
+        <p>
+          Eres el centro de gravedad de mi universo; todos mis pensamientos, mis sueños y mis sonrisas terminan orbitando alrededor de ti. No importa qué tan vasto, oscuro o infinito sea el cosmos exterior, a tu lado todo se siente en paz, cálido y lleno de luz.
+        </p>
+        <p>
+          Dicen que estamos hechos de polvo de estrellas. Y estoy completamente seguro de que los átomos que forman mi corazón ya te buscaban desde el principio de los tiempos.
+        </p>
+        <p class="font-cinzel text-amber-200 font-semibold pt-2 text-center text-sm">
+          Te amo con la fuerza de un millón de soles. ♾️✨
+        </p>
+      </div>
+
+      <div class="mt-5 pt-3 border-t border-white/10 flex justify-between items-center text-xs text-rose-300">
+        <span>Siempre tuyo</span>
+        <span>En este y en todos los universos ❤️</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Sintetizador Cósmico Armónico (Web Audio API) sin archivos externos */
+    let audioCtx = null;
+    let isAudioPlaying = false;
+    let synthLoopTimer = null;
+
+    // Escala etérea (C# menor celestial / cósmica): C#4, D#4, E4, G#4, A4, B4, C#5, E5
+    const cosmicScale = [277.18, 311.13, 329.63, 415.30, 440.00, 493.88, 554.37, 659.25];
+    const celestialChords = [
+      [277.18, 415.30, 659.25], // C#m
+      [440.00, 554.37, 659.25], // A maj
+      [329.63, 493.88, 659.25], // E maj
+      [311.13, 415.30, 554.37]  // G#m / C#
+    ];
+    let chordIndex = 0;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Tono cósmico con reverberación y envolvente suave
+    function playCosmicTone(freq, duration = 3.5, type = 'sine', volume = 0.08) {
+      if (!audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        // Ataque y relajación etéreos
+        gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(volume, audioCtx.currentTime + 0.6);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn("Audio exception:", e);
+      }
+    }
+
+    function playCelestialChord() {
+      if (!isAudioPlaying) return;
+      const chord = celestialChords[chordIndex % celestialChords.length];
+      chordIndex++;
+      chord.forEach((freq, idx) => {
+        setTimeout(() => {
+          playCosmicTone(freq, 4.0, idx === 0 ? 'triangle' : 'sine', 0.04);
+        }, idx * 120);
+      });
+      // Campanilla brillante aleatoria
+      if (Math.random() > 0.4) {
+        const twinkleFreq = cosmicScale[Math.floor(Math.random() * cosmicScale.length)] * 2;
+        setTimeout(() => playCosmicTone(twinkleFreq, 2.5, 'sine', 0.03), 800);
+      }
+    }
+
+    function toggleAudio() {
+      initAudio();
+      isAudioPlaying = !isAudioPlaying;
+      const label = document.getElementById('audioLabel');
+      const icon = document.getElementById('audioIcon');
+
+      if (isAudioPlaying) {
+        label.textContent = "Sonido Activo";
+        icon.textContent = "🪐";
+        playCelestialChord();
+        synthLoopTimer = setInterval(playCelestialChord, 3600);
+      } else {
+        label.textContent = "Música del Cosmos";
+        icon.textContent = "✨";
+        clearInterval(synthLoopTimer);
+      }
+    }
+
+    document.getElementById('audioBtn').addEventListener('click', toggleAudio);
+
+    const loveThoughts = [
+      "Eres el único centro de gravedad que mantiene a flote todo mi mundo.",
+      "Ni siquiera la velocidad de la luz podría escapar de lo mucho que te amo.",
+      "En un universo de materia oscura, tú eres la supernova que ilumina mis días.",
+      "Si las estrellas contaran las veces que pienso en ti, el cielo no alcanzaría.",
+      "Toda mi galaxia colapsa de felicidad cada vez que me sonríes.",
+      "Cruzamos billones de años cósmicos para coincidir en el mismo tiempo y lugar.",
+      "Tu amor tiene una atracción gravitacional infinita: entre más cerca, más te amo.",
+      "Para la astronomía el universo es infinito, para mí mi universo cabe en tus brazos."
+    ];
+
+    let currentMode = 'blackhole'; // 'blackhole' | 'constellation'
+    let lastThoughtIndex = -1;
+
+    function showCosmicThought(customText = null) {
+      const toast = document.getElementById('thoughtToast');
+      const textElem = document.getElementById('thoughtText');
+      
+      let text = customText;
+      if (!text) {
+        let rand;
+        do {
+          rand = Math.floor(Math.random() * loveThoughts.length);
+        } while (rand === lastThoughtIndex && loveThoughts.length > 1);
+        lastThoughtIndex = rand;
+        text = loveThoughts[rand];
+      }
+
+      textElem.innerHTML = `“${text}”`;
+      toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      // Campanilla armónica cuando brota un pensamiento
+      if (audioCtx && isAudioPlaying) {
+        playCosmicTone(880, 2, 'sine', 0.05);
+      }
+
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+      }, 5500);
+    }
+
+    const canvas = document.getElementById('space-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      recalcConstellationPositions();
+    });
+
+    let pointer = {
+      x: width / 2,
+      y: height / 2,
+      isDown: false,
+      hasMoved: false
+    };
+
+    // Agujero negro central con coordenadas dinámicas
+    const blackHole = {
+      x: width / 2,
+      y: height / 2 - 30,
+      radius: Math.min(width, height) * 0.095,
+      angle: 0,
+      glowPulse: 0,
+      distortionIntensity: 1
+    };
+
+    const stars = [];
+    const starCount = window.innerWidth < 640 ? 160 : 300;
+
+    for (let i = 0; i < starCount; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 1.8 + 0.3,
+        alpha: Math.random() * 0.8 + 0.2,
+        twinkleSpeed: Math.random() * 0.03 + 0.01,
+        color: ['#ffffff', '#fbcfe8', '#e0e7ff', '#fef08a', '#c084fc'][Math.floor(Math.random() * 5)]
+      });
+    }
+
+    // Polvo cósmico que orbita alrededor del agujero negro
+    const accretionParticles = [];
+    const accretionCount = window.innerWidth < 640 ? 220 : 380;
+
+    for (let i = 0; i < accretionCount; i++) {
+      const dist = Math.random() * (blackHole.radius * 3.4) + (blackHole.radius * 1.05);
+      accretionParticles.push({
+        distance: dist,
+        angle: Math.random() * Math.PI * 2,
+        speed: (Math.random() * 0.018 + 0.008) * (blackHole.radius * 1.5 / dist),
+        size: Math.random() * 2.2 + 0.8,
+        color: ['#fbbf24', '#f43f5e', '#ec4899', '#a855f7', '#38bdf8', '#f59e0b'][Math.floor(Math.random() * 6)],
+        alpha: Math.random() * 0.7 + 0.3
+      });
+    }
+
+    // Coordenadas relativas de un corazón simétrico estilizado para la constelación
+    const constellationPointsRaw = [
+      { rx: 0.00, ry: -0.15, label: "Tú y Yo" },      // Centro hendidura corazón
+      { rx: -0.18, ry: -0.28, label: "Primer Mirada" }, // Arco superior izquierdo
+      { rx: -0.32, ry: -0.10, label: "Nuestra Risa" },   // Lóbulo izquierdo
+      { rx: -0.22, ry: 0.12, label: "Tus Abrazos" },    // Curva inferior izquierda
+      { rx: 0.00, ry: 0.32, label: "Amor Eterno" },     // Punta inferior del corazón
+      { rx: 0.22, ry: 0.12, label: "Mi Lugar Seguro" }, // Curva inferior derecha
+      { rx: 0.32, ry: -0.10, label: "Complicidad" },    // Lóbulo derecho
+      { rx: 0.18, ry: -0.28, label: "Destino" }         // Arco superior derecho
+    ];
+
+    let constellationNodes = [];
+    let connectedSegments = [];
+    let discoveredNodes = new Set();
+
+    function recalcConstellationPositions() {
+      const centerX = width / 2;
+      const centerY = height / 2 - 25;
+      const scale = Math.min(width, height) * 0.78;
+
+      constellationNodes = constellationPointsRaw.map((pt, index) => {
+        return {
+          id: index,
+          x: centerX + pt.rx * scale,
+          y: centerY + pt.ry * scale,
+          radius: 9,
+          pulse: 0,
+          label: pt.label,
+          connected: discoveredNodes.has(index)
+        };
+      });
+    }
+    recalcConstellationPositions();
+
+    const meteors = [];
+    const spaceDust = [];
+
+    function spawnShootingStar(startX = null, startY = null, targetX = null, targetY = null) {
+      const x = startX !== null ? startX : Math.random() * width;
+      const y = startY !== null ? startY : Math.random() * (height * 0.4);
+      const angle = targetX !== null ? Math.atan2(targetY - y, targetX - x) : (Math.PI / 4 + (Math.random() - 0.5) * 0.5);
+      const speed = Math.random() * 7 + 9;
+
+      meteors.push({
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        length: Math.random() * 70 + 40,
+        color: ['#fda4af', '#fef08a', '#c084fc', '#67e8f9'][Math.floor(Math.random() * 4)],
+        life: 1,
+        decay: Math.random() * 0.02 + 0.015
+      });
+
+      // Disparar sonido fugaz
+      if (audioCtx && isAudioPlaying) {
+        playCosmicTone(1200 + Math.random() * 400, 1.2, 'sine', 0.02);
+      }
+    }
+
+    function createDustBurst(x, y, count = 25, color = '#ec4899') {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd = Math.random() * 4 + 1;
+        spaceDust.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd,
+          size: Math.random() * 2.5 + 1,
+          color: color,
+          alpha: 1,
+          decay: Math.random() * 0.025 + 0.015
+        });
+      }
+    }
+
+    function drawBlackHole(cx, cy, radius) {
+      blackHole.angle += 0.012;
+      blackHole.glowPulse = Math.sin(Date.now() * 0.002) * 0.15 + 1;
+
+      // 1. Resplandor gravítico exterior y lente (Lensing Ring)
+      const outerGlow = ctx.createRadialGradient(cx, cy, radius * 0.8, cx, cy, radius * 3.5);
+      outerGlow.addColorStop(0, 'rgba(0, 0, 0, 1)');
+      outerGlow.addColorStop(0.3, 'rgba(236, 72, 153, 0.45)');
+      outerGlow.addColorStop(0.55, 'rgba(147, 51, 234, 0.35)');
+      outerGlow.addColorStop(0.8, 'rgba(56, 189, 248, 0.15)');
+      outerGlow.addColorStop(1, 'rgba(3, 3, 8, 0)');
+
+      ctx.fillStyle = outerGlow;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Anillo de Luz Elíptico de Acreción (estilo Interstellar / Gargantúa)
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(-0.25); // Inclinación elegante
+
+      // Halo superior curvado por lente de gravedad
+      ctx.beginPath();
+      ctx.ellipse(0, -radius * 0.35, radius * 1.85, radius * 0.8, 0, Math.PI, Math.PI * 2);
+      ctx.lineWidth = radius * 0.28;
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.35)';
+      ctx.filter = 'blur(6px)';
+      ctx.stroke();
+      ctx.filter = 'none';
+
+      // Disco elíptico principal
+      const diskGrad = ctx.createLinearGradient(-radius * 2, 0, radius * 2, 0);
+      diskGrad.addColorStop(0, 'rgba(244, 63, 94, 0.1)');
+      diskGrad.addColorStop(0.25, 'rgba(251, 191, 36, 0.85)');
+      diskGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.95)');
+      diskGrad.addColorStop(0.75, 'rgba(236, 72, 153, 0.85)');
+      diskGrad.addColorStop(1, 'rgba(168, 85, 247, 0.1)');
+
+      ctx.beginPath();
+      ctx.ellipse(0, 0, radius * 2.3, radius * 0.45, 0, 0, Math.PI * 2);
+      ctx.lineWidth = radius * 0.22;
+      ctx.strokeStyle = diskGrad;
+      ctx.stroke();
+
+      ctx.restore();
+
+      // 3. Partículas del disco de acreción arremolinadas
+      accretionParticles.forEach(p => {
+        p.angle += p.speed;
+        const cos = Math.cos(p.angle);
+        const sin = Math.sin(p.angle);
+
+        // Proyección con perspectiva inclinada
+        const px = cx + cos * p.distance;
+        const py = cy + sin * (p.distance * 0.38) - (cos * (blackHole.radius * 0.15));
+
+        ctx.beginPath();
+        ctx.arc(px, py, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+      });
+
+      // 4. Horizonte de Sucesos (Esfera Negra Absoluta y Borde de Fotones)
+      ctx.save();
+      // Borde de fotones dorado/violeta súper nítido
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 0.96, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.lineWidth = 2.5;
+      ctx.shadowColor = '#fbbf24';
+      ctx.shadowBlur = 14;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // El pozo de sombra gravitatoria interior
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 0.94, 0, Math.PI * 2);
+      ctx.fillStyle = '#010103';
+      ctx.fill();
+
+      // Centro con frase o latido tierno en el centro del horizonte
+      ctx.fillStyle = 'rgba(254, 240, 138, 0.95)';
+      ctx.font = '600 11px Montserrat';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('MI GRAVEDAD', cx, cy - 8);
+
+      ctx.fillStyle = 'rgba(244, 114, 182, 0.9)';
+      ctx.font = '700 12px sans-serif';
+      ctx.fillText('❤️', cx, cy + 10);
+      ctx.restore();
+    }
+
+    function drawConstellation() {
+      // Líneas de conexión doradas completadas
+      ctx.save();
+      for (let i = 0; i < constellationNodes.length; i++) {
+        const nextIdx = (i + 1) % constellationNodes.length;
+        const n1 = constellationNodes[i];
+        const n2 = constellationNodes[nextIdx];
+
+        if (n1.connected && n2.connected) {
+          ctx.beginPath();
+          ctx.moveTo(n1.x, n1.y);
+          ctx.lineTo(n2.x, n2.y);
+          ctx.strokeStyle = 'rgba(251, 191, 36, 0.75)';
+          ctx.lineWidth = 2.5;
+          ctx.shadowColor = '#f59e0b';
+          ctx.shadowBlur = 12;
+          ctx.stroke();
+        } else {
+          // Línea guía tenue
+          ctx.beginPath();
+          ctx.setLineDash([4, 6]);
+          ctx.moveTo(n1.x, n1.y);
+          ctx.lineTo(n2.x, n2.y);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
+      ctx.restore();
+
+      // Dibujar estrellas nodales interactivas
+      constellationNodes.forEach((node) => {
+        node.pulse = (node.pulse || 0) + 0.04;
+        const pulseScale = Math.sin(node.pulse) * 2;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, (node.connected ? 9 : 6) + pulseScale, 0, Math.PI * 2);
+
+        if (node.connected) {
+          ctx.fillStyle = '#fef08a';
+          ctx.shadowColor = '#f59e0b';
+          ctx.shadowBlur = 18;
+        } else {
+          ctx.fillStyle = '#c084fc';
+          ctx.shadowColor = '#a855f7';
+          ctx.shadowBlur = 8;
+        }
+        ctx.fill();
+
+        // Anillo blanco de nodo estelar
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, (node.connected ? 13 : 9) + pulseScale, 0, Math.PI * 2);
+        ctx.strokeStyle = node.connected ? 'rgba(251, 191, 36, 0.8)' : 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Etiqueta del nodo
+        ctx.font = '600 10px Montserrat';
+        ctx.fillStyle = node.connected ? '#fde047' : 'rgba(226, 232, 240, 0.7)';
+        ctx.textAlign = 'center';
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = '#000000';
+        ctx.fillText(node.label, node.x, node.y - 18);
+
+        ctx.restore();
+      });
+
+      // Si todos los puntos están conectados, mostrar mensaje en el centro del corazón
+      if (discoveredNodes.size === constellationNodes.length) {
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.font = '700 24px Cinzel';
+        ctx.fillStyle = '#fef08a';
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 20;
+        ctx.fillText('CONSTELACIÓN DE AMOR', width / 2, height / 2 - 40);
+
+        ctx.font = '400 36px Great Vibes';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('Tú y Yo Por Siempre', width / 2, height / 2 + 5);
+        ctx.restore();
+      }
+    }
+
+    function animate() {
+      // Borrado con ligera estela para efecto cósmico suave
+      ctx.fillStyle = 'rgba(3, 3, 8, 0.45)';
+      ctx.fillRect(0, 0, width, height);
+
+      // 1. Campo Estelar Titilante
+      stars.forEach(star => {
+        star.alpha += Math.sin(Date.now() * star.twinkleSpeed) * 0.015;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = star.color;
+        ctx.globalAlpha = Math.max(0.1, Math.min(1, star.alpha));
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      });
+
+      // 2. Renderizar según el Modo Activo
+      if (currentMode === 'blackhole') {
+        drawBlackHole(blackHole.x, blackHole.y, blackHole.radius);
+      } else if (currentMode === 'constellation') {
+        drawConstellation();
+      }
+
+      // 3. Estrellas fugaces y meteoros
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.x += m.vx;
+        m.y += m.vy;
+        m.life -= m.decay;
+
+        if (m.life <= 0) {
+          meteors.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(m.x, m.y);
+        ctx.lineTo(m.x - m.vx * 3.5, m.y - m.vy * 3.5);
+        ctx.strokeStyle = m.color;
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        ctx.shadowColor = m.color;
+        ctx.shadowBlur = 12;
+        ctx.globalAlpha = m.life;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 4. Polvo estelar interactivo (al tocar o succionar)
+      for (let i = spaceDust.length - 1; i >= 0; i--) {
+        const d = spaceDust[i];
+
+        // Si está el agujero negro activo, atrae suavemente las partículas de polvo
+        if (currentMode === 'blackhole') {
+          const dx = blackHole.x - d.x;
+          const dy = blackHole.y - d.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > 5) {
+            d.vx += (dx / dist) * 0.25;
+            d.vy += (dy / dist) * 0.25;
+          }
+        }
+
+        d.x += d.vx;
+        d.y += d.vy;
+        d.alpha -= d.decay;
+
+        if (d.alpha <= 0) {
+          spaceDust.splice(i, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
+        ctx.fillStyle = d.color;
+        ctx.globalAlpha = d.alpha;
+        ctx.shadowColor = d.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function handlePointerInteraction(px, py) {
+      if (currentMode === 'constellation') {
+        // Verificar si se tocó un nodo de la constelación
+        constellationNodes.forEach((node) => {
+          const dx = px - node.x;
+          const dy = py - node.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < node.radius + 24) {
+            if (!discoveredNodes.has(node.id)) {
+              discoveredNodes.add(node.id);
+              node.connected = true;
+              createDustBurst(node.x, node.y, 25, '#fbbf24');
+              
+              // Nota celestial
+              if (audioCtx && isAudioPlaying) {
+                playCosmicTone(cosmicScale[node.id % cosmicScale.length], 2.2, 'triangle', 0.09);
+              }
+
+              // Actualizar badge
+              document.getElementById('constellationScore').textContent = `${discoveredNodes.size} / 8 Conectadas`;
+              
+              if (discoveredNodes.size === constellationNodes.length) {
+                showCosmicThought("¡Has completado nuestra Constelación! Nuestro amor está escrito en el mapa del cosmos.");
+                createDustBurst(width / 2, height / 2 - 25, 60, '#ec4899');
+              } else {
+                showCosmicThought(`Estrella "${node.label}" unida a nuestro mapa estelar.`);
+              }
+            }
+          }
+        });
+      } else if (currentMode === 'blackhole') {
+        // Verificar proximidad al agujero negro
+        const dx = blackHole.x - px;
+        const dy = blackHole.y - py;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < blackHole.radius * 1.5) {
+          // Tocado el agujero negro directamente
+          createDustBurst(blackHole.x, blackHole.y, 35, '#a855f7');
+          showCosmicThought();
+          if (audioCtx && isAudioPlaying) {
+            playCosmicTone(150, 2.5, 'sine', 0.12);
+          }
+        } else {
+          // Lanzar polvo estelar atraído hacia el horizonte de sucesos
+          createDustBurst(px, py, 15, '#38bdf8');
+        }
+      }
+    }
+
+    canvas.addEventListener('pointerdown', (e) => {
+      pointer.isDown = true;
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      handlePointerInteraction(e.clientX, e.clientY);
+    });
+
+    canvas.addEventListener('pointermove', (e) => {
+      if (pointer.isDown) {
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+        if (Math.random() > 0.4) {
+          createDustBurst(e.clientX, e.clientY, 3, '#f472b6');
+        }
+      }
+    });
+
+    canvas.addEventListener('pointerup', () => {
+      pointer.isDown = false;
+    });
+
+    const introView = document.getElementById('introView');
+    const hudOverlay = document.getElementById('hudOverlay');
+    const startJourneyBtn = document.getElementById('startJourneyBtn');
+
+    startJourneyBtn.addEventListener('click', () => {
+      // Iniciar sonido en el primer gesto de usuario
+      if (!isAudioPlaying) {
+        toggleAudio();
+      }
+
+      introView.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        introView.classList.add('hidden');
+        hudOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        hudOverlay.classList.add('opacity-100');
+        showCosmicThought("Bienvenida a nuestro rincón en el universo. Toca el agujero negro o explora las constelaciones.");
+        spawnShootingStar(width * 0.2, 50, width * 0.8, height * 0.6);
+      }, 700);
+    });
+
+    // Modos de Vista
+    const modeBlackHoleBtn = document.getElementById('modeBlackHoleBtn');
+    const modeConstellationBtn = document.getElementById('modeConstellationBtn');
+    const constellationBadge = document.getElementById('constellationBadge');
+    const hudHeading = document.getElementById('hudHeading');
+
+    modeBlackHoleBtn.addEventListener('click', () => {
+      currentMode = 'blackhole';
+      modeBlackHoleBtn.className = "flex-1 py-2 px-2 rounded-2xl text-xs font-semibold bg-violet-600/50 text-violet-100 border border-violet-400/40 transition flex flex-col items-center gap-1 active:scale-95";
+      modeConstellationBtn.className = "flex-1 py-2 px-2 rounded-2xl text-xs font-semibold bg-white/5 text-stone-300 border border-transparent transition flex flex-col items-center gap-1 active:scale-95";
+      constellationBadge.classList.add('hidden');
+      hudHeading.textContent = "Centro Gravitacional";
+      showCosmicThought("El agujero negro atrae todos mis pensamientos hacia ti.");
+    });
+
+    modeConstellationBtn.addEventListener('click', () => {
+      currentMode = 'constellation';
+      modeConstellationBtn.className = "flex-1 py-2 px-2 rounded-2xl text-xs font-semibold bg-amber-500/40 text-amber-100 border border-amber-400/40 transition flex flex-col items-center gap-1 active:scale-95";
+      modeBlackHoleBtn.className = "flex-1 py-2 px-2 rounded-2xl text-xs font-semibold bg-white/5 text-stone-300 border border-transparent transition flex flex-col items-center gap-1 active:scale-95";
+      constellationBadge.classList.remove('hidden');
+      hudHeading.textContent = "Nuestra Constelación";
+      showCosmicThought("Toca las estrellas doradas para conectar nuestro corazón cósmico.");
+    });
+
+    // Deseo Fugaz (Meteoro)
+    document.getElementById('spawnMeteorBtn').addEventListener('click', () => {
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          spawnShootingStar();
+        }, i * 250);
+      }
+      showCosmicThought("Pide un deseo a las estrellas... aunque mi único deseo siempre serás tú.");
+    });
+
+    // Modal Carta Para Ti
+    const cosmicLetterModal = document.getElementById('cosmicLetterModal');
+    const openLetterBtn = document.getElementById('openLetterBtn');
+    const closeLetterBtn = document.getElementById('closeLetterBtn');
+
+    openLetterBtn.addEventListener('click', () => {
+      cosmicLetterModal.classList.remove('modal-hidden');
+      cosmicLetterModal.classList.add('modal-visible');
+      if (audioCtx && isAudioPlaying) {
+        playCosmicTone(440, 2.5, 'sine', 0.05);
+      }
+    });
+
+    closeLetterBtn.addEventListener('click', () => {
+      cosmicLetterModal.classList.remove('modal-visible');
+      cosmicLetterModal.classList.add('modal-hidden');
+    });
+
+    window.onload = function() {
+      animate();
+      // Generar estrellas fugaces espontáneas periódicas de fondo
+      setInterval(() => {
+        if (Math.random() > 0.6) {
+          spawnShootingStar();
+        }
+      }, 5000);
+    };
+  </script>
+</body>
+</html>

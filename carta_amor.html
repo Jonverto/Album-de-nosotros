@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Un Detalle Especial Para Ti ❤️</title>
+  
+  <!-- Google Fonts para tipografía romántica y elegante -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,600;1,300&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN para estilos y diseño responsivo -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    :root {
+      --romantic-pink: #ffeef2;
+      --romantic-gold: #e2a85c;
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at top, #fff1f3 0%, #fed7e2 45%, #fbb6ce 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-script {
+      font-family: 'Dancing Script', cursive;
+    }
+
+    .font-calligraphy {
+      font-family: 'Great Vibes', cursive;
+    }
+
+    .font-serif-elegant {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Partículas de fondo canvas */
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Brillo y sombras suaves */
+    .glow-card {
+      box-shadow: 0 20px 40px -15px rgba(244, 114, 182, 0.4),
+                  0 0 25px rgba(251, 207, 232, 0.6);
+    }
+
+    /* Animación del sobre de bienvenida */
+    .envelope-wrapper {
+      perspective: 1000px;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .envelope-flap {
+      transform-origin: top center;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .envelope-open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 0;
+    }
+
+    /* Animación de los tulipanes flotando ligeramente */
+    @keyframes gentleSway {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(2.5deg);
+      }
+    }
+
+    @keyframes pulseHeart {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.15);
+      }
+    }
+
+    .tulip-sway {
+      animation: gentleSway 4s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+
+    .pulse-anim {
+      animation: pulseHeart 1.8s ease-in-out infinite;
+    }
+
+    /* Transiciones suaves */
+    .fade-out {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.92) translateY(20px);
+      transition: all 0.8s ease-in-out;
+    }
+
+    .fade-in {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Tooltip tierno emergente */
+    .love-toast {
+      animation: floatUp 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 10px) scale(0.85);
+      }
+      25% {
+        opacity: 1;
+        transform: translate(-50%, -15px) scale(1.05);
+      }
+      80% {
+        opacity: 1;
+        transform: translate(-50%, -35px) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50px) scale(0.9);
+      }
+    }
+
+    /* Estilo de los pétalos de tulipán SVG interactivos */
+    .tulip-item {
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s;
+    }
+
+    .tulip-item:hover, .tulip-item:active {
+      transform: scale(1.12) translateY(-10px);
+      filter: drop-shadow(0 10px 15px rgba(244, 63, 94, 0.35));
+    }
+  </style>
+</head>
+<body class="relative flex items-center justify-center p-3 sm:p-6 min-h-screen">
+
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Botón de Música Flotante -->
+  <button id="musicToggleBtn" class="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-pink-200 text-rose-600 text-sm font-semibold flex items-center gap-2 hover:bg-pink-50 transition active:scale-95" aria-label="Reproducir melodía">
+    <span id="musicIcon" class="text-base">🎵</span>
+    <span id="musicText">Música</span>
+  </button>
+
+  <!-- PANTALLA 1: SOBRE DE BIENVENIDA -->
+  <section id="envelopeScreen" class="relative z-20 flex flex-col items-center justify-center max-w-sm w-full text-center transition-all duration-700">
+    <div class="mb-6">
+      <span class="inline-block px-4 py-1.5 bg-white/80 backdrop-blur rounded-full text-rose-500 font-semibold text-xs tracking-widest uppercase shadow-sm">
+        💌 Para mi persona favorita
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-calligraphy text-rose-800 mt-2">Tienes una cartita...</h1>
+      <p class="text-xs sm:text-sm text-rose-700/80 mt-1 font-light">Toca el sobre para abrir tu sorpresa</p>
+    </div>
+
+    <div id="envelopeButton" class="envelope-wrapper relative w-64 h-48 sm:w-72 sm:h-52 cursor-pointer group active:scale-95 transition-transform">
+      <!-- Sombra trasera -->
+      <div class="absolute inset-0 bg-pink-300/40 rounded-2xl blur-xl transform translate-y-4"></div>
+      
+      <!-- Cuerpo del sobre -->
+      <div class="relative w-full h-full bg-gradient-to-br from-rose-100 to-rose-200 rounded-2xl shadow-2xl border border-rose-300/60 overflow-hidden flex items-center justify-center">
+        
+        <!-- Pestaña superior doblada -->
+        <div class="envelope-flap absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-rose-200 to-rose-300 shadow-sm border-b border-rose-300/50" style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+        
+        <!-- Solapas laterales visuales -->
+        <div class="absolute bottom-0 left-0 w-full h-full pointer-events-none" style="clip-path: polygon(0 100%, 50% 50%, 100% 100%); background: rgba(255, 230, 238, 0.7);"></div>
+
+        <!-- Sello de Corazón pulsante -->
+        <div class="relative z-10 w-14 h-14 bg-gradient-to-tr from-rose-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white pulse-anim">
+          <svg class="w-8 h-8 text-white drop-shadow" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="mt-4 text-xs font-semibold text-rose-600 animate-bounce flex items-center justify-center gap-1">
+        <span>Toca aquí con amor</span>
+        <span>✨</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANTALLA 2: CONTENIDO PRINCIPAL (FLORES, MENSAJE Y JARDÍN) -->
+  <main id="mainCard" class="hidden relative z-20 w-full max-w-lg bg-white/85 backdrop-blur-xl rounded-3xl p-5 sm:p-8 glow-card border border-white/60 text-center my-6">
+    
+    <!-- Encabezado sutil -->
+    <div class="flex items-center justify-between mb-3 border-b border-pink-100 pb-3">
+      <span class="text-xs uppercase tracking-widest text-rose-400 font-semibold">Toca cada flor 🌷</span>
+      <span class="text-xs text-rose-500 bg-pink-50 border border-pink-200 px-2.5 py-0.5 rounded-full font-medium" id="tulipCounter">0/5 descubiertos</span>
+    </div>
+
+    <div class="py-2">
+      <span class="text-xs font-medium text-pink-500 tracking-wider uppercase">Desde lo más profundo de mi corazón</span>
+      <h1 class="text-6xl sm:text-7xl font-calligraphy text-transparent bg-clip-text bg-gradient-to-r from-rose-600 via-pink-600 to-rose-500 drop-shadow-sm my-1 leading-tight">
+        ¡Te amo!
+      </h1>
+      <p class="text-sm sm:text-base font-serif-elegant italic text-stone-700 max-w-xs mx-auto">
+        "En un jardín lleno de estrellas y mil maravillas, mis ojos siempre te elegirían a ti."
+      </p>
+    </div>
+
+    <div class="relative w-full h-72 sm:h-80 my-3 flex items-end justify-center overflow-visible">
+      
+      <!-- Fondo de resplandor para el ramo -->
+      <div class="absolute bottom-6 w-48 h-48 bg-rose-200/50 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Jarrón/Envoltorio decorativo sutil -->
+      <div class="absolute bottom-0 z-0 w-28 h-20 bg-gradient-to-b from-white/90 to-pink-100/90 backdrop-blur rounded-b-2xl border-2 border-pink-200/70 shadow-sm flex items-center justify-center">
+        <span class="text-rose-400 text-xs tracking-wider font-semibold font-script">Con Amor 💕</span>
+      </div>
+
+      <!-- Contenedor del Ramo de Tulipanes -->
+      <div class="relative z-10 w-full h-full flex items-end justify-center pb-2">
+
+        <!-- Tulipán 1: Rojo Pasión (Izquierda extrema) -->
+        <div class="tulip-item tulip-sway relative -mr-6 sm:-mr-4 origin-bottom" style="transform: rotate(-16deg); animation-delay: 0.1s;" onclick="flowerClicked(0, event)">
+          <svg class="w-24 sm:w-28 h-60" viewBox="0 0 100 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Tallo y Hoja -->
+            <path d="M50 85 C 46 130, 48 180, 52 235" stroke="#4ade80" stroke-width="5" stroke-linecap="round"/>
+            <path d="M48 140 C 20 130, 10 160, 49 190" fill="#22c55e" opacity="0.85"/>
+            <!-- Capullo Tulipán Rojo -->
+            <g>
+              <ellipse cx="50" cy="55" rx="20" ry="28" fill="#e11d48"/>
+              <!-- Pétalo izquierdo -->
+              <path d="M35 55 C 32 30, 48 20, 50 50 C 42 68, 33 65, 35 55 Z" fill="#f43f5e"/>
+              <!-- Pétalo central -->
+              <path d="M50 20 C 60 40, 58 68, 50 78 C 42 68, 40 40, 50 20 Z" fill="#be123c"/>
+              <!-- Pétalo derecho -->
+              <path d="M65 55 C 68 30, 52 20, 50 50 C 58 68, 67 65, 65 55 Z" fill="#fb7185"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Tulipán 2: Amarillo Cálido / Alegría (Medio Izquierda) -->
+        <div class="tulip-item tulip-sway relative -mr-4 origin-bottom" style="transform: rotate(-7deg); animation-delay: 0.7s;" onclick="flowerClicked(1, event)">
+          <svg class="w-24 sm:w-28 h-64" viewBox="0 0 100 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 80 C 52 130, 49 180, 50 235" stroke="#4ade80" stroke-width="5" stroke-linecap="round"/>
+            <path d="M51 150 C 78 140, 85 170, 51 200" fill="#16a34a" opacity="0.85"/>
+            <!-- Capullo Amarillo -->
+            <g>
+              <ellipse cx="50" cy="50" rx="21" ry="29" fill="#facc15"/>
+              <path d="M34 50 C 31 25, 48 18, 50 48 C 42 66, 32 62, 34 50 Z" fill="#fde047"/>
+              <path d="M50 16 C 60 38, 58 66, 50 76 C 42 66, 40 38, 50 16 Z" fill="#eab308"/>
+              <path d="M66 50 C 69 25, 52 18, 50 48 C 58 66, 68 62, 66 50 Z" fill="#fef08a"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Tulipán 3: Rosa Suave (Centro Alto) -->
+        <div class="tulip-item tulip-sway relative z-10 origin-bottom" style="animation-delay: 0.4s;" onclick="flowerClicked(2, event)">
+          <svg class="w-28 sm:w-32 h-72" viewBox="0 0 100 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 75 C 50 120, 50 180, 50 235" stroke="#4ade80" stroke-width="6" stroke-linecap="round"/>
+            <path d="M50 135 C 15 120, 8 165, 50 185" fill="#22c55e" opacity="0.9"/>
+            <path d="M50 145 C 85 130, 92 175, 50 195" fill="#16a34a" opacity="0.8"/>
+            <!-- Capullo Rosa Pastel Destacado -->
+            <g>
+              <ellipse cx="50" cy="46" rx="23" ry="32" fill="#f472b6"/>
+              <path d="M33 46 C 30 18, 48 12, 50 44 C 41 64, 31 60, 33 46 Z" fill="#fbcfe8"/>
+              <path d="M50 10 C 62 34, 60 64, 50 74 C 40 64, 38 34, 50 10 Z" fill="#ec4899"/>
+              <path d="M67 46 C 70 18, 52 12, 50 44 C 59 64, 69 60, 67 46 Z" fill="#f472b6"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Tulipán 4: Púrpura Encanto (Medio Derecha) -->
+        <div class="tulip-item tulip-sway relative -ml-4 origin-bottom" style="transform: rotate(8deg); animation-delay: 1.1s;" onclick="flowerClicked(3, event)">
+          <svg class="w-24 sm:w-28 h-64" viewBox="0 0 100 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 80 C 48 130, 51 180, 50 235" stroke="#4ade80" stroke-width="5" stroke-linecap="round"/>
+            <path d="M50 145 C 18 140, 20 175, 50 195" fill="#22c55e" opacity="0.85"/>
+            <!-- Capullo Morado -->
+            <g>
+              <ellipse cx="50" cy="50" rx="21" ry="29" fill="#a855f7"/>
+              <path d="M34 50 C 31 25, 48 18, 50 48 C 42 66, 32 62, 34 50 Z" fill="#c084fc"/>
+              <path d="M50 16 C 60 38, 58 66, 50 76 C 42 66, 40 38, 50 16 Z" fill="#9333ea"/>
+              <path d="M66 50 C 69 25, 52 18, 50 48 C 58 66, 68 62, 66 50 Z" fill="#e9d5ff"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Tulipán 5: Blanco / Perla Ternura (Derecha extrema) -->
+        <div class="tulip-item tulip-sway relative -ml-6 sm:-ml-4 origin-bottom" style="transform: rotate(18deg); animation-delay: 0.5s;" onclick="flowerClicked(4, event)">
+          <svg class="w-24 sm:w-28 h-60" viewBox="0 0 100 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 85 C 54 130, 52 180, 48 235" stroke="#4ade80" stroke-width="5" stroke-linecap="round"/>
+            <path d="M51 140 C 80 130, 90 160, 51 190" fill="#16a34a" opacity="0.85"/>
+            <!-- Capullo Blanco Crema -->
+            <g>
+              <ellipse cx="50" cy="55" rx="20" ry="28" fill="#f8fafc"/>
+              <path d="M35 55 C 32 30, 48 20, 50 50 C 42 68, 33 65, 35 55 Z" fill="#ffffff"/>
+              <path d="M50 20 C 60 40, 58 68, 50 78 C 42 68, 40 40, 50 20 Z" fill="#e2e8f0"/>
+              <path d="M65 55 C 68 30, 52 20, 50 50 C 58 68, 67 65, 65 55 Z" fill="#f1f5f9"/>
+            </g>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-r from-rose-50/90 to-pink-50/90 rounded-2xl p-4 sm:p-5 border border-pink-100/90 text-left relative overflow-hidden shadow-inner">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-lg">💌</span>
+        <span class="text-xs font-bold text-rose-800 uppercase tracking-wider">Para el amor de mi vida</span>
+      </div>
+      <p id="dedicationText" class="text-xs sm:text-sm text-stone-700 leading-relaxed font-light">
+        Quise darte tulipanes que nunca se marchiten, tal como mis sentimientos por ti. Gracias por llenar mis días de paz, por cada una de tus risas y por ser ese lugar seguro al que siempre quiero regresar. Eres lo más lindo que me ha pasado.
+      </p>
+      
+      <!-- Pequeño detalle de firma -->
+      <div class="mt-4 pt-3 border-t border-rose-200/50 flex justify-between items-center text-xs text-rose-500 font-medium">
+        <span class="font-script text-base sm:text-lg">Siempre tuyo, por siempre nosotros</span>
+        <span>♾️❤️</span>
+      </div>
+    </div>
+
+    <!-- Botón interactivo para generar razones de amor -->
+    <div class="mt-5 flex flex-col gap-2 items-center">
+      <button onclick="showRandomReason(event)" class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white rounded-full text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition-all flex items-center justify-center gap-2">
+        <span>✨ Toca para saber una razón por la que te amo</span>
+      </button>
+
+      <div id="randomReasonBox" class="min-h-[2.5rem] flex items-center justify-center text-rose-700 font-medium text-xs sm:text-sm italic px-2 py-1 text-center transition-opacity duration-300 opacity-0">
+        <!-- Razón dinámica -->
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Colección de notas de amor para cada tulipán
+    const tulipMessages = [
+      { color: "Rojo Pasión", text: "❤️ Tu sonrisa es mi motivo favorito para sonreír cada día." },
+      { color: "Amarillo Brillo", text: "☀️ Gracias por iluminar mi mundo incluso en días grises." },
+      { color: "Rosa Amor", text: "🌸 En tus abrazos encontré el lugar más cálido y seguro." },
+      { color: "Morado Mágico", text: "✨ Contigo hasta los momentos más simples se vuelven mágicos." },
+      { color: "Blanco Pureza", text: "🕊️ Te amo de la forma más honesta, bonita e incondicional." }
+    ];
+
+    // Razones románticas aleatorias
+    const loveReasons = [
+      "Por la forma tan linda en que me miras cuando crees que no me doy cuenta.",
+      "Porque escuchar tu risa es mi canción favorita en el universo entero.",
+      "Por tu ternura infinita y la nobleza de tu hermoso corazón.",
+      "Porque me haces querer ser una mejor versión de mí cada día.",
+      "Por la forma en que encajan nuestras manos cuando caminamos juntos.",
+      "Porque contigo puedo ser completamente yo, sin filtros ni miedos.",
+      "Simplemente porque existes y elegiste compartir tu camino conmigo."
+    ];
+
+    const discoveredTulips = new Set();
+    let audioCtx = null;
+    let isPlayingMusic = false;
+    let melodyInterval = null;
+
+    // Sintetizador con Web Audio API: reproduce arpegios suaves estilo caja de música/arpa
+    function playChime(freq, duration = 1.2, type = 'sine') {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        // Curva envolvente suave (fade-in y fade-out delicado)
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // En caso de bloqueo de autoplay en algunos navegadores
+        console.warn("Audio Context init pending interaction:", e);
+      }
+    }
+
+    // Melodía romántica en escala pentatónica mayor suave (estilo piano dulce)
+    const romanticScale = [
+      261.63, // C4
+      293.66, // D4
+      329.63, // E4
+      392.00, // G4
+      440.00, // A4
+      523.25, // C5
+      587.33, // D5
+      659.25  // E5
+    ];
+
+    const melodyNotes = [
+      329.63, 392.00, 523.25, 440.00,
+      329.63, 392.00, 440.00, 392.00,
+      293.66, 329.63, 392.00, 329.63,
+      261.63, 293.66, 329.63, 261.63
+    ];
+
+    let noteIndex = 0;
+
+    function toggleMusic() {
+      if (isPlayingMusic) {
+        stopRomanticMelody();
+      } else {
+        startRomanticMelody();
+      }
+    }
+
+    function startRomanticMelody() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      isPlayingMusic = true;
+      document.getElementById('musicText').textContent = "Pausar";
+      document.getElementById('musicIcon').textContent = "💖";
+      
+      // Reproducir notas periódicas
+      playChime(melodyNotes[noteIndex % melodyNotes.length], 1.8, 'triangle');
+      melodyInterval = setInterval(() => {
+        noteIndex = (noteIndex + 1) % melodyNotes.length;
+        playChime(melodyNotes[noteIndex], 1.5, 'sine');
+      }, 700);
+    }
+
+    function stopRomanticMelody() {
+      isPlayingMusic = false;
+      clearInterval(melodyInterval);
+      document.getElementById('musicText').textContent = "Música";
+      document.getElementById('musicIcon').textContent = "🎵";
+    }
+
+    document.getElementById('musicToggleBtn').addEventListener('click', toggleMusic);
+
+    const envelopeBtn = document.getElementById('envelopeButton');
+    const envelopeScreen = document.getElementById('envelopeScreen');
+    const mainCard = document.getElementById('mainCard');
+
+    envelopeBtn.addEventListener('click', () => {
+      // Iniciar música automáticamente con el primer toque interactivo si es posible
+      if (!isPlayingMusic) {
+        startRomanticMelody();
+      }
+
+      // Animación de apertura del sobre
+      envelopeBtn.classList.add('envelope-open');
+      createHeartExplosion(window.innerWidth / 2, window.innerHeight / 2, 40);
+
+      setTimeout(() => {
+        envelopeScreen.classList.add('fade-out');
+        setTimeout(() => {
+          envelopeScreen.classList.add('hidden');
+          mainCard.classList.remove('hidden');
+          mainCard.classList.add('fade-in');
+          // Disparar cascada festiva de pétalos
+          createHeartExplosion(window.innerWidth / 2, window.innerHeight * 0.4, 25);
+        }, 500);
+      }, 600);
+    });
+
+    function flowerClicked(index, event) {
+      const msgData = tulipMessages[index];
+      
+      // Sonido armonioso acorde a la flor
+      const flowerChord = [523.25, 587.33, 659.25, 783.99, 880.00];
+      playChime(flowerChord[index], 1.4, 'triangle');
+
+      // Marcar flor como descubierta
+      discoveredTulips.add(index);
+      document.getElementById('tulipCounter').textContent = `${discoveredTulips.size}/5 descubiertos`;
+
+      // Posición del toque
+      const rect = event.currentTarget.getBoundingClientRect();
+      const clickX = rect.left + rect.width / 2;
+      const clickY = rect.top + 20;
+
+      // Efecto de corazoncitos brotando de la flor
+      createHeartExplosion(clickX, clickY, 15);
+
+      // Mostrar mensaje tierno flotante
+      showToast(msgData.text, clickX, clickY);
+    }
+
+    function showToast(text, x, y) {
+      // Limpiar anteriores
+      const existing = document.querySelectorAll('.love-toast');
+      existing.forEach(el => el.remove());
+
+      const toast = document.createElement('div');
+      toast.className = 'love-toast fixed z-50 px-4 py-2 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-rose-300 text-rose-700 text-xs sm:text-sm font-semibold max-w-xs text-center pointer-events-none';
+      toast.style.left = `${Math.min(Math.max(x, 150), window.innerWidth - 150)}px`;
+      toast.style.top = `${y}px`;
+      toast.innerHTML = text;
+
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 1800);
+    }
+
+    function showRandomReason(event) {
+      playChime(659.25, 1.2, 'sine');
+      const box = document.getElementById('randomReasonBox');
+      const randomText = loveReasons[Math.floor(Math.random() * loveReasons.length)];
+
+      box.style.opacity = '0';
+      setTimeout(() => {
+        box.innerHTML = `“${randomText}”`;
+        box.style.opacity = '1';
+      }, 200);
+
+      // Confeti de corazones desde el botón
+      const rect = event.target.getBoundingClientRect();
+      createHeartExplosion(rect.left + rect.width / 2, rect.top, 12);
+    }
+
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    const colors = ['#f43f5e', '#ec4899', '#f472b6', '#fda4af', '#fecdd3', '#e11d48'];
+
+    class FloatingItem {
+      constructor(isExplosion = false, originX = 0, originY = 0) {
+        this.isExplosion = isExplosion;
+        this.reset(originX, originY);
+      }
+
+      reset(originX = 0, originY = 0) {
+        if (this.isExplosion) {
+          this.x = originX;
+          this.y = originY;
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 4 + 2;
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed - 1.5;
+          this.life = 1;
+          this.decay = Math.random() * 0.02 + 0.015;
+        } else {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height - height;
+          this.vx = (Math.random() - 0.5) * 1.2;
+          this.vy = Math.random() * 1.2 + 0.8;
+          this.life = 1;
+          this.decay = 0;
+        }
+
+        this.size = Math.random() * 14 + 10;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.04;
+        this.type = Math.random() > 0.4 ? 'heart' : 'petal';
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.rotation += this.rotationSpeed;
+
+        if (this.isExplosion) {
+          this.vy += 0.08; // Gravedad suave
+          this.life -= this.decay;
+        } else {
+          if (this.y > height + 20) {
+            this.x = Math.random() * width;
+            this.y = -20;
+          }
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.globalAlpha = Math.max(0, this.life * 0.7);
+        ctx.fillStyle = this.color;
+
+        if (this.type === 'heart') {
+          // Dibujar forma de corazón
+          const s = this.size / 15;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(-10 * s, -12 * s, -18 * s, 4 * s, 0, 16 * s);
+          ctx.bezierCurveTo(18 * s, 4 * s, 10 * s, -12 * s, 0, 0);
+          ctx.fill();
+        } else {
+          // Dibujar forma de pétalo de flor
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size * 0.4, this.size * 0.8, Math.PI / 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      }
+    }
+
+    // Inicializar partículas flotantes continuas
+    const floatingCount = window.innerWidth < 640 ? 25 : 45;
+    for (let i = 0; i < floatingCount; i++) {
+      const p = new FloatingItem(false);
+      p.y = Math.random() * height; // Distribuidas por la pantalla inicial
+      particles.push(p);
+    }
+
+    function createHeartExplosion(x, y, count = 20) {
+      for (let i = 0; i < count; i++) {
+        particles.push(new FloatingItem(true, x, y));
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.update();
+        p.draw();
+
+        // Eliminar partículas de explosión terminadas
+        if (p.isExplosion && p.life <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(animateParticles);
+    }
+
+    window.onload = function() {
+      animateParticles();
+    };
+  </script>
+</body>
+</html>

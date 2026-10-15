@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wayne Tech: Transmisión Clasificada 🦇💛</title>
+
+  <!-- Google Fonts: Auténtica tipografía Arcade 8-bit / 16-bit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --gotham-yellow: #ffcc00;
+      --gotham-amber: #ff9900;
+      --gotham-cyan: #00f0ff;
+      --gotham-green: #39ff14;
+      --gotham-dark: #070913;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background-color: var(--gotham-dark);
+      color: #ffffff;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    .font-terminal {
+      font-family: 'VT323', monospace;
+    }
+
+    /* Canvas de Gotham */
+    #gotham-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      display: block;
+      touch-action: none;
+    }
+
+    /* Scanlines CRT clásicas de arcade retro */
+    .crt-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.35) 50%
+      ), linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.03),
+        rgba(0, 255, 0, 0.01),
+        rgba(0, 0, 255, 0.03)
+      );
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    /* Brillos de Neón Gotham */
+    .neon-yellow {
+      text-shadow: 0 0 6px rgba(255, 204, 0, 0.9), 0 0 14px rgba(255, 153, 0, 0.6);
+    }
+
+    .neon-cyan {
+      text-shadow: 0 0 6px rgba(0, 240, 255, 0.8), 0 0 16px rgba(0, 150, 255, 0.5);
+    }
+
+    .neon-green {
+      text-shadow: 0 0 6px rgba(57, 255, 20, 0.85);
+    }
+
+    /* Botones estilo Arcade 16-Bit */
+    .pixel-btn {
+      position: relative;
+      background-color: #121629;
+      border: 3px solid #ffcc00;
+      box-shadow: inset -3px -3px 0px 0px #805500,
+                  inset 3px 3px 0px 0px #ffe680,
+                  3px 3px 0px 0px #000000;
+      transition: transform 0.08s, filter 0.08s;
+      cursor: pointer;
+    }
+
+    .pixel-btn:hover {
+      filter: brightness(1.15);
+    }
+
+    .pixel-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: inset -2px -2px 0px 0px #805500,
+                  inset 2px 2px 0px 0px #ffe680,
+                  1px 1px 0px 0px #000000;
+    }
+
+    .pixel-box {
+      background: #090c19;
+      border: 3px solid #ffcc00;
+      box-shadow: inset -3px -3px 0px 0px #402800,
+                  inset 3px 3px 0px 0px #ffe680,
+                  0px 8px 0px 0px #000000;
+    }
+
+    /* Animaciones pixeladas */
+    @keyframes blinkPixel {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .pixel-cursor {
+      display: inline-block;
+      width: 10px;
+      height: 18px;
+      background-color: var(--gotham-green);
+      animation: blinkPixel 0.8s infinite;
+      vertical-align: middle;
+    }
+
+    /* Flotador de Corazones Pixel */
+    .pixel-toast {
+      animation: pixelFloat 2.2s steps(8, end) forwards;
+      pointer-events: none;
+    }
+
+    @keyframes pixelFloat {
+      0% { opacity: 1; transform: translate(-50%, 0); }
+      70% { opacity: 1; transform: translate(-50%, -40px); }
+      100% { opacity: 0; transform: translate(-50%, -60px); }
+    }
+  </style>
+</head>
+<body class="relative flex flex-col justify-between w-full h-full min-h-screen">
+
+  <!-- Scanlines retroarcade -->
+  <div class="crt-overlay"></div>
+
+  <!-- Canvas Gotham City (Capas de Parallax, Lluvia, Rayos, Batiseñal, Batman y Gárgola) -->
+  <canvas id="gotham-canvas"></canvas>
+
+  <!-- HUD SUPERIOR: Encabezado Wayne Tech & Controles de Audio -->
+  <header class="relative z-30 w-full px-3 py-2 flex items-center justify-between pointer-events-auto">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 bg-yellow-400 border-2 border-black flex items-center justify-center text-black font-bold text-[10px]">
+        🦇
+      </div>
+      <div>
+        <div class="text-[9px] sm:text-[10px] text-yellow-300 neon-yellow">WAYNE-NET v4.2</div>
+        <div class="text-[7px] text-cyan-300 font-terminal tracking-widest uppercase">ENLACE CLASIFICADO: ENLÍNEA</div>
+      </div>
+    </div>
+
+    <!-- Botón Chiptune Retro Audio -->
+    <button id="chiptuneToggleBtn" class="pixel-btn px-2.5 py-1.5 flex items-center gap-1.5 text-[8px] sm:text-[9px] text-yellow-300">
+      <span id="audioIcon">🎵</span>
+      <span id="audioText">CHIPTUNE: OFF</span>
+    </button>
+  </header>
+
+  <!-- PANTALLA INTRO: ACCESO DE SEGURIDAD BATMAN -->
+  <section id="introTerminal" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm transition-all duration-300">
+    <div class="pixel-box max-w-sm sm:max-w-md w-full p-4 sm:p-6 text-center flex flex-col items-center">
+      
+      <!-- Bat-Símbolo Pixel Art Header -->
+      <div class="text-3xl my-2 text-yellow-400 animate-pulse">🦇💛🦇</div>
+
+      <div class="text-[10px] text-cyan-400 mb-2 font-mono">BAT-ORDENADOR CENTRAL</div>
+      <h1 class="text-xs sm:text-sm text-yellow-300 neon-yellow leading-relaxed mb-4">
+        IDENTIFICACIÓN DETECTADA:<br>
+        <span class="text-white">"LA REINA DE MI NOCHE"</span>
+      </h1>
+
+      <p class="text-[8px] sm:text-[9px] text-stone-300 leading-5 mb-5 font-terminal text-lg">
+        Gotham es peligrosa y oscura, pero cuando estás conmigo, hasta la noche más fría se llena de luz. He cifrado un mensaje que solo tú puedes abrir.
+      </p>
+
+      <button id="enterGothamBtn" class="pixel-btn px-4 py-3 text-[9px] sm:text-[10px] text-black bg-yellow-400 hover:bg-yellow-300 font-bold border-2 border-black active:scale-95 flex items-center justify-center gap-2 w-full">
+        <span>ACTIVAR SISTEMAS</span>
+        <span>🚀</span>
+      </button>
+
+      <div class="text-[7px] text-yellow-500/80 mt-3 font-mono">
+        [ PRESIONA START PARA ENTRAR ]
+      </div>
+    </div>
+  </section>
+
+  <!-- HUD INFERIOR: CONTROLES ARCADE Y BAT-TERMINAL -->
+  <footer class="relative z-30 w-full max-w-xl mx-auto px-3 pb-3 pt-1 pointer-events-auto">
+    
+    <!-- Mensaje dinámico de Batman en la radio -->
+    <div id="radioBox" class="pixel-box mb-2 p-2.5 sm:p-3 flex items-start gap-2.5 bg-black/80 border-cyan-400">
+      <div class="w-8 h-8 rounded-none border border-cyan-400 bg-cyan-950/60 flex items-center justify-center text-sm shrink-0">
+        🦇
+      </div>
+      <div class="text-left w-full overflow-hidden">
+        <div class="text-[7px] text-cyan-300 flex justify-between">
+          <span>FRECUENCIA BAT-CANAL 01</span>
+          <span class="text-green-400 animate-pulse">● RECIBIENDO</span>
+        </div>
+        <p id="radioTransmission" class="text-[8px] sm:text-[9px] text-yellow-200 mt-1 leading-4">
+          "Toca la Batiseñal en el cielo o pulsa en mí para enviarte un detalle de la noche..."
+        </p>
+      </div>
+    </div>
+
+    <!-- Barra de botones arcade 16-Bit -->
+    <div class="grid grid-cols-4 gap-1.5 sm:gap-2">
+      
+      <!-- Botón 1: Encender / Cambiar Batiseñal -->
+      <button id="toggleSignalBtn" class="pixel-btn py-2 px-1 text-[7px] sm:text-[8px] text-yellow-300 flex flex-col items-center justify-center gap-1">
+        <span class="text-base sm:text-lg">💡</span>
+        <span class="tracking-tighter">BATISEÑAL</span>
+      </button>
+
+      <!-- Botón 2: Interacción Batman -->
+      <button id="actionBatBtn" class="pixel-btn py-2 px-1 text-[7px] sm:text-[8px] text-pink-300 flex flex-col items-center justify-center gap-1 border-pink-500">
+        <span class="text-base sm:text-lg">🌹</span>
+        <span class="tracking-tighter">DAR FLOR</span>
+      </button>
+
+      <!-- Botón 3: Relámpago en Gotham -->
+      <button id="lightningBtn" class="pixel-btn py-2 px-1 text-[7px] sm:text-[8px] text-cyan-300 flex flex-col items-center justify-center gap-1 border-cyan-400">
+        <span class="text-base sm:text-lg">⚡</span>
+        <span class="tracking-tighter">RELÁMPAGO</span>
+      </button>
+
+      <!-- Botón 4: Bat-Computadora (Archivos Clasificados) -->
+      <button id="openTerminalBtn" class="pixel-btn py-2 px-1 text-[7px] sm:text-[8px] text-green-400 flex flex-col items-center justify-center gap-1 border-green-500">
+        <span class="text-base sm:text-lg">💻</span>
+        <span class="tracking-tighter">BAT-FILES</span>
+      </button>
+
+    </div>
+
+    <div class="text-center text-[7px] text-yellow-500/70 mt-1.5 font-mono">
+      TIP: TOCA DIRECTAMENTE A BATMAN O LA BATISEÑAL EN EL CIELO
+    </div>
+  </footer>
+
+  <!-- MODAL: BAT-COMPUTADORA (TERMINAL CLASIFICADA CON SCANLINES Y TEXTO TIPOGRÁFICO) -->
+  <div id="terminalModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/90 backdrop-blur-md">
+    <div class="pixel-box max-w-lg w-full p-4 sm:p-6 bg-[#040810] border-2 border-green-400 text-left relative flex flex-col max-h-[85vh]">
+      
+      <!-- Barra superior de ventana Wayne Tech -->
+      <div class="flex items-center justify-between border-b-2 border-green-500/50 pb-2 mb-3">
+        <div class="text-[9px] text-green-400 neon-green flex items-center gap-1">
+          <span>⬛</span> WAYNE_ENTERPRISES://ARCHIVOS_CONFIDENCIALES
+        </div>
+        <button id="closeTerminalBtn" class="text-[10px] text-green-300 hover:text-white px-2 py-0.5 border border-green-500 bg-green-950/50">
+          [X]
+        </button>
+      </div>
+
+      <!-- Selector de Archivos Secretos -->
+      <div class="grid grid-cols-3 gap-1.5 mb-3 text-[7px] sm:text-[8px]">
+        <button onclick="loadBatFile(0)" class="pixel-btn p-1.5 text-center text-yellow-300 border-yellow-400">
+          VOTO: NUNCA ME IRÉ
+        </button>
+        <button onclick="loadBatFile(1)" class="pixel-btn p-1.5 text-center text-cyan-300 border-cyan-400">
+          MI LUZ EN GOTHAM
+        </button>
+        <button onclick="loadBatFile(2)" class="pixel-btn p-1.5 text-center text-pink-300 border-pink-400">
+          NUESTRO EQUIPO
+        </button>
+      </div>
+
+      <!-- Consola de texto CRT tecleado -->
+      <div class="flex-1 bg-black/90 border border-green-500/40 p-3 sm:p-4 rounded-none overflow-y-auto font-terminal text-lg sm:text-xl text-green-300 leading-6 space-y-2">
+        <div class="text-xs text-green-500">> DESENCRIPTANDO VOTO DE AMOR... LISTO.</div>
+        <div id="terminalTextContent" class="text-white min-h-[120px]">
+          <!-- Contenido typewriter dinámico -->
+        </div>
+        <div><span class="pixel-cursor"></span></div>
+      </div>
+
+      <!-- Firma del Caballero de la Noche -->
+      <div class="mt-3 pt-2 border-t border-green-500/40 flex items-center justify-between text-[8px] text-green-400">
+        <span>CODIFICADO CON AMOR PURAMENTE PARA TI</span>
+        <span class="text-yellow-400">🦇❤️</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========================================================
+       SINTETIZADOR CHIPTUNE 8-BIT / 16-BIT RETRO (Web Audio API)
+       Emula chips legendarios como el NES (Ricoh 2A03) y Game Boy:
+       - Canal 1: Onda Cuadrada (Pulse wave 50%) para melodía heroica/romántica
+       - Canal 2: Onda Cuadrada (Pulse wave 25%) para armonías y arpegios rápidos
+       - Canal 3: Onda Triangular para bajos profundos y envolventes
+       ======================================================== */
+    let audioCtx = null;
+    let isChiptuneActive = false;
+    let chiptuneStep = 0;
+    let chiptuneTimer = null;
+
+    // Frecuencias exactas en Hz para notas retro
+    const N = {
+      C3: 130.81, D3: 146.83, Eb3: 155.56, E3: 164.81, F3: 174.61, G3: 196.00, Ab3: 207.65, A3: 220.00, Bb3: 233.08, B3: 246.94,
+      C4: 261.63, D4: 293.66, Eb4: 311.13, E4: 329.63, F4: 349.23, G4: 392.00, Ab4: 415.30, A4: 440.00, Bb4: 466.16, B4: 493.88,
+      C5: 523.25, D5: 587.33, Eb5: 622.25, E5: 659.25, F5: 698.46, G5: 783.99, Ab5: 830.61, A5: 880.00, Bb5: 932.33, B5: 987.77,
+      C6: 1046.50
+    };
+
+    /* Arreglo heroico-romántico estilo Batman / Gotham 16-Bit SNES:
+       Melodía en modo menor con resolución dulce y épica */
+    const batMelodyScore = [
+      // Frase 1: Entrada heroica de Gotham
+      { bass: N.C3, lead: N.C5, arp: [N.Eb4, N.G4, N.C5] },
+      { bass: N.C3, lead: N.D5, arp: [N.G4, N.C5, N.Eb5] },
+      { bass: N.C3, lead: N.Eb5, arp: [N.Eb4, N.G4, N.C5] },
+      { bass: N.C3, lead: N.G5, arp: [N.G4, N.C5, N.G5] },
+
+      // Frase 2: Toque oscuro y dulce
+      { bass: N.Ab3, lead: N.Ab5, arp: [N.C4, N.Eb4, N.Ab4] },
+      { bass: N.Ab3, lead: N.G5, arp: [N.Eb4, N.Ab4, N.C5] },
+      { bass: N.F3, lead: N.F5, arp: [N.C4, N.F4, N.Ab4] },
+      { bass: N.G3, lead: N.Eb5, arp: [N.D4, N.G4, N.B4] },
+
+      // Frase 3: Melodía romántica ascendente (Tú eres mi luz)
+      { bass: N.C3, lead: N.D5, arp: [N.Eb4, N.G4, N.C5] },
+      { bass: N.Eb3, lead: N.Eb5, arp: [N.G4, N.Bb4, N.Eb5] },
+      { bass: N.F3, lead: N.F5, arp: [N.Ab4, N.C5, N.F5] },
+      { bass: N.G3, lead: N.G5, arp: [N.Bb4, N.D5, N.G5] },
+
+      // Frase 4: Clímax tierno y solemne
+      { bass: N.Ab3, lead: N.C6, arp: [N.C5, N.Eb5, N.Ab5] },
+      { bass: N.Bb3, lead: N.Bb5, arp: [N.D5, N.F5, N.Bb5] },
+      { bass: N.G3, lead: N.G5, arp: [N.B4, N.D5, N.G5] },
+      { bass: N.C3, lead: N.C5, arp: [N.Eb4, N.G4, N.C5] }
+    ];
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Nota chiptune con envolvente ADSR retro
+    function playChiptuneNote(freq, type = 'square', duration = 0.25, volume = 0.08) {
+      if (!audioCtx || !freq) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        // Ataque percusivo retro e inmediato
+        gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(volume, audioCtx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    // Efecto de sonido Retro Blip / Salto / Moneda
+    function playRetroSfx(type = 'jump') {
+      if (!audioCtx) return;
+      try {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        if (type === 'heart') {
+          // Sonido dulce de 1-UP / Corazón
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(N.E5, now);
+          osc.frequency.setValueAtTime(N.G5, now + 0.08);
+          osc.frequency.setValueAtTime(N.C6, now + 0.16);
+          gain.gain.setValueAtTime(0.09, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+          osc.start(now);
+          osc.stop(now + 0.4);
+        } else if (type === 'thunder') {
+          // Sonido de trueno digital con ruido blanco filtrado
+          playChiptuneNote(85, 'sawtooth', 0.6, 0.15);
+          playChiptuneNote(55, 'square', 0.8, 0.2);
+          return;
+        } else if (type === 'signal') {
+          // Sirena / Foco Wayne
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(680, now + 0.25);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.start(now);
+          osc.stop(now + 0.32);
+        } else {
+          // Beep de terminal
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(800, now);
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.start(now);
+          osc.stop(now + 0.07);
+        }
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function runChiptuneBeat() {
+      if (!isChiptuneActive) return;
+
+      const bar = batMelodyScore[chiptuneStep % batMelodyScore.length];
+      chiptuneStep++;
+
+      // 1. Canal Bajo (Onda Triangular - Game Boy)
+      if (bar.bass) {
+        playChiptuneNote(bar.bass, 'triangle', 0.45, 0.18);
+      }
+
+      // 2. Canal Lead Principal (Onda Cuadrada)
+      if (bar.lead) {
+        playChiptuneNote(bar.lead, 'square', 0.38, 0.09);
+      }
+
+      // 3. Arpegio rápido estilo Commodore 64 / NES
+      if (bar.arp && bar.arp.length > 0) {
+        bar.arp.forEach((freq, idx) => {
+          setTimeout(() => {
+            playChiptuneNote(freq, 'square', 0.1, 0.04);
+          }, idx * 75);
+        });
+      }
+    }
+
+    function toggleChiptune() {
+      initAudio();
+      isChiptuneActive = !isChiptuneActive;
+      const text = document.getElementById('audioText');
+      const icon = document.getElementById('audioIcon');
+
+      if (isChiptuneActive) {
+        text.textContent = "CHIPTUNE: ON";
+        icon.textContent = "🔊";
+        runChiptuneBeat();
+        chiptuneTimer = setInterval(runChiptuneBeat, 320);
+      } else {
+        text.textContent = "CHIPTUNE: OFF";
+        icon.textContent = "🎵";
+        clearInterval(chiptuneTimer);
+      }
+    }
+
+    document.getElementById('chiptuneToggleBtn').addEventListener('click', toggleChiptune);
+
+
+    /* ========================================================
+       MOTOR GRÁFICO PIXEL ART DE GOTHAM CITY
+       - Renderizado a baja resolución escalada (pixel art puro)
+       - Rascacielos con ventanas encendidas aleatorias
+       - Lluvia continua de píxeles
+       - Relámpagos dinámicos
+       - Batiseñal interactiva con corazón central
+       - Batman chibi animado sobre gárgola gótica
+       ======================================================== */
+    const canvas = document.getElementById('gotham-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Resolución interna retro de 320 x 240 píxeles escalada en alta fidelidad
+    const V_WIDTH = 320;
+    const V_HEIGHT = 240;
+
+    const offscreenCanvas = document.createElement('canvas');
+    offscreenCanvas.width = V_WIDTH;
+    offscreenCanvas.height = V_HEIGHT;
+    const vCtx = offscreenCanvas.getContext('2d');
+    vCtx.imageRendering = 'pixelated';
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      ctx.imageRendering = 'pixelated';
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Estado del escenario de Gotham
+    const gothamState = {
+      signalActive: true,
+      signalPulse: 0,
+      signalTargetX: 110,
+      signalTargetY: 55,
+      lightningAlpha: 0,
+      batmanAction: 'idle', // 'idle' | 'heart' | 'rose' | 'jump'
+      batmanTimer: 0,
+      batmanFrame: 0,
+      rainParticles: [],
+      pixelHearts: []
+    };
+
+    // Inicializar lluvia de píxeles
+    for (let i = 0; i < 85; i++) {
+      gothamState.rainParticles.push({
+        x: Math.random() * V_WIDTH,
+        y: Math.random() * V_HEIGHT,
+        speed: Math.random() * 4 + 5,
+        len: Math.random() * 3 + 3
+      });
+    }
+
+    // Generar edificios de Gotham con luces de ventanas pixeladas fijas
+    const skyline = [
+      { x: 0, w: 45, h: 120, win: [] },
+      { x: 40, w: 55, h: 160, win: [] },
+      { x: 90, w: 40, h: 90, win: [] },
+      { x: 125, w: 60, h: 145, win: [] },
+      { x: 180, w: 50, h: 110, win: [] },
+      { x: 225, w: 65, h: 170, win: [] },
+      { x: 285, w: 45, h: 130, win: [] }
+    ];
+
+    skyline.forEach(b => {
+      for (let r = 0; r < b.h - 15; r += 9) {
+        for (let c = 4; c < b.w - 6; c += 7) {
+          if (Math.random() > 0.45) {
+            b.win.push({ rx: c, ry: r, color: Math.random() > 0.75 ? '#ffcc00' : '#4d9be6' });
+          }
+        }
+      }
+    });
+
+    // Dibujador de sprites pixel art con matrices numéricas
+    function drawPixelMatrix(targetCtx, matrix, startX, startY, pixelSize, colorMap) {
+      for (let r = 0; r < matrix.length; r++) {
+        for (let c = 0; c < matrix[r].length; c++) {
+          const val = matrix[r][c];
+          if (val && colorMap[val]) {
+            targetCtx.fillStyle = colorMap[val];
+            targetCtx.fillRect(startX + c * pixelSize, startY + r * pixelSize, pixelSize, pixelSize);
+          }
+        }
+      }
+    }
+
+    /* SPRITE 1: Bat-Símbolo con Corazón en el Centro (Matriz de 16x9 píxeles) */
+    const batHeartMatrix = [
+      [1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1],
+      [1,1,0,0,0,1,1,1,1,1,1,0,0,0,1,1],
+      [1,1,1,0,1,1,2,2,2,2,1,1,0,1,1,1],
+      [0,1,1,1,1,2,3,2,2,3,2,1,1,1,1,0],
+      [0,0,1,1,1,2,3,3,3,3,2,1,1,1,0,0],
+      [0,0,0,1,1,1,2,3,3,2,1,1,1,0,0,0],
+      [0,0,0,0,1,1,1,2,2,1,1,1,0,0,0,0],
+      [0,0,0,0,0,1,1,1,2,1,1,0,0,0,0,0],
+      [0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0]
+    ];
+
+    /* SPRITE 2: Batman Chibi Pixel Art (Matriz de 16x20) */
+    const batmanIdleMatrix = [
+      [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0], // Cuernos de la máscara
+      [0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0],
+      [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0], // Cabeza
+      [0,0,0,1,2,2,1,1,1,1,2,2,1,0,0,0], // Ojos blancos luminosos (2)
+      [0,0,0,1,1,1,3,3,3,3,1,1,1,0,0,0], // Rostro expuesto (3)
+      [0,0,0,0,1,1,3,3,3,3,1,1,0,0,0,0],
+      [0,0,4,4,1,1,1,1,1,1,1,1,4,4,0,0], // Hombros / Capa (4 = capa oscura)
+      [0,4,4,5,5,5,6,6,6,6,5,5,5,4,4,0], // Pecho gris (5) y Bat-logo dorado (6)
+      [0,4,4,5,5,6,6,7,7,6,6,5,5,4,4,0], // Bat-logo con corazón rojo (7)
+      [0,4,4,5,5,5,6,6,6,6,5,5,5,4,4,0],
+      [0,4,4,8,8,8,8,8,8,8,8,8,8,4,4,0], // Cinturón amarillo utilitario (8)
+      [0,0,4,1,1,1,1,1,1,1,1,1,1,4,0,0], // Piernas
+      [0,0,4,1,1,1,0,0,0,0,1,1,1,4,0,0],
+      [0,0,4,1,1,1,0,0,0,0,1,1,1,4,0,0],
+      [0,0,0,9,9,9,0,0,0,0,9,9,9,0,0,0], // Botas negras/azules
+      [0,0,9,9,9,9,0,0,0,0,9,9,9,9,0,0]
+    ];
+
+    /* SPRITE 3: Batman dando una Rosa Roja Pixel */
+    const batmanRoseMatrix = [
+      [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],
+      [0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0],
+      [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+      [0,0,0,1,2,2,1,1,1,1,2,2,1,0,0,0],
+      [0,0,0,1,1,1,3,3,3,3,1,1,1,0,0,0],
+      [0,0,0,0,1,1,3,3,3,3,1,1,0,0,0,0],
+      [0,0,4,4,1,1,1,1,1,1,1,1,0,0,0,0],
+      [0,4,4,5,5,5,6,6,6,6,5,5,1,1,0,0], // Brazo extendido hacia la derecha
+      [0,4,4,5,5,6,6,7,7,6,6,5,1,1,1,0],
+      [0,4,4,5,5,5,6,6,6,6,5,5,0,0,1,0],
+      [0,4,4,8,8,8,8,8,8,8,8,8,0,7,7,0], // Rosa roja (7) y tallo verde (8)
+      [0,0,4,1,1,1,1,1,1,1,1,1,7,7,7,0],
+      [0,0,4,1,1,1,0,0,0,0,1,1,0,8,0,0],
+      [0,0,4,1,1,1,0,0,0,0,1,1,0,8,0,0],
+      [0,0,0,9,9,9,0,0,0,0,9,9,9,0,0,0],
+      [0,0,9,9,9,9,0,0,0,0,9,9,9,9,0,0]
+    ];
+
+    /* Gárgola Gótica de Piedra Pixel Art */
+    const gargoyleMatrix = [
+      [0,0,0,0,0,1,1,1,0,0,0,0],
+      [0,0,0,1,1,2,2,1,1,0,0,0],
+      [0,0,1,1,3,2,2,3,1,1,0,0],
+      [0,1,1,1,1,1,1,1,1,1,1,0],
+      [1,1,1,2,2,1,1,2,2,1,1,1],
+      [1,1,1,1,1,1,1,1,1,1,1,1],
+      [0,0,1,1,1,1,1,1,1,1,0,0],
+      [0,0,1,1,1,1,1,1,1,1,0,0],
+      [0,1,1,1,1,1,1,1,1,1,1,0],
+      [1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+
+    const batmanColors = {
+      1: '#121929', // Capucha / máscara azul noche
+      2: '#00ffff', // Ojos blancos neón cian
+      3: '#ffcca3', // Piel rostro
+      4: '#0d131f', // Capa ondeante
+      5: '#3f4e66', // Traje gris Gotham
+      6: '#ffcc00', // Escudo amarillo
+      7: '#ff1a40', // Corazón o rosa roja brillante
+      8: '#e69900', // Cinturón dorado / tallo
+      9: '#0a0d14'  // Botas de combate
+    };
+
+    const gargoyleColors = {
+      1: '#2a3547',
+      2: '#1b222e',
+      3: '#ff3b30' // Ojos de rubí de la gárgola
+    };
+
+    const batHeartColors = {
+      1: '#000000',
+      2: '#ffcc00',
+      3: '#ff0044'
+    };
+
+    function triggerLightning() {
+      gothamState.lightningAlpha = 1.0;
+      playRetroSfx('thunder');
+      showRadioMessage("¡Relámpago en el sector 4! Ni las tormentas de Gotham apagan lo que siento por ti.");
+    }
+
+    function spawnPixelHeart(originX, originY) {
+      gothamState.pixelHearts.push({
+        x: originX,
+        y: originY,
+        vy: - (Math.random() * 0.8 + 0.8),
+        vx: (Math.random() - 0.5) * 0.6,
+        life: 1.0,
+        color: Math.random() > 0.3 ? '#ff1a53' : '#ffcc00'
+      });
+      playRetroSfx('heart');
+    }
+
+    function renderGothamScene() {
+      // 1. Cielo Nocturno de Gotham
+      vCtx.fillStyle = '#060814';
+      vCtx.fillRect(0, 0, V_WIDTH, V_HEIGHT);
+
+      // Luna de Gotham
+      vCtx.fillStyle = '#f6f1d1';
+      vCtx.beginPath();
+      vCtx.fillRect(230, 20, 22, 22);
+
+      // 2. Batiseñal en las Nubes (Haz de luz proyectado)
+      if (gothamState.signalActive) {
+        gothamState.signalPulse += 0.05;
+        const pulseSize = Math.sin(gothamState.signalPulse) * 3;
+
+        // Haz de luz cónico pixelado
+        vCtx.fillStyle = 'rgba(255, 204, 0, 0.12)';
+        vCtx.beginPath();
+        vCtx.moveTo(270, 200); // Origen en la azotea del DPGC
+        vCtx.lineTo(gothamState.signalTargetX - 35, gothamState.signalTargetY - 20);
+        vCtx.lineTo(gothamState.signalTargetX + 35, gothamState.signalTargetY + 20);
+        vCtx.closePath();
+        vCtx.fill();
+
+        // Nube circular amarilla de la Batiseñal
+        vCtx.fillStyle = 'rgba(255, 204, 0, 0.85)';
+        vCtx.fillRect(gothamState.signalTargetX - 24, gothamState.signalTargetY - 14, 48 + pulseSize, 28 + pulseSize);
+        vCtx.fillStyle = 'rgba(255, 240, 150, 0.95)';
+        vCtx.fillRect(gothamState.signalTargetX - 20, gothamState.signalTargetY - 11, 40 + pulseSize, 22 + pulseSize);
+
+        // Bat-Símbolo con Corazón en el centro
+        drawPixelMatrix(
+          vCtx,
+          batHeartMatrix,
+          gothamState.signalTargetX - 16,
+          gothamState.signalTargetY - 9,
+          2,
+          batHeartColors
+        );
+      }
+
+      // 3. Rascacielos de Gotham City en capas
+      skyline.forEach(b => {
+        // Silueta del rascacielos
+        vCtx.fillStyle = '#0c1322';
+        vCtx.fillRect(b.x, V_HEIGHT - b.h, b.w, b.h);
+
+        // Borde superior
+        vCtx.fillStyle = '#1e293b';
+        vCtx.fillRect(b.x, V_HEIGHT - b.h, b.w, 2);
+
+        // Ventanas iluminadas
+        b.win.forEach(w => {
+          vCtx.fillStyle = w.color;
+          vCtx.fillRect(b.x + w.rx, V_HEIGHT - b.h + w.ry, 3, 4);
+        });
+      });
+
+      // 4. Lluvia continua de Gotham
+      vCtx.fillStyle = '#60a5fa';
+      gothamState.rainParticles.forEach(p => {
+        p.y += p.speed;
+        p.x -= 0.8; // Viento sutil
+        if (p.y > V_HEIGHT) {
+          p.y = -5;
+          p.x = Math.random() * V_WIDTH;
+        }
+        vCtx.fillRect(Math.floor(p.x), Math.floor(p.y), 1, p.len);
+      });
+
+      // 5. Azotea en primer plano y Gárgola Gótica
+      // Cornisa del edificio donde está Batman
+      vCtx.fillStyle = '#080c14';
+      vCtx.fillRect(0, V_HEIGHT - 45, 130, 45);
+      vCtx.fillStyle = '#1c2536';
+      vCtx.fillRect(0, V_HEIGHT - 46, 130, 2);
+
+      // Gárgola de piedra extendida
+      drawPixelMatrix(vCtx, gargoyleMatrix, 70, V_HEIGHT - 55, 3, gargoyleColors);
+
+      // 6. Batman Chibi y Capa ondeando
+      gothamState.batmanTimer += 0.05;
+      const capeWave = Math.sin(gothamState.batmanTimer * 3) > 0 ? 0 : 1;
+      const jumpY = gothamState.batmanAction === 'jump' ? -10 : 0;
+
+      const activeMatrix = (gothamState.batmanAction === 'rose') ? batmanRoseMatrix : batmanIdleMatrix;
+
+      // Dibujar a Batman en la cima de la gárgola
+      drawPixelMatrix(vCtx, activeMatrix, 35, V_HEIGHT - 95 + jumpY, 3, batmanColors);
+
+      // Capa ondeante adicional por viento
+      if (capeWave === 1 && gothamState.batmanAction === 'idle') {
+        vCtx.fillStyle = '#0d131f';
+        vCtx.fillRect(26, V_HEIGHT - 75 + jumpY, 8, 18);
+        vCtx.fillRect(20, V_HEIGHT - 65 + jumpY, 6, 10);
+      }
+
+      // 7. Partículas de corazones flotantes
+      for (let i = gothamState.pixelHearts.length - 1; i >= 0; i--) {
+        const h = gothamState.pixelHearts[i];
+        h.y += h.vy;
+        h.x += h.vx;
+        h.life -= 0.02;
+
+        if (h.life <= 0) {
+          gothamState.pixelHearts.splice(i, 1);
+          continue;
+        }
+
+        vCtx.fillStyle = h.color;
+        // Mini corazón de 5x4 píxeles
+        const hx = Math.floor(h.x);
+        const hy = Math.floor(h.y);
+        vCtx.fillRect(hx + 1, hy, 1, 1);
+        vCtx.fillRect(hx + 3, hy, 1, 1);
+        vCtx.fillRect(hx, hy + 1, 5, 1);
+        vCtx.fillRect(hx + 1, hy + 2, 3, 1);
+        vCtx.fillRect(hx + 2, hy + 3, 1, 1);
+      }
+
+      // 8. Flash de Relámpago que ilumina la ciudad entera
+      if (gothamState.lightningAlpha > 0) {
+        vCtx.fillStyle = `rgba(235, 245, 255, ${gothamState.lightningAlpha})`;
+        vCtx.fillRect(0, 0, V_WIDTH, V_HEIGHT);
+        gothamState.lightningAlpha -= 0.08;
+      }
+
+      // Proyectar el canvas virtual pixelado al canvas real de alta densidad
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(offscreenCanvas, 0, 0, canvas.width, canvas.height);
+
+      requestAnimationFrame(renderGothamScene);
+    }
+
+
+    // Transmisiones de Radio Románticas
+    const radioQuotes = [
+      "Hasta en la noche más oscura de Gotham, tú eres mi luz. 🦇💛",
+      "Ni el Guasón ni todo Arkham podrían separarme de ti: prometo estar siempre a tu lado.",
+      "Tú eres mi aliada favorita, mi cómplice y mi lugar seguro.",
+      "Soy la noche... pero contigo encontré mi sol.",
+      "Nunca me voy a ir, pase lo que pase siempre estaré contigo protegiéndote y apoyándote. 🛡️❤️",
+      "La Batiseñal ya no busca héroes, ahora solo proyecta tu corazón en el cielo."
+    ];
+
+    function showRadioMessage(text) {
+      const transmission = document.getElementById('radioTransmission');
+      transmission.textContent = text;
+      playRetroSfx('beep');
+    }
+
+    // Archivos clasificados de la Bat-Computadora con promesa incondicional
+    const batFiles = [
+      {
+        title: "ARCHIVO 01: EL PACTO INQUEBRANTABLE",
+        body: "Quiero que esto quede grabado en el servidor principal de mi vida: NUNCA ME VOY A IR. No importa qué tan difíciles sean las batallas, cuántos problemas aparezcan o qué tan fría se ponga la noche, siempre estaré contigo apoyándote, cuidándote y siendo tu escudo protector. Somos un equipo invencible."
+      },
+      {
+        title: "ARCHIVO 02: MI LUZ EN GOTHAM",
+        body: "Gotham puede estar repleta de sombras, pero desde que llegaste tú, cada rincón tiene sentido. Tu sonrisa es mi mayor victoria y el motivo por el cual siempre regreso a salvo a casa."
+      },
+      {
+        title: "ARCHIVO 03: ALIADOS PARA SIEMPRE",
+        body: "No necesito superpoderes cuando tengo tu mano junto a la mía. Eres mi cómplice, mi calma y mi mayor tesoro en este y en todos los universos conocidos."
+      }
+    ];
+
+    let typewriterTimer = null;
+
+    function loadBatFile(index) {
+      playRetroSfx('beep');
+      const file = batFiles[index];
+      const target = document.getElementById('terminalTextContent');
+      target.textContent = "";
+
+      let charIndex = 0;
+      const fullText = `[ CLASIFICADO - ACCESO CONCEDIDO ]\n${file.title}\n\n"${file.body}"`;
+
+      clearInterval(typewriterTimer);
+      typewriterTimer = setInterval(() => {
+        if (charIndex < fullText.length) {
+          target.textContent += fullText.charAt(charIndex);
+          charIndex++;
+          if (charIndex % 3 === 0) playRetroSfx('beep');
+        } else {
+          clearInterval(typewriterTimer);
+        }
+      }, 25);
+    }
+
+    // Toque directo en Batman en la pantalla
+    function handleScreenTap(clientX, clientY) {
+      initAudio();
+      
+      // Coordenadas relativas
+      const rx = (clientX / window.innerWidth) * V_WIDTH;
+      const ry = (clientY / window.innerHeight) * V_HEIGHT;
+
+      // 1. Tocar en la Batiseñal (arriba en el cielo)
+      if (ry < 100 && rx > 60 && rx < 180) {
+        gothamState.signalActive = !gothamState.signalActive;
+        playRetroSfx('signal');
+        if (gothamState.signalActive) {
+          showRadioMessage("¡Batiseñal de Corazón encendida! Que todo Gotham sepa a quién amo.");
+          spawnPixelHeart(gothamState.signalTargetX, gothamState.signalTargetY);
+        } else {
+          showRadioMessage("Batiseñal en sigilo táctico nocturno.");
+        }
+        return;
+      }
+
+      // 2. Tocar a Batman en la gárgola (esquina inferior izquierda)
+      if (rx < 120 && ry > 130) {
+        gothamState.batmanAction = 'rose';
+        spawnPixelHeart(45, V_HEIGHT - 85);
+        showRadioMessage("Batman te entrega una rosa de acero y terciopelo: 'Para la reina de mi corazón'. 🌹");
+        setTimeout(() => {
+          gothamState.batmanAction = 'idle';
+        }, 3200);
+        return;
+      }
+
+      // 3. Tocar en el cielo abierto: genera corazones pixelados flotantes
+      spawnPixelHeart(rx, ry);
+      const randQuote = radioQuotes[Math.floor(Math.random() * radioQuotes.length)];
+      showRadioMessage(randQuote);
+    }
+
+    canvas.addEventListener('pointerdown', (e) => {
+      handleScreenTap(e.clientX, e.clientY);
+    });
+
+    // Control Botón 1: Batiseñal
+    document.getElementById('toggleSignalBtn').addEventListener('click', () => {
+      initAudio();
+      gothamState.signalActive = true;
+      playRetroSfx('signal');
+      spawnPixelHeart(gothamState.signalTargetX, gothamState.signalTargetY);
+      showRadioMessage("¡Bat-Heart Signal activada a máxima potencia en las nubes!");
+    });
+
+    // Control Botón 2: Batman da Rosa
+    document.getElementById('actionBatBtn').addEventListener('click', () => {
+      initAudio();
+      gothamState.batmanAction = 'rose';
+      spawnPixelHeart(45, V_HEIGHT - 85);
+      showRadioMessage("Batman te extiende una rosa roja: 'Mi promesa de estar siempre a tu lado jamás se marchitará'.");
+      setTimeout(() => {
+        gothamState.batmanAction = 'idle';
+      }, 3500);
+    });
+
+    // Control Botón 3: Relámpago
+    document.getElementById('lightningBtn').addEventListener('click', () => {
+      initAudio();
+      triggerLightning();
+    });
+
+    // Control Botón 4: Modal Bat-Computadora
+    const terminalModal = document.getElementById('terminalModal');
+    document.getElementById('openTerminalBtn').addEventListener('click', () => {
+      initAudio();
+      terminalModal.classList.remove('hidden');
+      loadBatFile(0);
+    });
+
+    document.getElementById('closeTerminalBtn').addEventListener('click', () => {
+      playRetroSfx('beep');
+      terminalModal.classList.add('hidden');
+      clearInterval(typewriterTimer);
+    });
+
+    // Pantalla Intro Botón Start
+    const introTerminal = document.getElementById('introTerminal');
+    document.getElementById('enterGothamBtn').addEventListener('click', () => {
+      initAudio();
+      toggleChiptune(); // Iniciar música arcade
+      playRetroSfx('heart');
+      introTerminal.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        introTerminal.classList.add('hidden');
+        showRadioMessage("¡Bienvenida a la Baticueva! Explora Gotham y toca la Batiseñal.");
+      }, 300);
+    });
+
+    window.onload = function() {
+      renderGothamScene();
+    };
+  </script>
+</body>
+</html>

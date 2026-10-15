@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mi Refugio Seguro Contigo // Minecraft Love</title>
+  
+  <!-- Tipografía retro estilo Minecraft de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN para layout ágil -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --mc-gui-bg: #c6c6c6;
+      --mc-gui-light: #ffffff;
+      --mc-gui-dark: #555555;
+      --mc-gui-darker: #373737;
+      --mc-slot-bg: #8b8b8b;
+      --mc-slot-border-dark: #373737;
+      --mc-slot-border-light: #ffffff;
+      --mc-heart-red: #ff2a2a;
+      --mc-gold: #ffaa00;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: #0b0e14;
+      color: #ffffff;
+      font-family: 'Press Start 2P', monospace;
+      overflow-x: hidden;
+    }
+
+    .font-vt {
+      font-family: 'VT323', monospace;
+    }
+
+    /* Botón clásico de Minecraft con bordes 3D */
+    .mc-btn {
+      position: relative;
+      background: #757575;
+      border: 3px solid #000000;
+      box-shadow: inset -3px -3px 0px 0px #373737,
+                  inset 3px 3px 0px 0px #b8b8b8;
+      color: #ffffff;
+      text-shadow: 2px 2px 0px #222222;
+      font-family: 'Press Start 2P', monospace;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: filter 0.08s;
+    }
+
+    .mc-btn:hover {
+      background: #8b8b8b;
+    }
+
+    .mc-btn:active {
+      box-shadow: inset 3px 3px 0px 0px #222222,
+                  inset -2px -2px 0px 0px #aaaaaa;
+      transform: translate(1px, 1px);
+    }
+
+    /* Panel GUI clásico de Minecraft */
+    .mc-panel {
+      background: var(--mc-gui-bg);
+      border: 4px solid #000000;
+      box-shadow: inset 4px 4px 0px 0px var(--mc-gui-light),
+                  inset -4px -4px 0px 0px var(--mc-gui-darker);
+      color: #373737;
+    }
+
+    /* Hotbar Clásica de 9 slots con borde biselado */
+    .mc-hotbar {
+      background: #8f8f8f;
+      border: 4px solid #000000;
+      box-shadow: inset 3px 3px 0px #e0e0e0,
+                  inset -3px -3px 0px #3a3a3a;
+      display: inline-flex;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .mc-slot {
+      width: 44px;
+      height: 44px;
+      background: #8b8b8b;
+      border: 3px solid #000000;
+      box-shadow: inset 3px 3px 0px #373737,
+                  inset -3px -3px 0px #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.05s;
+    }
+
+    @media (min-width: 640px) {
+      .mc-slot {
+        width: 52px;
+        height: 52px;
+      }
+    }
+
+    .mc-slot.selected {
+      border: 4px solid #ffffff;
+      box-shadow: inset 2px 2px 0px #000000, 0 0 8px rgba(255, 255, 255, 0.8);
+      transform: scale(1.06);
+      background: #9d9d9d;
+      z-index: 10;
+    }
+
+    .mc-slot-num {
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      font-size: 8px;
+      color: #e0e0e0;
+      text-shadow: 1px 1px 0px #000;
+      pointer-events: none;
+    }
+
+    /* Notificación de Logro desbloqueado estilo Minecraft */
+    .mc-toast {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #1f1f1f;
+      border: 3px solid #5a5a5a;
+      box-shadow: 0 8px 0px #000000;
+      padding: 10px 14px;
+      max-width: 90vw;
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      pointer-events: none;
+    }
+
+    .mc-toast.show {
+      transform: translateX(0);
+    }
+
+    /* Modal estilo Libro Encantado de Minecraft */
+    .mc-book-modal {
+      background: #f4e8c1;
+      border: 6px solid #4a2c11;
+      box-shadow: inset 4px 4px 0px #fff7db,
+                  inset -4px -4px 0px #855325,
+                  0 12px 0px #000000;
+      color: #2b1704;
+    }
+
+    /* CRT scanlines suaves */
+    .crt {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+      background-size: 100% 4px, 6px 100%;
+      z-index: 40;
+    }
+
+    /* Partículas de corazoncitos pixelados */
+    .heart-fx {
+      position: fixed;
+      pointer-events: none;
+      z-index: 90;
+      animation: floatHeart 1.8s forwards steps(8);
+    }
+
+    @keyframes floatHeart {
+      0% { opacity: 1; transform: translate(0, 0) scale(1); }
+      70% { opacity: 1; transform: translate(var(--dx), -45px) scale(1.2); }
+      100% { opacity: 0; transform: translate(var(--dx), -75px) scale(0.8); }
+    }
+  </style>
+</head>
+<body class="relative flex flex-col justify-between w-full h-full min-h-screen">
+
+  <div class="crt"></div>
+
+  <!-- NOTIFICACIÓN DE LOGRO DESBLOQUEADO (Achievement Unlocked) -->
+  <div id="achievementToast" class="mc-toast">
+    <div class="w-10 h-10 bg-yellow-950 border-2 border-yellow-500 flex items-center justify-center text-xl shrink-0">
+      🏆
+    </div>
+    <div class="flex flex-col">
+      <span class="text-[9px] text-yellow-400 uppercase tracking-wider">¡Logro conseguido!</span>
+      <span id="achievementTitle" class="text-[10px] text-white mt-1 leading-snug">Compañera de Aventuras</span>
+    </div>
+  </div>
+
+  <!-- HEADER HUD SUPERIOR -->
+  <header class="relative z-30 w-full px-3 py-2.5 flex items-center justify-between pointer-events-auto">
+    <!-- Corazones de vida palpitando estilo Minecraft -->
+    <div class="flex items-center gap-1 bg-black/50 px-2.5 py-1.5 border-2 border-stone-800 rounded">
+      <div id="heartsContainer" class="flex gap-0.5"></div>
+      <span class="text-[8px] text-stone-300 ml-1.5 hidden sm:inline">LVL 99</span>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- Alternar Día / Atardecer / Noche -->
+      <button id="timeBtn" class="mc-btn px-2.5 py-1.5 text-[8px] flex items-center gap-1.5">
+        <span id="timeIcon">🌙</span>
+        <span id="timeText" class="hidden sm:inline">NOCHE</span>
+      </button>
+
+      <!-- Botón de Música estilo C418 -->
+      <button id="musicToggleBtn" class="mc-btn px-2.5 py-1.5 text-[8px] flex items-center gap-1.5">
+        <span id="musicIcon">🔇</span>
+        <span id="musicLabel" class="hidden sm:inline">MÚSICA</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CANVAS PRINCIPAL DEL ESCENARIO MINECRAFT (Cabaña, Fogata, Protagonista, Lobito) -->
+  <main class="relative z-10 w-full flex-1 flex flex-col items-center justify-center p-2">
+    
+    <div class="relative w-full max-w-2xl aspect-[4/3] sm:aspect-[16/10] bg-black border-4 border-stone-900 shadow-2xl overflow-hidden cursor-pointer" id="stageWrapper">
+      <!-- Indicador de toque -->
+      <div class="absolute top-2 left-1/2 -translate-x-1/2 bg-black/70 border border-yellow-500/60 px-3 py-1 text-[8px] text-yellow-300 pointer-events-none z-20 animate-pulse text-center">
+        🔥 TOCA LA FOGATA, AL LOBITO O A TU PERSONAJE 🔥
+      </div>
+
+      <canvas id="mcCanvas" width="320" height="220" class="w-full h-full block"></canvas>
+    </div>
+
+    <!-- CUADRO DE DIÁLOGO / CHAT DE MINECRAFT -->
+    <div class="w-full max-w-2xl mt-2 px-2">
+      <div class="bg-black/75 border-2 border-stone-700 p-2 sm:p-2.5 text-left flex items-start gap-2 shadow-lg">
+        <span class="text-yellow-400 text-xs sm:text-sm shrink-0">&lt;Compañero&gt;</span>
+        <p id="chatLine" class="text-[9px] sm:text-[10px] text-stone-200 leading-relaxed font-vt text-lg sm:text-xl">
+          "Quédate cerca del fuego... la noche en este mundo es fría, pero aquí nada te faltará."
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER: HOTBAR CLÁSICA DE MINECRAFT -->
+  <footer class="relative z-30 w-full max-w-md mx-auto pb-4 pt-1 flex flex-col items-center pointer-events-auto">
+    
+    <div class="text-[8px] text-stone-400 mb-1 tracking-wider uppercase">
+      Inventario de Amor
+    </div>
+
+    <!-- Los 4 Items seleccionables -->
+    <div class="mc-hotbar">
+      <!-- Slot 1: Comida / Sopa para cuidar de ella -->
+      <div class="mc-slot selected" data-slot="0" onclick="selectSlot(0)">
+        <span class="mc-slot-num">1</span>
+        <span class="text-xl">🍲</span>
+      </div>
+
+      <!-- Slot 2: Amapola / Flor roja -->
+      <div class="mc-slot" data-slot="1" onclick="selectSlot(1)">
+        <span class="mc-slot-num">2</span>
+        <span class="text-xl">🌺</span>
+      </div>
+
+      <!-- Slot 3: Diamante -->
+      <div class="mc-slot" data-slot="2" onclick="selectSlot(2)">
+        <span class="mc-slot-num">3</span>
+        <span class="text-xl">💎</span>
+      </div>
+
+      <!-- Slot 4: Libro Encantado (Carta Completa) -->
+      <div class="mc-slot" data-slot="3" onclick="selectSlot(3)">
+        <span class="mc-slot-num">4</span>
+        <span class="text-xl">📖</span>
+      </div>
+    </div>
+
+    <div id="itemDesc" class="mt-2 text-[8px] sm:text-[9px] text-yellow-300 text-center font-vt text-base tracking-wide px-2">
+      [1] SOPA DE HONGOS: "Para rellenar tus corazones y cuidarte siempre."
+    </div>
+  </footer>
+
+  <!-- MODAL: LIBRO ENCANTADO (CARTA DE AMOR COMPLETA & VOTO ETERNO) -->
+  <div id="bookModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+    <div class="mc-book-modal max-w-sm sm:max-w-md w-full p-6 sm:p-7 relative flex flex-col">
+      
+      <!-- Título de Libro de Minecraft -->
+      <div class="border-b-2 border-amber-900/30 pb-2 mb-3 flex items-center justify-between">
+        <div class="text-[9px] font-bold uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
+          <span>📖</span> LIBRO Y PLUMA (ENCANTADO)
+        </div>
+        <span class="text-[8px] text-stone-600">Pág. 1 de 1</span>
+      </div>
+
+      <h2 class="text-xs sm:text-sm font-bold text-amber-950 mb-3 text-center">
+        NUESTRO REFUGIO ETERNO
+      </h2>
+
+      <!-- Texto del libro -->
+      <div class="font-vt text-lg sm:text-xl text-stone-900 leading-snug space-y-3 max-h-[58vh] overflow-y-auto pr-1">
+        <p>
+          <strong>Para la protagonista de todas mis aventuras:</strong>
+        </p>
+        <p>
+          Dicen que en Minecraft el peligro llega cuando se oculta el sol y la noche se llena de monstruos. Pero desde que juego la vida contigo, no existe oscuridad ni tormenta que me dé miedo.
+        </p>
+        <p class="text-amber-900 font-bold bg-amber-100/60 p-2 border-l-4 border-amber-800">
+          "Quiero que sepas que nunca me voy a ir. No importa qué tan difícil se ponga la noche, cuántos monstruos o problemas enfrentemos o qué desafíos vengan en el camino, siempre voy a estar a tu lado apoyándote incondicionalmente. Esta cabaña y mi corazón siempre serán tu lugar seguro."
+        </p>
+        <p>
+          Eres mi diamante más valioso, mi punto de reaparición permanente y mi hogar sin importar en qué bioma nos encontremos. Te amo infinitamente.
+        </p>
+      </div>
+
+      <!-- Botón Hecho -->
+      <div class="mt-4 pt-3 border-t-2 border-amber-900/30 flex justify-between items-center">
+        <span class="text-[8px] text-amber-900 font-bold">Firma: Tu Compañero</span>
+        <button id="closeBookBtn" class="mc-btn px-4 py-2 text-[9px] text-black bg-stone-300">
+          HECHO
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========================================================
+       1. MOTOR DE AUDIO RELAJANTE ESTILO C418 (Web Audio API)
+       Inspirado en piezas como "Sweden" y "Wet Hands"
+       Sintetiza un piano de cola con fieltro suave y reverberación
+       ======================================================== */
+    let audioCtx = null;
+    let isMusicPlaying = false;
+    let musicStep = 0;
+    let musicTimer = null;
+
+    // Frecuencias exactas en Hz para notas de piano
+    const P = {
+      D3: 146.83, G3: 196.00, A3: 220.00, B3: 246.94, C4: 261.63,
+      D4: 293.66, E4: 329.63, Fs4: 369.99, G4: 392.00, A4: 440.00,
+      B4: 493.88, C5: 523.25, D5: 587.33, E5: 659.25, Fs5: 739.99,
+      G5: 783.99, A5: 880.00, B5: 987.77
+    };
+
+    // Secuencia nostálgica de acordes y arpegios estilo C418 (Minecraft)
+    const minecraftChords = [
+      // Acorde D Maj9
+      { bass: P.D3, chord: [P.Fs4, P.A4, P.C5], lead: P.Fs5, delay: 0 },
+      { bass: null, chord: [P.A4, P.D5], lead: P.E5, delay: 900 },
+      { bass: null, chord: [P.Fs4, P.A4], lead: P.D5, delay: 1800 },
+      { bass: null, chord: [P.D4, P.Fs4], lead: P.A4, delay: 2700 },
+
+      // Acorde G Maj7 (Paz absoluta en el bosque)
+      { bass: P.G3, chord: [P.G4, P.B4, P.D5], lead: P.B5, delay: 0 },
+      { bass: null, chord: [P.B4, P.D5], lead: P.A5, delay: 900 },
+      { bass: null, chord: [P.G4, P.B4], lead: P.G5, delay: 1800 },
+      { bass: null, chord: [P.D4, P.G4], lead: P.D5, delay: 2700 },
+
+      // Acorde Bm7 (Melancolía y abrigo de la fogata)
+      { bass: P.B3 * 0.5, chord: [P.Fs4, P.A4, P.D5], lead: P.Fs5, delay: 0 },
+      { bass: null, chord: [P.A4, P.D5], lead: P.E5, delay: 900 },
+      { bass: null, chord: [P.Fs4, P.A4], lead: P.D5, delay: 1800 },
+      { bass: null, chord: [P.D4, P.Fs4], lead: P.B4, delay: 2700 },
+
+      // Acorde Em9 -> A7sus (Resolución cálida hacia el amanecer)
+      { bass: P.E4 * 0.5, chord: [P.G4, P.B4, P.E5], lead: P.G5, delay: 0 },
+      { bass: null, chord: [P.B4, P.E5], lead: P.Fs5, delay: 900 },
+      { bass: P.A3, chord: [P.G4, P.A4, P.D5], lead: P.E5, delay: 1800 },
+      { bass: null, chord: [P.Fs4, P.A4], lead: P.D5, delay: 2700 }
+    ];
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Tono de piano suave con filtro acústico y decaimiento cálido
+    function playPianoNote(freq, vol = 0.08, duration = 3.2) {
+      if (!audioCtx || !freq) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const oscHarmonic = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+
+        // Filtro pasa-bajos para simular el sonido apagado y acogedor del piano de Minecraft
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+        filter.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + duration);
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        oscHarmonic.type = 'triangle';
+        oscHarmonic.frequency.setValueAtTime(freq * 2, audioCtx.currentTime);
+
+        // Curva ADSR suave
+        gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.035);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(filter);
+        oscHarmonic.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        oscHarmonic.start();
+        osc.stop(audioCtx.currentTime + duration);
+        oscHarmonic.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    // Efecto de sonido: Crepitar de la fogata
+    function playCampfireCrackle() {
+      if (!audioCtx) return;
+      try {
+        // Tono grave de brasa
+        playPianoNote(90 + Math.random() * 40, 0.03, 0.4);
+      } catch (e) {}
+    }
+
+    // Efecto de sonido: Subir de nivel / Logro
+    function playAchievementSound() {
+      if (!audioCtx) return;
+      const notes = [P.G4, P.B4, P.D5, P.G5];
+      notes.forEach((n, idx) => {
+        setTimeout(() => playPianoNote(n, 0.1, 1.2), idx * 80);
+      });
+    }
+
+    // Efecto de sonido: Ladrido o sonido tierno del lobito
+    function playWolfSound() {
+      if (!audioCtx) return;
+      playPianoNote(P.B4, 0.08, 0.15);
+      setTimeout(() => playPianoNote(P.E5, 0.09, 0.35), 90);
+    }
+
+    function playC418Beat() {
+      if (!isMusicPlaying) return;
+
+      const bar = minecraftChords[musicStep % minecraftChords.length];
+      musicStep++;
+
+      if (bar.bass) {
+        playPianoNote(bar.bass, 0.14, 4.0);
+      }
+      if (bar.chord) {
+        bar.chord.forEach((f, idx) => {
+          setTimeout(() => playPianoNote(f, 0.04, 2.8), idx * 45);
+        });
+      }
+      if (bar.lead) {
+        setTimeout(() => playPianoNote(bar.lead, 0.08, 3.2), 120);
+      }
+    }
+
+    function toggleMusic() {
+      initAudio();
+      isMusicPlaying = !isMusicPlaying;
+      const label = document.getElementById('musicLabel');
+      const icon = document.getElementById('musicIcon');
+
+      if (isMusicPlaying) {
+        label.textContent = "MÚSICA: ON";
+        icon.textContent = "🔊";
+        playC418Beat();
+        musicTimer = setInterval(playC418Beat, 2400);
+      } else {
+        label.textContent = "MÚSICA: OFF";
+        icon.textContent = "🔇";
+        clearInterval(musicTimer);
+      }
+    }
+
+    document.getElementById('musicToggleBtn').addEventListener('click', toggleMusic);
+
+    /* ========================================================
+       2. MOTOR GRÁFICO PIXEL ART DE MINECRAFT EN CANVAS
+       - Renderizado a 320x220 píxeles escalados
+       - Cabaña de madera de roble clásica con tejado biselado
+       - Ventanas luminosas y antorcha exterior
+       - Cielo dinámico (Día, Atardecer, Noche con luna cuadrada)
+       - Fogata animada con leña, humo y chispas de corazones
+       - Personajes en pixel art (Ella como protagonista cute y tú a su lado)
+       - Lobito fiel domesticado con collar rojo
+       ======================================================== */
+    const canvas = document.getElementById('mcCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+
+    const CW = 320;
+    const CH = 220;
+
+    let timeState = 'night'; // 'sunset' | 'night'
+    let fireFrame = 0;
+    let fireTicker = 0;
+    let wolfTailWag = 0;
+
+    // Partículas de humo y brasas de la fogata
+    const smokeParticles = [];
+    for (let i = 0; i < 18; i++) {
+      smokeParticles.push({
+        x: 156 + (Math.random() - 0.5) * 8,
+        y: 165 - Math.random() * 50,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: - (Math.random() * 0.6 + 0.5),
+        size: Math.random() * 3 + 2,
+        alpha: Math.random() * 0.7 + 0.2
+      });
+    }
+
+    // Estrellas cúbicas nocturnas
+    const stars = [];
+    for (let i = 0; i < 40; i++) {
+      stars.push({
+        x: Math.floor(Math.random() * CW),
+        y: Math.floor(Math.random() * 95),
+        size: Math.random() > 0.8 ? 2 : 1,
+        alpha: Math.random() * 0.8 + 0.2
+      });
+    }
+
+    // Luciérnagas / partículas mágicas de noche
+    const fireflies = [];
+    for (let i = 0; i < 12; i++) {
+      fireflies.push({
+        x: Math.random() * CW,
+        y: 120 + Math.random() * 60,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.3,
+        pulse: Math.random() * Math.PI * 2
+      });
+    }
+
+    function drawPixelRect(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
+    }
+
+    /* Dibujar Cielo y Clima */
+    function drawSky() {
+      if (timeState === 'night') {
+        // Cielo noche profunda
+        ctx.fillStyle = '#060913';
+        ctx.fillRect(0, 0, CW, CH);
+
+        // Estrellas cúbicas de Minecraft
+        stars.forEach(s => {
+          ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+          ctx.fillRect(s.x, s.y, s.size, s.size);
+        });
+
+        // Luna cúbica clásica de Minecraft
+        drawPixelRect(240, 20, 24, 24, '#f8fafc');
+        drawPixelRect(244, 24, 6, 6, '#cbd5e1'); // cráter
+        drawPixelRect(252, 30, 8, 8, '#cbd5e1'); // cráter
+      } else {
+        // Atardecer cálido de Minecraft (Cálidos naranjas y púrpuras)
+        const sunsetGrad = ctx.createLinearGradient(0, 0, 0, 140);
+        sunsetGrad.addColorStop(0, '#3b1d4a');
+        sunsetGrad.addColorStop(0.45, '#8c2d38');
+        sunsetGrad.addColorStop(0.8, '#d9572b');
+        sunsetGrad.addColorStop(1, '#f9a338');
+        ctx.fillStyle = sunsetGrad;
+        ctx.fillRect(0, 0, CW, CH);
+
+        // Sol cuadrado hundiéndose
+        drawPixelRect(40, 60, 22, 22, '#fef08a');
+      }
+
+      // Nubes volumétricas cúbicas clásicas
+      const cloudColor = timeState === 'night' ? 'rgba(25, 33, 52, 0.7)' : 'rgba(255, 215, 185, 0.45)';
+      drawPixelRect(15, 30, 70, 12, cloudColor);
+      drawPixelRect(130, 15, 95, 14, cloudColor);
+      drawPixelRect(220, 45, 80, 10, cloudColor);
+    }
+
+    /* Bosque de Abetos y Colinas al fondo */
+    function drawHillsAndPines() {
+      // Colina lejana
+      ctx.fillStyle = timeState === 'night' ? '#0d181c' : '#273822';
+      ctx.beginPath();
+      ctx.moveTo(0, 145);
+      ctx.lineTo(80, 125);
+      ctx.lineTo(200, 140);
+      ctx.lineTo(CW, 115);
+      ctx.lineTo(CW, CH);
+      ctx.lineTo(0, CH);
+      ctx.closePath();
+      ctx.fill();
+
+      // Siluetas de árboles de pino cúbicos (Minecraft Spruce)
+      drawMinecraftPine(25, 95);
+      drawMinecraftPine(60, 88);
+      drawMinecraftPine(255, 85);
+      drawMinecraftPine(290, 92);
+    }
+
+    function drawMinecraftPine(x, y) {
+      const color = timeState === 'night' ? '#0a1a14' : '#143820';
+      const trunkColor = '#2b1e13';
+      // Tronco
+      drawPixelRect(x + 5, y + 25, 4, 18, trunkColor);
+      // Follaje escalonado
+      drawPixelRect(x + 2, y + 18, 10, 8, color);
+      drawPixelRect(x + 3, y + 10, 8, 8, color);
+      drawPixelRect(x + 5, y + 4, 4, 6, color);
+    }
+
+    /* Terreno de Hierba con Bloques de Tierra cúbicos */
+    function drawTerrain() {
+      const grassGreen = timeState === 'night' ? '#1c3a1b' : '#387324';
+      const dirtBrown = timeState === 'night' ? '#261b11' : '#573d26';
+
+      // Capa de césped
+      drawPixelRect(0, 145, CW, 14, grassGreen);
+      // Borde irregular de píxeles de tierra colgando
+      for (let i = 0; i < CW; i += 6) {
+        if ((i % 12) === 0) {
+          drawPixelRect(i, 158, 4, 3, grassGreen);
+        }
+      }
+      // Tierra inferior
+      drawPixelRect(0, 159, CW, CH - 159, dirtBrown);
+
+      // Camino de tierra aplanada frente a la cabaña
+      const pathColor = timeState === 'night' ? '#33261a' : '#735438';
+      drawPixelRect(110, 162, 100, 24, pathColor);
+
+      // Flores de Minecraft: Amapolas rojas cúbicas
+      drawMinecraftFlower(18, 140, '#ff2222');
+      drawMinecraftFlower(295, 142, '#ff2222');
+      drawMinecraftFlower(282, 146, '#ffffff'); // Flor blanca
+    }
+
+    function drawMinecraftFlower(x, y, petalColor) {
+      drawPixelRect(x + 1, y + 2, 1, 6, '#2d6a1e'); // tallo
+      drawPixelRect(x, y, 3, 3, petalColor); // flor
+      drawPixelRect(x + 1, y + 1, 1, 1, '#ffee55'); // centro
+    }
+
+    /* Cabaña de Madera de Roble Clásica de Minecraft */
+    function drawCabin() {
+      const cx = 15;
+      const cy = 70;
+
+      // Troncos de las esquinas (Oak Log con corteza)
+      const logBark = '#3c2918';
+      const logHighlight = '#5a3d24';
+      drawPixelRect(cx, cy, 10, 75, logBark);
+      drawPixelRect(cx + 2, cy, 3, 75, logHighlight);
+
+      drawPixelRect(cx + 85, cy, 10, 75, logBark);
+      drawPixelRect(cx + 87, cy, 3, 75, logHighlight);
+
+      // Paredes de tablones de madera de roble (Oak Planks)
+      const plankColor = '#805934';
+      const plankLine = '#634427';
+      drawPixelRect(cx + 10, cy + 12, 75, 63, plankColor);
+
+      // Líneas horizontales de los tablones
+      for (let py = cy + 12; py < cy + 75; py += 10) {
+        drawPixelRect(cx + 10, py, 75, 1, plankLine);
+      }
+
+      // Tejado de madera a dos aguas (Stairs)
+      const roofColor = '#50351d';
+      const roofEdge = '#362312';
+      drawPixelRect(cx - 6, cy + 8, 107, 7, roofColor);
+      drawPixelRect(cx - 6, cy + 14, 107, 2, roofEdge);
+
+      drawPixelRect(cx - 2, cy + 1, 99, 7, roofColor);
+      drawPixelRect(cx + 3, cy - 6, 89, 7, roofColor);
+      drawPixelRect(cx + 9, cy - 12, 77, 7, roofColor);
+
+      // Ventana de cristal iluminada (Glass Pane)
+      const winGlow = '#ffe27d';
+      const winFrame = '#3c2918';
+      drawPixelRect(cx + 16, cy + 24, 20, 20, winFrame);
+      drawPixelRect(cx + 18, cy + 26, 16, 16, winGlow);
+      // Cruz del marco de ventana
+      drawPixelRect(cx + 25, cy + 26, 2, 16, winFrame);
+      drawPixelRect(cx + 18, cy + 33, 16, 2, winFrame);
+
+      // Puerta cerrada de madera
+      drawPixelRect(cx + 52, cy + 32, 22, 43, '#4a321c');
+      drawPixelRect(cx + 54, cy + 34, 18, 39, '#634427');
+      drawPixelRect(cx + 55, cy + 52, 3, 3, '#eab308'); // pomo dorado
+
+      // Antorcha exterior iluminando la entrada
+      const torchX = cx + 80;
+      const torchY = cy + 30;
+      drawPixelRect(torchX, torchY, 2, 8, '#5c3d1f'); // palito
+      // Fuego de la antorcha
+      drawPixelRect(torchX - 1, torchY - 3, 4, 4, '#ff9900');
+      drawPixelRect(torchX, torchY - 2, 2, 2, '#ffff66');
+
+      // Resplandor cálido de la antorcha en la pared
+      ctx.fillStyle = 'rgba(255, 170, 0, 0.15)';
+      ctx.fillRect(torchX - 10, torchY - 10, 24, 24);
+    }
+
+    /* Fogata de Minecraft Animada (Campfire) */
+    function drawCampfire() {
+      const fx = 150;
+      const fy = 160;
+
+      fireTicker++;
+      if (fireTicker % 6 === 0) {
+        fireFrame = (fireFrame + 1) % 4;
+      }
+
+      // Base de troncos cruzados de la fogata
+      drawPixelRect(fx - 12, fy + 6, 24, 4, '#24170e');
+      drawPixelRect(fx - 10, fy + 7, 20, 2, '#4a311d');
+      drawPixelRect(fx - 8, fy + 2, 16, 4, '#24170e');
+
+      // Llamas cúbicas de la fogata
+      const flameShift = (fireFrame % 2 === 0) ? 0 : 1;
+      // Núcleo rojo/naranja
+      drawPixelRect(fx - 7 + flameShift, fy - 10, 14, 14, '#ff3b00');
+      drawPixelRect(fx - 5, fy - 14, 10, 6, '#ff6600');
+      // Centro amarillo brillante
+      drawPixelRect(fx - 4 + flameShift, fy - 8, 8, 10, '#ffcc00');
+      drawPixelRect(fx - 2, fy - 12, 4, 5, '#ffff66');
+      drawPixelRect(fx - 1, fy - 6, 2, 6, '#ffffff');
+
+      // Resplandor de la fogata en el suelo
+      ctx.fillStyle = 'rgba(255, 140, 0, 0.22)';
+      ctx.beginPath();
+      ctx.ellipse(fx, fy + 8, 38, 14, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Partículas de humo ascendente
+      smokeParticles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.005;
+
+        if (p.y < 80 || p.alpha <= 0) {
+          p.x = fx + (Math.random() - 0.5) * 8;
+          p.y = fy - 8;
+          p.alpha = Math.random() * 0.7 + 0.3;
+        }
+
+        ctx.fillStyle = `rgba(220, 220, 220, ${p.alpha})`;
+        ctx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size, p.size);
+      });
+    }
+
+    /* PROTAGONISTAS PIXEL ART ESTILO MINECRAFT (Ella y Tú) */
+    function drawCharacters() {
+      // 1. ELLA (Protagonista femenina cute) - Sentada/parada a la izquierda de la fogata
+      const gx = 124;
+      const gy = 142;
+
+      // Pelo castaño suave / oscuro moderno
+      drawPixelRect(gx, gy, 12, 12, '#3d2314');
+      drawPixelRect(gx - 1, gy + 3, 3, 11, '#3d2314'); // mechón izquierdo
+      drawPixelRect(gx + 10, gy + 3, 3, 11, '#3d2314'); // mechón derecho
+
+      // Cara
+      drawPixelRect(gx + 2, gy + 3, 8, 7, '#f7d0b5');
+      // Ojos tiernos (pixel art)
+      drawPixelRect(gx + 3, gy + 5, 2, 2, '#2b1b11');
+      drawPixelRect(gx + 7, gy + 5, 2, 2, '#2b1b11');
+      // Rubor en las mejillas
+      drawPixelRect(gx + 2, gy + 7, 2, 1, '#f87171');
+      drawPixelRect(gx + 8, gy + 7, 2, 1, '#f87171');
+
+      // Suéter / Cómodo outfit (Rosa pastel cálido)
+      drawPixelRect(gx + 1, gy + 12, 10, 12, '#f472b6');
+      drawPixelRect(gx + 3, gy + 13, 6, 8, '#ec4899'); // detalle suéter
+      // Brazos acogedores
+      drawPixelRect(gx - 2, gy + 12, 3, 10, '#f472b6');
+      drawPixelRect(gx + 11, gy + 12, 3, 10, '#f472b6');
+
+      // Pantalón azul denim
+      drawPixelRect(gx + 2, gy + 24, 8, 7, '#3b82f6');
+      // Botas cómodas de cuero
+      drawPixelRect(gx + 1, gy + 31, 4, 3, '#451a03');
+      drawPixelRect(gx + 7, gy + 31, 4, 3, '#451a03');
+
+
+      // 2. ÉL (Tú como compañero a su lado) - A la derecha de ella compartiendo el fuego
+      const bx = 180;
+      const by = 138;
+
+      // Pelo oscuro
+      drawPixelRect(bx, by, 13, 11, '#1c1917');
+      // Cara
+      drawPixelRect(bx + 2, by + 3, 9, 8, '#f5cbaf');
+      // Ojos
+      drawPixelRect(bx + 3, by + 5, 2, 2, '#1e293b');
+      drawPixelRect(bx + 7, by + 5, 2, 2, '#1e293b');
+      // Sonrisa
+      drawPixelRect(bx + 5, by + 8, 3, 1, '#b45309');
+
+      // Chaqueta de explorador verde / gris
+      drawPixelRect(bx, by + 12, 13, 14, '#15803d');
+      drawPixelRect(bx + 3, by + 12, 7, 10, '#166534'); // pecho
+      // Brazos
+      drawPixelRect(bx - 3, by + 12, 3, 11, '#15803d');
+      drawPixelRect(bx + 13, by + 12, 3, 11, '#15803d');
+
+      // Pantalón oscuro
+      drawPixelRect(bx + 2, by + 26, 9, 9, '#1f2937');
+      // Botas
+      drawPixelRect(bx + 1, by + 35, 4, 3, '#0f172a');
+      drawPixelRect(bx + 7, by + 35, 4, 3, '#0f172a');
+    }
+
+    /* Lobito Domesticado de Minecraft (Wolf con Collar Rojo) */
+    function drawWolf() {
+      const wx = 205;
+      const wy = 158;
+
+      wolfTailWag += 0.08;
+      const wag = Math.sin(wolfTailWag) > 0 ? 0 : 1;
+
+      // Cuerpo blanco/gris sentado
+      drawPixelRect(wx, wy + 6, 12, 10, '#e2e8f0');
+      drawPixelRect(wx + 2, wy + 7, 8, 8, '#cbd5e1');
+
+      // Patas delanteras
+      drawPixelRect(wx - 2, wy + 10, 4, 6, '#e2e8f0');
+      drawPixelRect(wx + 2, wy + 10, 4, 6, '#e2e8f0');
+
+      // Cabeza cúbica
+      drawPixelRect(wx - 4, wy, 8, 7, '#e2e8f0');
+      // Hocico
+      drawPixelRect(wx - 6, wy + 3, 3, 3, '#cbd5e1');
+      drawPixelRect(wx - 7, wy + 3, 2, 2, '#000000'); // naricita negra
+      // Ojos
+      drawPixelRect(wx - 3, wy + 1, 2, 2, '#000000');
+      // Orejitas
+      drawPixelRect(wx - 4, wy - 3, 2, 3, '#cbd5e1');
+      drawPixelRect(wx + 1, wy - 3, 2, 3, '#cbd5e1');
+
+      // COLLAR ROJO DOMESTICADO CLÁSICO
+      drawPixelRect(wx - 4, wy + 6, 8, 2, '#dc2626');
+
+      // Colita moviéndose
+      drawPixelRect(wx + 12, wy + 6 - wag, 3, 5, '#e2e8f0');
+    }
+
+    /* Luciérnagas de noche */
+    function drawFireflies() {
+      if (timeState !== 'night') return;
+
+      fireflies.forEach(f => {
+        f.x += f.vx;
+        f.y += f.vy;
+        f.pulse += 0.06;
+
+        if (f.x < 0) f.x = CW;
+        if (f.x > CW) f.x = 0;
+        if (f.y < 110) f.y = 180;
+        if (f.y > 190) f.y = 120;
+
+        const alpha = Math.sin(f.pulse) * 0.4 + 0.6;
+        ctx.fillStyle = `rgba(234, 179, 8, ${alpha})`;
+        ctx.fillRect(Math.floor(f.x), Math.floor(f.y), 2, 2);
+      });
+    }
+
+    /* Bucle Principal de Renderizado */
+    function render() {
+      ctx.clearRect(0, 0, CW, CH);
+
+      drawSky();
+      drawHillsAndPines();
+      drawTerrain();
+      drawCabin();
+      drawCampfire();
+      drawCharacters();
+      drawWolf();
+      drawFireflies();
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+
+    /* ========================================================
+       3. INTERACCIONES Y SISTEMA DE LOGROS DE MINECRAFT
+       ======================================================== */
+    const stageWrapper = document.getElementById('stageWrapper');
+    const chatLine = document.getElementById('chatLine');
+    const achievementToast = document.getElementById('achievementToast');
+    const achievementTitle = document.getElementById('achievementTitle');
+    let toastTimer = null;
+
+    function triggerAchievement(title) {
+      initAudio();
+      playAchievementSound();
+
+      achievementTitle.textContent = title;
+      achievementToast.classList.add('show');
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        achievementToast.classList.remove('show');
+      }, 4200);
+    }
+
+    function spawnHeartParticle(clientX, clientY) {
+      const h = document.createElement('div');
+      h.className = 'heart-fx';
+      h.textContent = '❤️';
+      h.style.left = `${clientX}px`;
+      h.style.top = `${clientY}px`;
+      h.style.setProperty('--dx', `${(Math.random() - 0.5) * 50}px`);
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 1800);
+    }
+
+    // Interacción al tocar dentro del Canvas
+    stageWrapper.addEventListener('click', (e) => {
+      initAudio();
+      const rect = canvas.getBoundingClientRect();
+      const clickX = ((e.clientX - rect.left) / rect.width) * CW;
+      const clickY = ((e.clientY - rect.top) / rect.height) * CH;
+
+      spawnHeartParticle(e.clientX, e.clientY);
+
+      // 1. Clic en la fogata (centro)
+      if (clickX >= 135 && clickX <= 170 && clickY >= 140) {
+        playCampfireCrackle();
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => spawnHeartParticle(e.clientX + (i - 1) * 20, e.clientY), i * 150);
+        }
+        chatLine.innerHTML = `"El fuego está crepitando... Esta cabaña y mi corazón siempre serán tu lugar seguro."`;
+        triggerAchievement("Punto de reaparición fijado en mi corazón");
+        return;
+      }
+
+      // 2. Clic en el Lobito (derecha)
+      if (clickX >= 195 && clickY >= 150) {
+        playWolfSound();
+        spawnHeartParticle(e.clientX, e.clientY);
+        chatLine.innerHTML = `*¡Guau!* El lobito se alegra al verte sonreír y mueve la cola con alegría.`;
+        return;
+      }
+
+      // 3. Clic en los Personajes
+      if (clickX >= 115 && clickX <= 195 && clickY >= 130 && clickY <= 175) {
+        playAchievementSound();
+        chatLine.innerHTML = `"Quiero que sepas que nunca me voy a ir. No importa qué tan difícil se ponga la noche, siempre estaré a tu lado apoyándote."`;
+        triggerAchievement("Escudo irrompible: Afrontaremos cualquier dificultad juntos");
+        return;
+      }
+
+      // Clic general
+      chatLine.innerHTML = `"Contigo hasta la noche más oscura de Minecraft se siente llena de paz y estrellas."`;
+    });
+
+    // Control de tiempo Día/Noche
+    const timeBtn = document.getElementById('timeBtn');
+    const timeIcon = document.getElementById('timeIcon');
+    const timeText = document.getElementById('timeText');
+
+    timeBtn.addEventListener('click', () => {
+      initAudio();
+      if (timeState === 'night') {
+        timeState = 'sunset';
+        timeIcon.textContent = '🌅';
+        timeText.textContent = 'ATARDECER';
+        chatLine.innerHTML = `"Mira el atardecer cúbico... cada día a tu lado es una nueva aventura que agradezco."`;
+      } else {
+        timeState = 'night';
+        timeIcon.textContent = '🌙';
+        timeText.textContent = 'NOCHE';
+        chatLine.innerHTML = `"La noche ha caído, pero bajo este techo y frente al fuego nada nos perturba."`;
+      }
+    });
+
+    /* ========================================================
+       4. SISTEMA DE HOTBAR E ITEMS DE MINECRAFT
+       ======================================================== */
+    const itemDetails = [
+      {
+        name: "Sopa de Hongos",
+        desc: `[1] SOPA DE HONGOS: "Para rellenar todos tus corazones. Prometo cuidar de ti en cada instante."`,
+        action: () => {
+          chatLine.innerHTML = `"Te preparé una sopita caliente... Tu bienestar y tu paz son mi mayor prioridad."`;
+          triggerAchievement("Vida al máximo: Siempre cuidaré de ti");
+          refillHearts();
+        }
+      },
+      {
+        name: "Amapola Roja",
+        desc: `[2] AMAPOLA DE BOSQUE: "Una flor roja que nunca se marchita, para mi jugadora favorita."`,
+        action: () => {
+          chatLine.innerHTML = `"Una amapola recogida en los campos de Minecraft... tan bonita y única como tú."`;
+          triggerAchievement("Un detalle para mi jugadora favorita");
+        }
+      },
+      {
+        name: "Diamante Puro",
+        desc: `[3] DIAMANTE BRILLANTE: "El valor incalculable de tu sonrisa. Nada brilla más que tú."`,
+        action: () => {
+          chatLine.innerHTML = `"Tantas cuevas recorridas, pero el tesoro más grande siempre ha sido tu corazón."`;
+          triggerAchievement("¡Diamantes encontrados! Eres mi mayor tesoro");
+        }
+      },
+      {
+        name: "Libro Encantado",
+        desc: `[4] LIBRO Y PLUMA: "Abre para leer la carta de amor y el juramento completo."`,
+        action: () => {
+          openBookModal();
+        }
+      }
+    ];
+
+    function selectSlot(index) {
+      initAudio();
+      playPianoNote(523.25, 0.08, 0.4);
+
+      document.querySelectorAll('.mc-slot').forEach((slot, idx) => {
+        if (idx === index) slot.classList.add('selected');
+        else slot.classList.remove('selected');
+      });
+
+      const item = itemDetails[index];
+      document.getElementById('itemDesc').textContent = item.desc;
+      item.action();
+    }
+
+    // Modal Libro Encantado
+    const bookModal = document.getElementById('bookModal');
+    const closeBookBtn = document.getElementById('closeBookBtn');
+
+    function openBookModal() {
+      initAudio();
+      playAchievementSound();
+      bookModal.classList.remove('hidden');
+    }
+
+    closeBookBtn.addEventListener('click', () => {
+      initAudio();
+      playPianoNote(392, 0.06, 0.3);
+      bookModal.classList.add('hidden');
+    });
+
+    /* ========================================================
+       5. BARRA DE CORAZONES DE VIDA DE MINECRAFT
+       ======================================================== */
+    const heartsContainer = document.getElementById('heartsContainer');
+    for (let i = 0; i < 10; i++) {
+      const heart = document.createElement('span');
+      heart.className = 'text-xs text-red-500 animate-pulse';
+      heart.textContent = '❤️';
+      heartsContainer.appendChild(heart);
+    }
+
+    function refillHearts() {
+      heartsContainer.innerHTML = '';
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('span');
+          heart.className = 'text-xs text-red-500 transform scale-125 transition-transform duration-200';
+          heart.textContent = '❤️';
+          heartsContainer.appendChild(heart);
+          playPianoNote(440 + i * 40, 0.03, 0.2);
+          setTimeout(() => heart.classList.remove('scale-125'), 200);
+        }, i * 60);
+      }
+    }
+
+    // Al cargar la página
+    window.onload = function() {
+      setTimeout(() => {
+        triggerAchievement("Encontraste a tu compañero de aventuras para siempre");
+      }, 800);
+    };
+  </script>
+</body>
+</html>
