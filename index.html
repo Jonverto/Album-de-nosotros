@@ -51,9 +51,9 @@
     /* Tarjeta Postal de Colección */
     .postcard-card {
       position: relative;
-      background: rgba(22, 13, 40, 0.82);
+      background: rgba(22, 13, 40, 0.85);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(251, 191, 36, 0.25);
+      border: 1px solid rgba(251, 191, 36, 0.28);
       box-shadow:
         0 18px 40px -12px rgba(0, 0, 0, 0.85),
         inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
@@ -70,22 +70,27 @@
         inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
     }
 
-    /* Estilo Sello Postal Perforado */
+    /* Estilo Sello Postal Perforado / Estampilla Antigua */
     .postal-stamp-frame {
       position: relative;
       background: #fbf8f0;
-      border: 3px dashed #d97706;
-      padding: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      border: 4px dashed #b45309;
+      padding: 8px 8px 20px 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      transform: rotate(-1.5deg);
+      transition: transform 0.3s ease;
+    }
+    .postal-stamp-frame:hover {
+      transform: rotate(0deg) scale(1.02);
     }
 
-    /* Estilo Foto Antigua / Polaroid con borde sepia y nota manuscrita */
+    /* Estilo Foto Antigua / Polaroid */
     .vintage-photo-frame {
       background: #fdfbf7;
-      padding: 10px 10px 24px 10px;
+      padding: 10px 10px 28px 10px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(180, 140, 90, 0.2);
       border: 1px solid #e7d8bc;
-      transform: rotate(-1deg);
+      transform: rotate(1deg);
       transition: transform 0.3s ease;
     }
     .vintage-photo-frame:hover {
@@ -93,7 +98,25 @@
     }
 
     .vintage-sepia {
-      filter: sepia(0.3) contrast(1.05) brightness(0.95);
+      filter: sepia(0.35) contrast(1.06) brightness(0.94);
+    }
+
+    /* Animación de Libro / Páginas pasando (Page Flip) */
+    .book-container {
+      perspective: 1600px;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .book-page {
+      background: linear-gradient(135deg, #fbf8f0 0%, #f4ebd0 100%);
+      color: #2b1704;
+      border: 3px solid #b45309;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.8), inset 0 0 35px rgba(139, 69, 19, 0.15);
+      transform-origin: left center;
+      transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.8s;
+      backface-visibility: hidden;
     }
 
     /* Botones de Lujo */
@@ -157,20 +180,30 @@
           📖
         </div>
         <div>
-          <span class="text-[10px] uppercase tracking-widest text-amber-300/90 font-semibold block">Colección Privada en GitHub Pages</span>
+          <span class="text-[10px] uppercase tracking-widest text-amber-300/90 font-semibold block">GitHub Pages // Colección Privada</span>
           <h1 class="text-sm sm:text-base font-royal text-white tracking-wide">EL ÁLBUM DE NUESTROS MUNDOS</h1>
         </div>
       </div>
 
       <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Selector de Vista: Mosaico Bento o Modo Libro de Páginas -->
+        <div class="bg-black/50 p-1 rounded-xl border border-amber-500/30 flex items-center gap-1">
+          <button onclick="setViewMode('mosaic')" id="viewMosaicBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow">
+            🍱 Mosaico
+          </button>
+          <button onclick="setViewMode('book')" id="viewBookBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-200 hover:text-white">
+            📖 Libro Antiguo
+          </button>
+        </div>
+
         <!-- Botón para Abrir el Creador de Postales / Fotos -->
         <button onclick="openCreatorStudio()" class="album-btn px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-lg">
           <span>➕</span>
-          <span class="font-bold">Crear Postal / Foto</span>
+          <span class="font-bold">Agregar Recuerdo / Foto</span>
         </button>
 
         <!-- Botón de Música de Galería -->
-        <button id="ambientMusicBtn" class="album-btn-ghost px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2">
+        <button id="ambientMusicBtn" class="album-btn-ghost px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2" onclick="toggleGalleryMusic()">
           <span id="musicIcon">🎹</span>
           <span id="musicText">Música: OFF</span>
         </button>
@@ -192,7 +225,7 @@
             Cada postal y fotografía guarda un universo construido para ti
           </h2>
           <p class="text-xs sm:text-sm text-purple-100/85 mt-3 leading-relaxed font-light">
-            Aquí están todas nuestras experiencias interactivas y recuerdos fotográficos. Puedes agregar nuevas tarjetas o subir fotos con bordes de estampilla o estilo antiguo directamente usando el botón superior; todo se guardará en tu enlace de GitHub.
+            Aquí están todas nuestras experiencias interactivas y recuerdos fotográficos. Puedes subir tus propias fotos con bordes de estampilla antigua o estilo Polaroid directamente desde el botón superior, o cambiar al "Modo Libro Antiguo" para pasar las páginas como un diario real.
           </p>
         </div>
 
@@ -207,32 +240,55 @@
       </div>
     </header>
 
-    <!-- FILTROS DE CATEGORÍA -->
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-      <div class="flex flex-wrap items-center gap-2">
-        <button onclick="filterAlbum('all')" id="filter-all" class="filter-pill active px-4 py-1.5 rounded-full text-xs border border-amber-400/30 transition">
-          ✨ Todas las Postales
-        </button>
-        <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
-          👑 Favoritas Destacadas
-        </button>
-        <button onclick="filterAlbum('photo')" id="filter-photo" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
-          📸 Fotos & Recuerdos
-        </button>
-        <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
-          👾 Mundos Interactivos
-        </button>
+    <!-- VISTA 1: MOSAICO BENTO -->
+    <div id="mosaicViewContainer">
+      <!-- FILTROS DE CATEGORÍA -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="filterAlbum('all')" id="filter-all" class="filter-pill active px-4 py-1.5 rounded-full text-xs border border-amber-400/30 transition">
+            ✨ Todas las Postales
+          </button>
+          <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
+            👑 Favoritas Destacadas
+          </button>
+          <button onclick="filterAlbum('photo')" id="filter-photo" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
+            📸 Fotos Estampilla / Antiguas
+          </button>
+          <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
+            👾 Mundos Interactivos
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs text-amber-300/80">
+          <span>💡 Sube fotos o crea notas interactivas cuando gustes</span>
+        </div>
       </div>
 
-      <div class="flex items-center gap-2 text-xs text-amber-300/80">
-        <span>💡 Tip: Los cambios se guardan automáticamente en este navegador</span>
-      </div>
+      <!-- GALERÍA MOSAICO BENTO -->
+      <section id="mosaicGrid" class="grid grid-cols-1 md:grid-cols-12 gap-5 auto-rows-auto">
+        <!-- Renderizado dinámico -->
+      </section>
     </div>
 
-    <!-- GALERÍA MOSAICO BENTO -->
-    <section id="mosaicGrid" class="grid grid-cols-1 md:grid-cols-12 gap-5 auto-rows-auto">
-      <!-- Renderizado dinámico -->
-    </section>
+    <!-- VISTA 2: MODO LIBRO ANTIGUO (PASAR PÁGINAS) -->
+    <div id="bookViewContainer" class="hidden">
+      <div class="book-container relative py-6">
+        <div id="bookPageContent" class="book-page rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[500px] flex flex-col justify-between relative">
+          <!-- Contenido de página de libro renderizado por JS -->
+        </div>
+
+        <!-- Controles de pasar página -->
+        <div class="flex items-center justify-between mt-6 px-4">
+          <button onclick="prevBookPage()" class="album-btn px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2">
+            <span>◀ Anterior Página</span>
+          </button>
+          <span id="bookPageIndicator" class="font-vt text-xl text-amber-300">Página 1 de 1</span>
+          <button onclick="nextBookPage()" class="album-btn px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2">
+            <span>Siguiente Página ▶</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
   </div>
 
@@ -241,30 +297,30 @@
     <div class="postcard-card max-w-xl w-full rounded-3xl p-6 sm:p-7 border-2 border-amber-400/50 bg-[#140b29] max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-amber-500/25 pb-3 mb-4">
         <div>
-          <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold">Estudio Creativo de Postales</span>
-          <h3 class="text-lg font-serif-title font-bold text-white">Agregar Nueva Postal o Fotografía</h3>
+          <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold">Estudio Creativo</span>
+          <h3 class="text-lg font-serif-title font-bold text-white">Agregar Nueva Postal o Foto Estampilla</h3>
         </div>
         <button onclick="closeCreatorStudio()" class="text-amber-300 hover:text-white text-sm px-2.5 py-1 rounded-lg bg-white/5">✕</button>
       </div>
 
       <form id="creatorForm" onsubmit="handleCreatePostcard(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-amber-300 mb-1">Título de la Postal o Recuerdo:</label>
-          <input type="text" id="inputTitle" required placeholder="Ej. Nuestra Tarde en el Café"
+          <label class="block text-xs font-semibold text-amber-300 mb-1">Título del Recuerdo:</label>
+          <input type="text" id="inputTitle" required placeholder="Ej. Nuestra Tarde Inolvidable"
             class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-amber-300 mb-1">Subtítulo o Fecha:</label>
-            <input type="text" id="inputSubtitle" placeholder="Ej. Lluvia y Tacitas de Chocolate"
+            <input type="text" id="inputSubtitle" placeholder="Ej. 14 de Febrero // Lluvia y Café"
               class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
           </div>
           <div>
             <label class="block text-xs font-semibold text-amber-300 mb-1">Estilo de Marco:</label>
             <select id="inputFrameStyle" class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
-              <option value="stamp">🎴 Sello Postal Estampilla Dorada</option>
-              <option value="vintage">📸 Foto Antigua / Polaroid con Sepia</option>
+              <option value="stamp">🎴 Estilo Sello Postal / Estampilla Antigua</option>
+              <option value="vintage">📸 Estilo Foto Antigua / Polaroid Sepia</option>
               <option value="mosaic">✨ Tarjeta Mosaico Interactiva</option>
             </select>
           </div>
@@ -273,18 +329,18 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-amber-300 mb-1">Emoji o Insignia:</label>
-            <input type="text" id="inputEmoji" value="☕" placeholder="Ej. ☕, 📸, 🌅"
+            <input type="text" id="inputEmoji" value="📸" placeholder="Ej. 📸, 🌷, ☕"
               class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-amber-300 mb-1">Subir Fotografía (Opcional):</label>
-            <input type="file" id="inputImageFile" accept="image/*"
+            <label class="block text-xs font-semibold text-amber-300 mb-1">Subir Fotografía:</label>
+            <input type="file" id="inputImageFile" accept="image/*" required
               class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3 py-1.5 text-[11px] text-purple-200 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-black hover:file:bg-amber-400">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-amber-300 mb-1">Mensaje o Cita Romántica:</label>
+          <label class="block text-xs font-semibold text-amber-300 mb-1">Mensaje o Dedicatoria Romántica:</label>
           <textarea id="inputQuote" rows="3" required placeholder="Escribe aquí tu dedicatoria o recuerdo especial..."
             class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl p-3 text-xs text-amber-50 focus:outline-none focus:border-amber-400"></textarea>
         </div>
@@ -318,7 +374,7 @@
 
   <script>
     /* =====================================================================
-       COLECCIÓN BASE + ALMACENAMIENTO LOCAL EN EL NAVEGADOR (LOCALSTORAGE)
+       COLECCIÓN DE POSTALES (SIN TARJETAS DE PROXIMAS IDEAS)
        ===================================================================== */
     const defaultPostcards = [
       {
@@ -422,8 +478,31 @@
 
     let userPostcards = JSON.parse(localStorage.getItem('user_custom_postcards') || '[]');
     let allPostcards = [...defaultPostcards, ...userPostcards];
-
     let currentFilter = 'all';
+    let currentViewMode = 'mosaic';
+    let currentBookPageIndex = 0;
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      const mosaicCont = document.getElementById('mosaicViewContainer');
+      const bookCont = document.getElementById('bookViewContainer');
+      const mosaicBtn = document.getElementById('viewMosaicBtn');
+      const bookBtn = document.getElementById('viewBookBtn');
+
+      if (mode === 'mosaic') {
+        mosaicCont.classList.remove('hidden');
+        bookCont.classList.add('hidden');
+        mosaicBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow";
+        bookBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-200 hover:text-white";
+        renderAlbumGrid();
+      } else {
+        mosaicCont.classList.add('hidden');
+        bookCont.classList.remove('hidden');
+        bookBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow";
+        mosaicBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-200 hover:text-white";
+        renderBookPage();
+      }
+    }
 
     function renderAlbumGrid() {
       const grid = document.getElementById('mosaicGrid');
@@ -443,7 +522,7 @@
         if (card.frameStyle === 'vintage' && card.customImage) {
           visualContent = `
             <div class="p-4 bg-[#090414] flex items-center justify-center">
-              <div class="vintage-photo-frame max-w-[260px] w-full">
+              <div class="vintage-photo-frame max-w-[260px] w-full cursor-pointer" onclick="openPostcardExperience('${card.id}')">
                 <img src="${card.customImage}" class="w-full h-44 object-cover vintage-sepia block" alt="Recuerdo">
                 <p class="font-handwriting text-stone-800 text-lg text-center mt-2">${card.title}</p>
               </div>
@@ -452,9 +531,9 @@
         } else if (card.frameStyle === 'stamp' && card.customImage) {
           visualContent = `
             <div class="p-4 bg-[#090414] flex items-center justify-center">
-              <div class="postal-stamp-frame max-w-[240px] w-full">
+              <div class="postal-stamp-frame max-w-[240px] w-full cursor-pointer" onclick="openPostcardExperience('${card.id}')">
                 <img src="${card.customImage}" class="w-full h-44 object-cover block" alt="Estampilla">
-                <div class="text-[9px] font-pixel text-amber-900 text-center mt-1">CORREO DE AMOR · 2026</div>
+                <div class="text-[9px] font-pixel text-amber-950 text-center mt-1">CORREO DE AMOR · 2026</div>
               </div>
             </div>
           `;
@@ -463,7 +542,10 @@
             <div class="relative w-full ${card.canvasHeight || 'h-48'} bg-[#090414] overflow-hidden cursor-pointer group" onclick="openPostcardExperience('${card.id}')">
               ${card.customImage ? 
                 `<img src="${card.customImage}" class="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-700" alt="Postal">` :
-                `<canvas id="preview-canvas-${card.id}" width="320" height="180" class="w-full h-full object-cover pixel-canvas block transition-transform duration-700 group-hover:scale-105"></canvas>`
+                `<div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-purple-950 to-[#120826] p-4 text-center">
+                   <span class="text-4xl mb-2">${card.emoji}</span>
+                   <span class="font-serif-title font-bold text-white text-base">${card.title}</span>
+                 </div>`
               }
               <div class="absolute inset-0 bg-gradient-to-t from-[#120924] via-transparent to-black/25 opacity-90 group-hover:opacity-60 transition-opacity"></div>
               <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
@@ -522,7 +604,79 @@
     }
 
     /* =====================================================================
-       CREADOR DE POSTALES Y FOTOS (ESTUDIO CREATIVO)
+       RENDERIZADO DE MODO LIBRO ANTIGUO (PASAR PÁGINAS)
+       ===================================================================== */
+    function renderBookPage() {
+      const container = document.getElementById('bookPageContent');
+      const indicator = document.getElementById('bookPageIndicator');
+      const card = allPostcards[currentBookPageIndex];
+
+      indicator.textContent = `Página ${currentBookPageIndex + 1} de ${allPostcards.length}`;
+
+      let imgHtml = '';
+      if (card.customImage) {
+        imgHtml = `<div class="my-4 flex justify-center"><img src="${card.customImage}" class="max-h-64 object-cover rounded-xl shadow-md border-2 border-amber-700" alt="Foto"></div>`;
+      }
+
+      container.innerHTML = `
+        <div>
+          <div class="flex items-center justify-between border-b-2 border-amber-800/40 pb-3 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">${card.emoji}</span>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-amber-900 block">${card.stampCode}</span>
+                <h3 class="text-lg sm:text-xl font-serif-title font-bold text-amber-950">${card.title}</h3>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-amber-900 text-amber-100 text-xs font-semibold">${card.dateBadge}</span>
+          </div>
+
+          ${imgHtml}
+
+          <p class="font-serif-title text-base sm:text-lg text-amber-950 leading-relaxed italic my-4 bg-amber-100/70 p-4 rounded-2xl border-l-4 border-amber-600">
+            ${card.quote}
+          </p>
+
+          <p class="text-xs sm:text-sm text-stone-700 mt-3 font-light leading-relaxed">
+            ${card.subtitle} · Guardado en el diario de nuestros mundos compartidos.
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t-2 border-amber-800/40 flex items-center justify-between">
+          <span class="font-handwriting text-xl text-amber-900">Para mi niña linda 📖💛</span>
+          ${!card.isCustom ? `
+            <button onclick="openPostcardExperience('${card.id}')" class="album-btn px-4 py-2 rounded-xl text-xs font-bold">
+              ✨ Abrir Teatro Interactivo
+            </button>
+          ` : `
+            <button onclick="deleteCustomCard('${card.id}')" class="text-xs text-rose-700 font-bold underline">
+              🗑️ Eliminar esta página
+            </button>
+          `}
+        </div>
+      `;
+    }
+
+    function nextBookPage() {
+      if (currentBookPageIndex < allPostcards.length - 1) {
+        currentBookPageIndex++;
+        renderBookPage();
+      } else {
+        showAlbumToast('Has llegado al final del diario', '📖');
+      }
+    }
+
+    function prevBookPage() {
+      if (currentBookPageIndex > 0) {
+        currentBookPageIndex--;
+        renderBookPage();
+      } else {
+        showAlbumToast('Estás en la primera página', '📖');
+      }
+    }
+
+    /* =====================================================================
+       ESTUDIO CREADOR DE POSTALES Y FOTOS (ESTAMPILLA / POLAROID)
        ===================================================================== */
     const creatorModal = document.getElementById('creatorModal');
     function openCreatorStudio() { creatorModal.classList.remove('hidden'); }
@@ -533,20 +687,20 @@
       const title = document.getElementById('inputTitle').value;
       const subtitle = document.getElementById('inputSubtitle').value || 'Recuerdo Especial';
       const frameStyle = document.getElementById('inputFrameStyle').value;
-      const emoji = document.getElementById('inputEmoji').value || '✨';
+      const emoji = document.getElementById('inputEmoji').value || '📸';
       const quote = document.getElementById('inputQuote').value;
       const fileInput = document.getElementById('inputImageFile');
 
       const saveCardData = (imgUrl = null) => {
         const newCard = {
           id: 'custom_' + Date.now(),
-          stampCode: 'POSTAL #NEW · PERSONALIZADA',
+          stampCode: 'POSTAL #NEW · FOTO ESTAMPILLA',
           title: title,
           subtitle: subtitle,
           category: ['photo', 'featured'],
           mosaicSpan: frameStyle === 'vintage' ? 'md:col-span-6' : 'md:col-span-4',
           canvasHeight: 'h-48',
-          dateBadge: 'Creada por Ti',
+          dateBadge: 'Álbum Fotográfico',
           emoji: emoji,
           quote: `“${quote}”`,
           tags: ['Personalizada', 'Foto', 'Recuerdo'],
@@ -558,10 +712,16 @@
         userPostcards.push(newCard);
         localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
         allPostcards = [...defaultPostcards, ...userPostcards];
-        renderAlbumGrid();
+        
+        if (currentViewMode === 'mosaic') {
+          renderAlbumGrid();
+        } else {
+          renderBookPage();
+        }
+
         closeCreatorStudio();
         document.getElementById('creatorForm').reset();
-        showAlbumToast('¡Nueva postal o foto agregada al álbum!', '📸');
+        showAlbumToast('¡Nueva foto o recuerdo agregado al álbum!', '📸');
       };
 
       if (fileInput.files && fileInput.files[0]) {
@@ -580,7 +740,13 @@
         userPostcards = userPostcards.filter(c => c.id !== id);
         localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
         allPostcards = [...defaultPostcards, ...userPostcards];
-        renderAlbumGrid();
+        
+        if (currentViewMode === 'mosaic') {
+          renderAlbumGrid();
+        } else {
+          currentBookPageIndex = Math.max(0, currentBookPageIndex - 1);
+          renderBookPage();
+        }
         showAlbumToast('Recuerdo eliminado', '🗑️');
       }
     }
@@ -653,6 +819,25 @@
       toast.classList.add('show');
       clearTimeout(window.albumToastTimer);
       window.albumToastTimer = setTimeout(() => toast.classList.remove('show'), 3400);
+    }
+
+    /* Música ambiental opcional con Web Audio API */
+    let audioCtx = null;
+    let isGalleryMusicActive = false;
+    function toggleGalleryMusic() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      isGalleryMusicActive = !isGalleryMusicActive;
+      const btnText = document.getElementById('musicText');
+      const btnIcon = document.getElementById('musicIcon');
+      if (isGalleryMusicActive) {
+        btnText.textContent = "Música: ON";
+        btnIcon.textContent = "🎵";
+        showAlbumToast("Música ambiental de galería activada", "🎹");
+      } else {
+        btnText.textContent = "Música: OFF";
+        btnIcon.textContent = "🎹";
+      }
     }
 
     /* Fondo de polvo dorado */
