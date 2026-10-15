@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>El Álbum de Nuestros Mundos // Para Mi Niña Linda 📖✨</title>
+
+  <!-- Google Fonts: Editorial, Caligrafía y Pixel Art para las postales -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg-velvet: #0b0714;
+      --card-dark: #150d24;
+      --gold-royal: #fbbf24;
+      --rose-soft: #f472b6;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 0%, #271447 0%, #110821 48%, #07030f 100%);
+      color: #fffbeb;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .font-serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .font-royal {
+      font-family: 'Cinzel Decorative', cursive;
+    }
+
+    .font-pixel {
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    .font-vt {
+      font-family: 'VT323', monospace;
+    }
+
+    .pixel-canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    /* Tarjeta Postal de Colección */
+    .postcard-card {
+      position: relative;
+      background: rgba(22, 13, 40, 0.82);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      box-shadow:
+        0 18px 40px -12px rgba(0, 0, 0, 0.85),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow: hidden;
+    }
+
+    .postcard-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(251, 191, 36, 0.65);
+      box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.95),
+        0 0 28px rgba(251, 191, 36, 0.22),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+    }
+
+    /* Sello Postal Dorado */
+    .postal-stamp {
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(251, 191, 36, 0.12),
+        rgba(251, 191, 36, 0.12) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+      border: 1.5px dashed rgba(251, 191, 36, 0.55);
+    }
+
+    /* Botones de Lujo del Álbum */
+    .album-btn {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #1c0a00;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .album-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .album-btn:active {
+      transform: translateY(1px);
+    }
+
+    .album-btn-ghost {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      color: #fde68a;
+      transition: all 0.2s ease;
+    }
+
+    .album-btn-ghost:hover {
+      background: rgba(251, 191, 36, 0.14);
+      border-color: rgba(251, 191, 36, 0.65);
+    }
+
+    /* Filtros de Categoría */
+    .filter-pill.active {
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+      color: #170902;
+      font-weight: 700;
+      border-color: transparent;
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.4);
+    }
+
+    /* Notificación Toast */
+    .album-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translate(-50%, 140%);
+      z-index: 120;
+      background: #1a0f2e;
+      border: 2px solid #fbbf24;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 25px rgba(251, 191, 36, 0.35);
+      transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    .album-toast.show {
+      transform: translate(-50%, 0);
+    }
+  </style>
+</head>
+<body class="relative pb-20">
+
+  <!-- Partículas de polvo de oro flotantes en el fondo del álbum -->
+  <canvas id="bgDustCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- TOAST DE NOTIFICACIÓN -->
+  <div id="albumToast" class="album-toast px-5 py-3 rounded-2xl flex items-center gap-3 pointer-events-none">
+    <span id="toastEmoji" class="text-xl">✨</span>
+    <span id="toastMessage" class="text-xs sm:text-sm font-medium text-amber-100">Postal abierta en el teatro interactivo</span>
+  </div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-5">
+
+    <!-- BARRA SUPERIOR DEL ÁLBUM -->
+    <nav class="flex flex-wrap items-center justify-between gap-3 py-3 px-4 sm:px-6 rounded-2xl bg-black/45 backdrop-blur-md border border-amber-500/20 mb-6">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-xl shadow-lg">
+          📖
+        </div>
+        <div>
+          <span class="text-[10px] uppercase tracking-widest text-amber-300/90 font-semibold block">Colección Privada Interactiva</span>
+          <h1 class="text-sm sm:text-base font-royal text-white tracking-wide">EL ÁLBUM DE NUESTROS MUNDOS</h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Contador de Postales Desbloqueadas -->
+        <div class="hidden sm:flex items-center gap-2 bg-amber-950/60 border border-amber-400/30 px-3.5 py-1.5 rounded-full text-xs text-amber-200">
+          <span>💌</span>
+          <span id="unlockedCountText">6 Postales Creadas · 4 Próximas</span>
+        </div>
+
+        <!-- Botón de Música de Galería -->
+        <button id="ambientMusicBtn" class="album-btn-ghost px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2">
+          <span id="musicIcon">🎹</span>
+          <span id="musicText">Música del Álbum: OFF</span>
+        </button>
+
+        <!-- Botón para Configurar/Guardar Links de tus tarjetas -->
+        <button id="openLinksManagerBtn" class="album-btn px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5">
+          <span>🔗</span>
+          <span class="hidden sm:inline">Mis Enlaces</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- HERO DE BIENVENIDA CON RETRATO MINIATURA DE ELLA -->
+    <header class="relative rounded-3xl p-6 sm:p-8 mb-8 overflow-hidden border border-amber-400/30 bg-gradient-to-r from-[#1d1036]/95 via-[#281340]/90 to-[#1a0d2e]/95 shadow-2xl">
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-pink-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="max-w-2xl text-center md:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-400/40 text-amber-300 text-xs font-medium mb-3">
+            <span>👑</span>
+            <span>Dedicado a mi güerita hermosa de ojitos café claros</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-serif-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-200 to-amber-300 leading-tight">
+            Cada postal es un universo que construí para decirte cuánto te amo
+          </h2>
+          <p class="text-xs sm:text-sm text-purple-100/85 mt-3 leading-relaxed font-light">
+            Aquí están guardadas todas nuestras cartas y mundos interactivos. Puedes admirar cada postal animada en vivo en este mosaico, abrir cualquiera a pantalla completa para jugar con ella o guardar sus enlaces directos.
+          </p>
+        </div>
+
+        <!-- Medallón Pixel Art en Vivo de Ella (Güerita, cabello castaño muy clarito casi rubio, ojos café claros) -->
+        <div class="shrink-0 flex flex-col items-center bg-black/40 p-3.5 rounded-2xl border border-amber-400/40 shadow-xl">
+          <div class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-amber-500/30 to-purple-950 shadow-inner">
+            <canvas id="heroPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
+          </div>
+          <span class="font-pixel text-[8px] text-amber-300 mt-2 tracking-wider">★ MI NIÑA LINDA ★</span>
+          <span class="text-[11px] text-rose-200/90 italic font-serif-title">"Eres lo que tanto esperé"</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- BARRA DE FILTROS Y CONTROLES DE VISTA (MOSAICO BENTO vs CUADRÍCULA) -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="filterAlbum('all')" id="filter-all" class="filter-pill active px-4 py-1.5 rounded-full text-xs border border-amber-400/30 transition">
+          ✨ Todas las Postales (10)
+        </button>
+        <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
+          👑 Favoritas Destacadas
+        </button>
+        <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
+          👾 Mundos Pixel Art
+        </button>
+        <button onclick="filterAlbum('upcoming')" id="filter-upcoming" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
+          🔒 Próximas Sorpresas (4)
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2 bg-black/40 p-1 rounded-xl border border-white/10">
+        <button onclick="setLayoutMode('mosaic')" id="layoutMosaicBtn" class="px-3 py-1 rounded-lg text-xs font-semibold bg-amber-500 text-black transition">
+          🍱 Mosaico Bento
+        </button>
+        <button onclick="setLayoutMode('uniform')" id="layoutUniformBtn" class="px-3 py-1 rounded-lg text-xs font-semibold text-amber-200/80 hover:text-white transition">
+          🎴 Postales Uniformes
+        </button>
+      </div>
+    </div>
+
+    <!-- GALERÍA MOSAICO BENTO DE POSTALES VIVAS -->
+    <section id="mosaicGrid" class="grid grid-cols-1 md:grid-cols-12 gap-5 auto-rows-auto">
+      <!-- Renderizado dinámico por JS con Canvas animados en vivo en cada postal -->
+    </section>
+
+  </div>
+
+  <!-- MODAL 1: TEATRO INTERACTIVO EN VIVO (ABRE Y JUEGA LA TARJETA DENTRO DEL ÁLBUM) -->
+  <div id="theaterModal" class="hidden fixed inset-0 z-50 flex flex-col bg-black/92 backdrop-blur-xl p-2 sm:p-5">
+    <!-- Barra superior del Teatro -->
+    <div class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between gap-2 bg-[#170d2b] border border-amber-400/40 rounded-t-2xl px-4 py-2.5">
+      <div class="flex items-center gap-2.5">
+        <span id="theaterIcon" class="text-xl">🏮</span>
+        <div>
+          <h3 id="theaterTitle" class="text-xs sm:text-sm font-bold text-amber-300">Nuestro Cielo de Luces</h3>
+          <p id="theaterSubtitle" class="text-[11px] text-purple-200/80">Postal Interactiva en Vivo · Puedes tocar y escuchar su música</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a id="theaterExternalLink" href="#" target="_blank" class="album-btn-ghost px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5">
+          <span>↗️</span>
+          <span class="hidden sm:inline">Abrir en Pestaña Nueva</span>
+        </a>
+        <button onclick="closeTheaterModal()" class="px-3.5 py-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-bold transition">
+          ✕ Cerrar Postal
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenedor de la Tarjeta Interactiva Completa o Vista Previa Rica -->
+    <div class="max-w-5xl w-full mx-auto flex-1 bg-[#090414] border-x border-b border-amber-400/40 rounded-b-2xl overflow-hidden relative flex flex-col">
+      <iframe id="theaterIframe" class="w-full h-full flex-1 border-0" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+  </div>
+
+  <!-- MODAL 2: GESTOR DE ENLACES DE TUS POSTALES (PARA VINCULAR TUS LINKS DE NETLIFY/ARCHIVOS) -->
+  <div id="linksManagerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="postcard-card max-w-xl w-full rounded-3xl p-6 sm:p-7 border-2 border-amber-400/50 bg-[#140b29]">
+      <div class="flex items-center justify-between border-b border-amber-500/25 pb-3 mb-4">
+        <div>
+          <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold">Configuración de Enlaces</span>
+          <h3 class="text-lg font-serif-title font-bold text-white">Rutas y URLs de tus Postales</h3>
+        </div>
+        <button onclick="closeLinksManager()" class="text-amber-300 hover:text-white text-sm px-2.5 py-1 rounded-lg bg-white/5">✕</button>
+      </div>
+
+      <p class="text-xs text-purple-200/90 leading-relaxed mb-4">
+        Por defecto, cada postal ya incluye su **escena interactiva integrada** para que puedas abrirla aquí mismo. Además, si subes cada archivo a Netlify o los guardas en la misma carpeta, aquí puedes pegar o personalizar sus links:
+      </p>
+
+      <div id="linksInputsContainer" class="space-y-3 max-h-[50vh] overflow-y-auto pr-2">
+        <!-- Inputs generados dinámicamente -->
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-amber-500/25 flex justify-end gap-3">
+        <button onclick="closeLinksManager()" class="album-btn-ghost px-4 py-2 rounded-xl text-xs font-semibold">Cancelar</button>
+        <button onclick="saveCustomLinks()" class="album-btn px-5 py-2 rounded-xl text-xs">💾 Guardar Enlaces en el Álbum</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================================
+       1. COLECCIÓN MAESTRA DE POSTALES DEL ÁLBUM (6 CREADAS + 4 PRÓXIMAS)
+       Algunas tienen tamaño 'hero' o 'wide' para el efecto Mosaico Bento,
+       y otras son postales compactas de colección.
+       ===================================================================== */
+    const albumPostcards = [
+      {
+        id: 'linternas',
+        stampCode: 'POSTAL #06 · NUEVA',
+        title: 'Nuestro Cielo de Luces',
+        subtitle: 'El Lago de las Linternas Flotantes (Estilo Enredados)',
+        category: ['featured', 'pixel'],
+        mosaicSpan: 'md:col-span-8', // Postal panorámica grande en el mosaico
+        canvasHeight: 'h-60 sm:h-72',
+        dateBadge: 'Destacada Principal',
+        emoji: '🏮',
+        defaultUrl: 'festival_linternas.html',
+        quote: '“Antes de ti mi mundo navegaba a oscuras, pero llegaste con tu luz cálida y en tan poco tiempo te convertiste en mi hogar entero.”',
+        tags: ['Pixel Art HD', 'Lago Espejo', 'Arpa Celta'],
+        unlocked: true
+      },
+      {
+        id: 'peonias',
+        stampCode: 'POSTAL #05 · FAVORITA',
+        title: 'Santuario de Peonías al Atardecer',
+        subtitle: 'Mi Güerita Hermosa Regando Nuestro Jardín',
+        category: ['featured', 'pixel'],
+        mosaicSpan: 'md:col-span-4', // Postal vertical elegante al lado
+        canvasHeight: 'h-60 sm:h-72',
+        dateBadge: 'Edición Especial',
+        emoji: '🌸',
+        defaultUrl: 'jardin_peonias.html',
+        quote: '“Estando juntos soy muy feliz y los momentos a tu lado son maravillosos. Eres lo que tanto esperé, mi niña linda.”',
+        tags: ['Sol Dorado', '5 Peonías', 'Invernadero'],
+        unlocked: true
+      },
+      {
+        id: 'minecraft',
+        stampCode: 'POSTAL #04 · GAMER',
+        title: 'Nuestro Refugio en Minecraft',
+        subtitle: 'Cabaña Acogedora, Fogata y Mesa de Crafteo',
+        category: ['pixel'],
+        mosaicSpan: 'md:col-span-4', // Postal compacta
+        canvasHeight: 'h-48',
+        dateBadge: 'Nivel ∞ Amor',
+        emoji: '🏕️',
+        defaultUrl: 'minecraft_amor.html',
+        quote: '“Nunca me voy a ir. No importa qué tan fría se ponga la noche, esta cabaña y mi corazón siempre serán tu lugar seguro.”',
+        tags: ['Cabaña Roble', 'Lobito Fiel', 'Piano C418'],
+        unlocked: true
+      },
+      {
+        id: 'batman',
+        stampCode: 'POSTAL #03 · 16-BIT',
+        title: 'Gotham Love: Bat-Señal de Corazón',
+        subtitle: 'Vigilando tu Paz desde las Alturas de Gotham',
+        category: ['pixel'],
+        mosaicSpan: 'md:col-span-4', // Postal compacta central
+        canvasHeight: 'h-48',
+        dateBadge: 'Wayne Tech',
+        emoji: '🦇',
+        defaultUrl: 'bat_amor_pixel.html',
+        quote: '“Hasta en la noche más oscura de Gotham, tú eres la luz que proyecta mi corazón en las nubes.”',
+        tags: ['Arcade 16-Bit', 'Batiseñal', 'Chiptune'],
+        unlocked: true
+      },
+      {
+        id: 'tulipanes',
+        stampCode: 'POSTAL #01 · ORIGEN',
+        title: 'Carta de Tulipanes Eternos',
+        subtitle: 'Nuestra Primera Sorpresa Interactiva',
+        category: ['featured'],
+        mosaicSpan: 'md:col-span-4', // Postal compacta derecha
+        canvasHeight: 'h-48',
+        dateBadge: 'Primera Carta',
+        emoji: '🌷',
+        defaultUrl: 'carta_de_amor.html',
+        quote: '“Quise darte tulipanes que nunca se marchiten, tal como mis sentimientos por ti.”',
+        tags: ['Sobre 3D', '5 Tulipanes', 'Caja Musical'],
+        unlocked: true
+      },
+      {
+        id: 'universo',
+        stampCode: 'POSTAL #02 · COSMOS',
+        title: 'Mi Centro de Gravedad & Altar Eterno',
+        subtitle: 'Agujero Negro, Constelación y Amor Más Allá del Tiempo',
+        category: ['featured'],
+        mosaicSpan: 'md:col-span-12', // Postal panorámica de ancho completo para cerrar las creadas
+        canvasHeight: 'h-52 sm:h-60',
+        dateBadge: 'Colección Cósmica & Eterna',
+        emoji: '🌌',
+        defaultUrl: 'universo_amor.html',
+        secondaryUrl: 'amor_eterno.html',
+        quote: '“Entre millones de galaxias y en todas las vidas posibles, mi alma siempre te buscaría a ti.”',
+        tags: ['Agujero Negro', 'Constelación', 'Veladoras 3D'],
+        unlocked: true
+      },
+      // --- LAS 4 PRÓXIMAS IDEAS QUE IREMOS DESBLOQUEANDO JUNTOS ---
+      {
+        id: 'ghibli',
+        stampCode: 'IDEA #02 · PRÓXIMAMENTE',
+        title: 'Pradera Encantada Studio Ghibli',
+        subtitle: 'Colina de Flores Silvestres y Estrellas Caídas del Cielo',
+        category: ['upcoming'],
+        mosaicSpan: 'md:col-span-6',
+        canvasHeight: 'h-44',
+        dateBadge: 'En Construcción #2',
+        emoji: '🍃',
+        defaultUrl: '#',
+        quote: '“Un campo mecido por la brisa donde atraparemos estrellitas del cielo al ritmo de un vals de piano y violín.”',
+        tags: ['Estilo Ghibli', 'Brisa Floral', 'Estrellas Fugaces'],
+        unlocked: false
+      },
+      {
+        id: 'cafeteria',
+        stampCode: 'IDEA #03 · PRÓXIMAMENTE',
+        title: 'Cafetería Lluviosa & Polaroids',
+        subtitle: 'Tarde Acogedora, Vinilo Lo-Fi y Cristal Empañado',
+        category: ['upcoming'],
+        mosaicSpan: 'md:col-span-6',
+        canvasHeight: 'h-44',
+        dateBadge: 'En Construcción #3',
+        emoji: '☕',
+        defaultUrl: '#',
+        quote: '“Dos tazas calientes mientras llueve afuera y un álbum de Polaroids con nuestros recuerdos favoritos.”',
+        tags: ['Lo-Fi Rain', 'Polaroids', 'Ventana Táctil'],
+        unlocked: false
+      },
+      {
+        id: 'cajamusica',
+        stampCode: 'IDEA #04 · PRÓXIMAMENTE',
+        title: 'Caja de Música de Cristal Real',
+        subtitle: 'Cúpula Encantada con Llave de Cuerda Dorada',
+        category: ['upcoming'],
+        mosaicSpan: 'md:col-span-6',
+        canvasHeight: 'h-44',
+        dateBadge: 'En Construcción #4',
+        emoji: '🔮',
+        defaultUrl: '#',
+        quote: '“Una joya eterna que gira al darle cuerda, guardando la promesa de cuidarte para siempre.”',
+        tags: ['Cúpula 3D', 'Cuerda Musical', 'Rosa Eterna'],
+        unlocked: false
+      },
+      {
+        id: 'tren',
+        stampCode: 'IDEA #05 · PRÓXIMAMENTE',
+        title: 'Expreso Nocturno sobre las Nubes',
+        subtitle: 'Viaje por Auroras Boreales con Boleto Dorado',
+        category: ['upcoming'],
+        mosaicSpan: 'md:col-span-6',
+        canvasHeight: 'h-44',
+        dateBadge: 'En Construcción #5',
+        emoji: '🚂',
+        defaultUrl: '#',
+        quote: '“Un tren que viaja sobre un espejo de agua estrellado con destino permanente a tu corazón.”',
+        tags: ['Tren Nocturno', 'Auroras', 'Boleto Dorado'],
+        unlocked: false
+      }
+    ];
+
+    let currentFilter = 'all';
+    let currentLayout = 'mosaic'; // 'mosaic' | 'uniform'
+
+    /* =====================================================================
+       2. RENDERIZADO DE LAS TARJETAS EN EL MOSAICO BENTO
+       ===================================================================== */
+    function renderAlbumGrid() {
+      const grid = document.getElementById('mosaicGrid');
+      grid.innerHTML = '';
+
+      const filtered = albumPostcards.filter(card => {
+        if (currentFilter === 'all') return true;
+        return card.category.includes(currentFilter);
+      });
+
+      filtered.forEach((card) => {
+        const spanClass = currentLayout === 'mosaic' ? card.mosaicSpan : 'md:col-span-4';
+        const cardEl = document.createElement('article');
+        cardEl.className = `postcard-card rounded-3xl flex flex-col justify-between ${spanClass} ${card.unlocked ? '' : 'opacity-85 border-dashed'}`;
+
+        cardEl.innerHTML = `
+          <div>
+            <!-- Cabecera estilo Postal con Sello -->
+            <div class="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/35">
+              <div class="flex items-center gap-2">
+                <span class="text-lg">${card.emoji}</span>
+                <span class="font-pixel text-[8px] text-amber-300 tracking-wider">${card.stampCode}</span>
+              </div>
+              <div class="postal-stamp px-2.5 py-0.5 rounded text-[10px] font-semibold text-amber-200">
+                ${card.dateBadge}
+              </div>
+            </div>
+
+            <!-- Lienzo Animado en Vivo de la Postal (Miniatura Viva) -->
+            <div class="relative w-full ${card.canvasHeight} bg-[#090414] overflow-hidden cursor-pointer group" onclick="openPostcardExperience('${card.id}')">
+              <canvas id="preview-canvas-${card.id}" width="320" height="180" class="w-full h-full object-cover pixel-canvas block transition-transform duration-700 group-hover:scale-105"></canvas>
+              
+              <!-- Overlay sutil al pasar el cursor -->
+              <div class="absolute inset-0 bg-gradient-to-t from-[#120924] via-transparent to-black/25 opacity-90 group-hover:opacity-60 transition-opacity"></div>
+
+              <!-- Etiqueta de Interacción en vivo -->
+              <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                <div>
+                  <h3 class="text-base sm:text-lg font-serif-title font-bold text-white drop-shadow-md leading-snug">
+                    ${card.title}
+                  </h3>
+                  <p class="text-xs text-amber-200/90 font-light drop-shadow">${card.subtitle}</p>
+                </div>
+
+                <span class="shrink-0 w-9 h-9 rounded-full bg-amber-400 text-black flex items-center justify-center text-sm font-bold shadow-lg group-hover:scale-110 transition-transform">
+                  ${card.unlocked ? '▶' : '🔒'}
+                </span>
+              </div>
+            </div>
+
+            <!-- Cuerpo de la Postal: Cita Romántica -->
+            <div class="p-4 sm:p-5">
+              <p class="font-vt text-lg sm:text-xl text-amber-50/95 leading-snug italic bg-black/30 p-3 rounded-xl border-l-2 border-amber-400">
+                ${card.quote}
+              </p>
+
+              <!-- Etiquetas de la Postal -->
+              <div class="flex flex-wrap gap-1.5 mt-3">
+                ${card.tags.map(t => `<span class="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-950/80 border border-purple-400/30 text-purple-200">${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- Pie de la Postal: Botones de Acción -->
+          <div class="px-4 sm:px-5 pb-4 pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
+            ${card.unlocked ? `
+              <button onclick="openPostcardExperience('${card.id}')" class="album-btn flex-1 py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                <span>✨</span>
+                <span>Interactuar con Postal</span>
+              </button>
+              <a href="${card.defaultUrl}" target="_blank" class="album-btn-ghost py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1" title="Abrir archivo o link directo">
+                <span>🔗</span>
+                <span>Link</span>
+              </a>
+              ${card.secondaryUrl ? `
+                <button onclick="openPostcardExperience('altar')" class="album-btn-ghost py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1" title="Ver Altar de Velas 3D">
+                  <span>🕯️</span>
+                  <span>Altar 3D</span>
+                </button>
+              ` : ''}
+            ` : `
+              <button onclick="previewUpcomingIdea('${card.id}')" class="album-btn-ghost w-full py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-2">
+                <span>🪄</span>
+                <span>Ver Concepto de esta Próxima Postal</span>
+              </button>
+            `}
+          </div>
+        `;
+
+        grid.appendChild(cardEl);
+      });
+    }
+
+    /* =====================================================================
+       3. MOTOR DE MINIATURAS ANIMADAS EN VIVO PARA CADA POSTAL DEL MOSAICO
+       Dibuja en tiempo real cada escena (Linternas, Peonías, Minecraft,
+       Batman, Tulipanes, Universo y los adelantos de Ghibli, Cafetería, etc.)
+       ===================================================================== */
+    let animTick = 0;
+
+    function px(ctx, x, y, w, h, col) {
+      ctx.fillStyle = col;
+      ctx.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
+    }
+
+    // Mini retrato de ella en el encabezado del álbum
+    function drawHeroMiniPortrait() {
+      const c = document.getElementById('heroPortraitCanvas');
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+
+      const bg = ctx.createLinearGradient(0, 0, 0, 32);
+      bg.addColorStop(0, '#2a144a');
+      bg.addColorStop(1, '#f59e0b');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, 32, 32);
+
+      const blink = (animTick % 140 > 134);
+
+      // Cabello castaño muy clarito casi rubio
+      px(ctx, 5, 5, 22, 23, '#c8924b');
+      px(ctx, 6, 6, 20, 21, '#eab66a');
+      px(ctx, 7, 5, 18, 4, '#f7d694');
+
+      // Corona de florecitas
+      px(ctx, 8, 4, 3, 2, '#fde047');
+      px(ctx, 14, 3, 4, 2, '#fbcfe8');
+      px(ctx, 21, 4, 3, 2, '#ffffff');
+
+      // Rostro güerita
+      px(ctx, 8, 9, 16, 14, '#fff3e6');
+      px(ctx, 9, 22, 14, 2, '#fbe0c8');
+
+      // Ojos café claros con brillo
+      if (blink) {
+        px(ctx, 10, 15, 4, 1, '#7d4f24');
+        px(ctx, 18, 15, 4, 1, '#7d4f24');
+      } else {
+        px(ctx, 10, 13, 4, 4, '#7d4f24');
+        px(ctx, 18, 13, 4, 4, '#7d4f24');
+        px(ctx, 11, 14, 2, 3, '#a86b32');
+        px(ctx, 19, 14, 2, 3, '#a86b32');
+        px(ctx, 10, 13, 1, 1, '#ffffff');
+        px(ctx, 18, 13, 1, 1, '#ffffff');
+      }
+
+      // Mejillas y sonrisa
+      px(ctx, 8, 17, 3, 2, '#fda4af');
+      px(ctx, 21, 17, 3, 2, '#fda4af');
+      px(ctx, 14, 19, 4, 1, '#e11d48');
+
+      // Vestido lavanda
+      px(ctx, 8, 25, 16, 7, '#c084fc');
+      px(ctx, 11, 25, 10, 3, '#fae8ff');
+    }
+
+    function renderAllPostcardCanvases() {
+      animTick++;
+      drawHeroMiniPortrait();
+
+      // 1. POSTAL LINTERNAS FLOTANTES
+      const cLantern = document.getElementById('preview-canvas-linternas');
+      if (cLantern) {
+        const ctx = cLantern.getContext('2d');
+        const g = ctx.createLinearGradient(0, 0, 0, 125);
+        g.addColorStop(0, '#090418');
+        g.addColorStop(0.6, '#231147');
+        g.addColorStop(1, '#4c246e');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 320, 125);
+
+        // Lago espejo
+        const wg = ctx.createLinearGradient(0, 125, 0, 180);
+        wg.addColorStop(0, '#1f0f3d');
+        wg.addColorStop(1, '#080314');
+        ctx.fillStyle = wg;
+        ctx.fillRect(0, 125, 320, 55);
+
+        // Linternas subiendo y reflejándose
+        for (let i = 0; i < 14; i++) {
+          const lx = (i * 24 + 12) % 305;
+          const ly = 115 - ((animTick * (0.25 + (i % 3) * 0.1) + i * 19) % 110);
+          px(ctx, lx - 2, ly - 2, 8, 9, 'rgba(251, 191, 36, 0.28)');
+          px(ctx, lx, ly, 4, 5, '#f59e0b');
+          px(ctx, lx + 1, ly + 1, 2, 3, '#fef08a');
+          // Reflejo en el lago
+          const ry = 126 + (125 - ly) * 0.35;
+          if (ry < 176) px(ctx, lx, ry, 4, 2, 'rgba(253, 224, 71, 0.35)');
+        }
+
+        // Barca en el centro con ella y tú
+        const bx = 115;
+        const by = 114 + Math.sin(animTick * 0.05) * 1.5;
+        px(ctx, bx, by + 8, 86, 10, '#5c280e');
+        px(ctx, bx - 4, by + 4, 94, 4, '#92400e');
+        // Ella (cabello rubio miel)
+        px(ctx, bx + 20, by - 8, 10, 12, '#eab66a');
+        px(ctx, bx + 22, by - 6, 8, 8, '#fff3e6');
+        px(ctx, bx + 22, by + 2, 8, 6, '#c084fc');
+        // Tú
+        px(ctx, bx + 54, by - 9, 10, 8, '#1c1917');
+        px(ctx, bx + 55, by - 5, 8, 8, '#f5cbaf');
+        px(ctx, bx + 54, by + 2, 9, 6, '#1e3a8a');
+        // Linterna central entre ambos
+        px(ctx, bx + 39, by - 6, 7, 8, '#fde047');
+      }
+
+      // 2. POSTAL JARDÍN DE PEONÍAS
+      const cPeony = document.getElementById('preview-canvas-peonias');
+      if (cPeony) {
+        const ctx = cPeony.getContext('2d');
+        const g = ctx.createLinearGradient(0, 0, 0, 130);
+        g.addColorStop(0, '#7c1d2e');
+        g.addColorStop(0.5, '#ea580c');
+        g.addColorStop(1, '#fde047');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 320, 180);
+
+        // Sol dorado
+        ctx.fillStyle = '#fffbeb';
+        ctx.beginPath();
+        ctx.arc(235, 72, 24, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Suelo y jardinera
+        px(ctx, 0, 125, 320, 55, '#362214');
+        px(ctx, 125, 130, 175, 28, '#5c341e');
+
+        // Ella regando (cabello rubio miel y sombrero)
+        const gx = 62, gy = 86;
+        px(ctx, gx - 4, gy - 4, 24, 4, '#eab308'); // sombrero
+        px(ctx, gx, gy, 16, 16, '#eab66a'); // cabello rubio miel
+        px(ctx, gx + 3, gy + 2, 11, 10, '#fff3e6'); // rostro güerita
+        px(ctx, gx + 3, gy + 12, 11, 18, '#10b981'); // overol
+        px(ctx, gx + 18, gy + 12, 10, 8, '#f59e0b'); // regadera
+
+        // 5 Peonías rosas
+        [145, 178, 212, 246, 278].forEach((pxPos, idx) => {
+          const bounce = Math.sin(animTick * 0.06 + idx) * 1.5;
+          px(ctx, pxPos - 8, 120 + bounce, 16, 10, '#1f4722');
+          px(ctx, pxPos - 7, 112 + bounce, 14, 11, '#e11d48');
+          px(ctx, pxPos - 5, 110 + bounce, 10, 8, '#fb7185');
+          px(ctx, pxPos - 3, 109 + bounce, 6, 4, '#ffe4e6');
+        });
+      }
+
+      // 3. POSTAL MINECRAFT CABAÑA Y FOGATA
+      const cMC = document.getElementById('preview-canvas-minecraft');
+      if (cMC) {
+        const ctx = cMC.getContext('2d');
+        px(ctx, 0, 0, 320, 180, '#070b16');
+        // Luna cuadrada
+        px(ctx, 255, 18, 20, 20, '#f8fafc');
+        // Suelo césped
+        px(ctx, 0, 122, 320, 12, '#2e5c1e');
+        px(ctx, 0, 134, 320, 46, '#47311d');
+        // Cabaña de roble
+        px(ctx, 24, 64, 72, 58, '#805934');
+        px(ctx, 18, 56, 84, 10, '#4a3119');
+        px(ctx, 36, 78, 18, 18, '#fde047'); // ventana
+        // Fogata central
+        const fx = 152, fy = 120;
+        px(ctx, fx - 8, fy + 2, 18, 5, '#3b2311');
+        px(ctx, fx - 5, fy - 10 + (animTick % 4), 12, 12, '#ff5500');
+        px(ctx, fx - 2, fy - 7, 6, 9, '#fde047');
+        // Personajes y lobito
+        px(ctx, 122, 96, 12, 26, '#f472b6');
+        px(ctx, 178, 94, 12, 28, '#15803d');
+        px(ctx, 204, 108, 10, 14, '#e2e8f0');
+      }
+
+      // 4. POSTAL BATMAN 16-BIT
+      const cBat = document.getElementById('preview-canvas-batman');
+      if (cBat) {
+        const ctx = cBat.getContext('2d');
+        px(ctx, 0, 0, 320, 180, '#060914');
+        // Rascacielos
+        [10, 60, 115, 175, 240].forEach((bx, i) => {
+          const bh = 70 + (i % 3) * 22;
+          px(ctx, bx, 180 - bh, 42, bh, '#0f172a');
+        });
+        // Batiseñal amarilla con corazón
+        ctx.fillStyle = 'rgba(255, 204, 0, 0.16)';
+        ctx.beginPath();
+        ctx.moveTo(260, 170);
+        ctx.lineTo(130, 35);
+        ctx.lineTo(190, 55);
+        ctx.fill();
+        px(ctx, 138, 30, 44, 26, '#ffcc00');
+        px(ctx, 154, 38, 12, 10, '#ff1a53'); // corazón central
+        // Batman en la gárgola
+        px(ctx, 42, 112, 18, 28, '#1e293b');
+        px(ctx, 46, 116, 3, 2, '#00ffff');
+        px(ctx, 52, 116, 3, 2, '#00ffff');
+      }
+
+      // 5. POSTAL TULIPANES
+      const cTulip = document.getElementById('preview-canvas-tulipanes');
+      if (cTulip) {
+        const ctx = cTulip.getContext('2d');
+        const g = ctx.createLinearGradient(0, 0, 0, 180);
+        g.addColorStop(0, '#fff1f2');
+        g.addColorStop(1, '#fbcfe8');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 320, 180);
+
+        const colors = ['#e11d48', '#facc15', '#ec4899', '#a855f7', '#ffffff'];
+        colors.forEach((col, i) => {
+          const tx = 85 + i * 36 + Math.sin(animTick * 0.04 + i) * 2;
+          const ty = 62 - (i === 2 ? 10 : 0);
+          px(ctx, tx + 6, ty + 20, 4, 65, '#22c55e');
+          px(ctx, tx, ty, 16, 22, col);
+          px(ctx, tx + 3, ty - 3, 10, 6, col);
+        });
+        px(ctx, 118, 125, 84, 42, '#ffe4e6');
+      }
+
+      // 6. POSTAL UNIVERSO & ALTAR ETERNO
+      const cUni = document.getElementById('preview-canvas-universo');
+      if (cUni) {
+        const ctx = cUni.getContext('2d');
+        px(ctx, 0, 0, 320, 180, '#05020d');
+        // Agujero negro a la izquierda
+        const bhX = 95, bhY = 85;
+        const grad = ctx.createRadialGradient(bhX, bhY, 10, bhX, bhY, 52);
+        grad.addColorStop(0, '#000000');
+        grad.addColorStop(0.35, '#f59e0b');
+        grad.addColorStop(0.65, '#ec4899');
+        grad.addColorStop(1, 'transparent');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(bhX, bhY, 52, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(bhX, bhY, 18, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 4 Veladoras 3D a la derecha
+        [195, 222, 249, 276].forEach((vx, idx) => {
+          px(ctx, vx, 92, 16, 36, '#ea580c');
+          px(ctx, vx + 2, 94, 12, 32, '#fbbf24');
+          const fh = 8 + Math.sin(animTick * 0.12 + idx) * 2;
+          px(ctx, vx + 6, 90 - fh, 4, fh, '#fef08a');
+        });
+      }
+
+      // 7-10. POSTALES PRÓXIMAS (GHIBLI, CAFETERÍA, CAJA DE MÚSICA, TREN)
+      const upcomingThemes = [
+        { id: 'ghibli', c1: '#38bdf8', c2: '#86efac', accent: '#fef08a' },
+        { id: 'cafeteria', c1: '#1e1b4b', c2: '#78350f', accent: '#fbbf24' },
+        { id: 'cajamusica', c1: '#31102f', c2: '#831843', accent: '#f43f5e' },
+        { id: 'tren', c1: '#090d26', c2: '#3b0764', accent: '#34d399' }
+      ];
+
+      upcomingThemes.forEach((th, idx) => {
+        const cUp = document.getElementById(`preview-canvas-${th.id}`);
+        if (!cUp) return;
+        const ctx = cUp.getContext('2d');
+        const g = ctx.createLinearGradient(0, 0, 0, 180);
+        g.addColorStop(0, th.c1);
+        g.addColorStop(1, th.c2);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 320, 180);
+
+        for (let s = 0; s < 10; s++) {
+          const sx = (s * 33 + animTick * 0.4) % 310;
+          const sy = (s * 17 + idx * 20) % 140;
+          px(ctx, sx, sy, 3, 3, th.accent);
+        }
+      });
+
+      requestAnimationFrame(renderAllPostcardCanvases);
+    }
+
+    /* =====================================================================
+       4. TEATRO INTERACTIVO EMBEBIDO (PARA PROBAR CADA POSTAL EN EL ÁLBUM)
+       ===================================================================== */
+    function openPostcardExperience(cardId) {
+      const theaterModal = document.getElementById('theaterModal');
+      const iframe = document.getElementById('theaterIframe');
+      const titleEl = document.getElementById('theaterTitle');
+      const subEl = document.getElementById('theaterSubtitle');
+      const iconEl = document.getElementById('theaterIcon');
+      const extLink = document.getElementById('theaterExternalLink');
+
+      let card = albumPostcards.find(c => c.id === cardId);
+      if (cardId === 'altar') {
+        card = {
+          id: 'altar',
+          title: 'Amor Eterno: Altar de Veladoras 3D y Calaverita',
+          subtitle: 'Las 4 Veladoras Sagradas y la Catrina',
+          emoji: '🕯️',
+          defaultUrl: 'amor_eterno.html',
+          quote: '“Ni en cien mil ataúdes cabe tanta lealtad.”'
+        };
+      }
+
+      if (!card) return;
+
+      titleEl.textContent = card.title;
+      subEl.textContent = card.subtitle;
+      iconEl.textContent = card.emoji;
+      extLink.href = card.defaultUrl;
+
+      // En GitHub Pages o carpeta compartida carga directamente el archivo interactivo completo;
+      // si estamos en vista previa aislada, ofrece la tarjeta interactiva de respaldo.
+      if (card.defaultUrl && card.defaultUrl !== '#') {
+        iframe.removeAttribute('srcdoc');
+        iframe.src = card.defaultUrl;
+      } else {
+        iframe.srcdoc = buildInteractivePostcardShowcase(card);
+      }
+      theaterModal.classList.remove('hidden');
+      showAlbumToast(`Abriendo postal: ${card.title}`, card.emoji);
+    }
+
+    function buildInteractivePostcardShowcase(card) {
+      return `
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
+          <script src="https://cdn.tailwindcss.com"><\/script>
+          <style>
+            body {
+              background: radial-gradient(circle at center, #241242 0%, #090414 100%);
+              color: #fffbeb;
+              font-family: 'Plus Jakarta Sans', sans-serif;
+              height: 100vh;
+              margin: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              overflow: hidden;
+            }
+            .float-heart {
+              position: fixed;
+              pointer-events: none;
+              animation: rise 1.8s ease-out forwards;
+            }
+            @keyframes rise {
+              0% { opacity: 1; transform: translateY(0) scale(0.9); }
+              100% { opacity: 0; transform: translateY(-90px) scale(1.3); }
+            }
+          </style>
+        </head>
+        <body onclick="spawnHeart(event)">
+          <div class="max-w-lg w-full mx-4 p-6 sm:p-8 rounded-3xl bg-black/65 border-2 border-amber-400/50 text-center shadow-2xl">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-4xl mb-4 animate-bounce">
+              ${card.emoji}
+            </div>
+            <span class="text-[11px] uppercase tracking-widest text-amber-300 font-bold">Vista de Postal en el Álbum</span>
+            <h1 class="text-2xl sm:text-3xl font-bold text-white mt-1 mb-3" style="font-family:'Playfair Display',serif;">${card.title}</h1>
+            <p class="text-xl text-amber-100 italic bg-white/5 p-4 rounded-2xl border-l-4 border-amber-400 mb-6" style="font-family:'VT323',monospace;">
+              ${card.quote}
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+              <a href="${card.defaultUrl}" target="_blank" class="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs transition">
+                🚀 Abrir archivo completo (${card.defaultUrl})
+              </a>
+              <button onclick="spawnShower()" class="px-5 py-3 rounded-xl bg-pink-600/80 hover:bg-pink-600 text-white font-bold text-xs transition">
+                💖 Lluvia de Amor en esta Postal
+              </button>
+            </div>
+            <p class="text-[11px] text-purple-200/70 mt-4">
+              Tip: Cuando guardes todos tus archivos HTML en la misma carpeta o pegues sus links en "Mis Enlaces", el botón superior abrirá la experiencia completa directamente.
+            </p>
+          </div>
+          <script>
+            function spawnHeart(e) {
+              const el = document.createElement('div');
+              el.className = 'float-heart text-2xl';
+              el.textContent = ['💖','✨','🏮','🌸','🌷'][Math.floor(Math.random()*5)];
+              el.style.left = e.clientX + 'px';
+              el.style.top = e.clientY + 'px';
+              document.body.appendChild(el);
+              setTimeout(() => el.remove(), 1800);
+            }
+            function spawnShower() {
+              for(let i=0;i<15;i++) {
+                setTimeout(() => {
+                  spawnHeart({ clientX: window.innerWidth*(0.2+Math.random()*0.6), clientY: window.innerHeight*0.6 });
+                }, i*80);
+              }
+            }
+          <\/script>
+        </body>
+        </html>
+      `;
+    }
+
+    function closeTheaterModal() {
+      const theaterModal = document.getElementById('theaterModal');
+      const iframe = document.getElementById('theaterIframe');
+      iframe.src = 'about:blank';
+      iframe.removeAttribute('srcdoc');
+      theaterModal.classList.add('hidden');
+    }
+
+    function previewUpcomingIdea(cardId) {
+      const card = albumPostcards.find(c => c.id === cardId);
+      if (!card) return;
+      showAlbumToast(`Próxima sorpresa a construir: ${card.title} (${card.emoji})`, '🪄');
+    }
+
+    /* =====================================================================
+       5. FILTROS, CAMBIO DE DISEÑO (MOSAICO vs UNIFORME) Y GESTOR DE LINKS
+       ===================================================================== */
+    function filterAlbum(category) {
+      currentFilter = category;
+      document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`filter-${category}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      renderAlbumGrid();
+    }
+
+    function setLayoutMode(mode) {
+      currentLayout = mode;
+      const mBtn = document.getElementById('layoutMosaicBtn');
+      const uBtn = document.getElementById('layoutUniformBtn');
+
+      if (mode === 'mosaic') {
+        mBtn.className = 'px-3 py-1 rounded-lg text-xs font-semibold bg-amber-500 text-black transition';
+        uBtn.className = 'px-3 py-1 rounded-lg text-xs font-semibold text-amber-200/80 hover:text-white transition';
+        showAlbumToast('Vista Mosaico Bento activada 🍱', '✨');
+      } else {
+        uBtn.className = 'px-3 py-1 rounded-lg text-xs font-semibold bg-amber-500 text-black transition';
+        mBtn.className = 'px-3 py-1 rounded-lg text-xs font-semibold text-amber-200/80 hover:text-white transition';
+        showAlbumToast('Vista de Postales Uniformes activada 🎴', '✨');
+      }
+      renderAlbumGrid();
+    }
+
+    // Gestor de Enlaces para personalizar URLs de Netlify
+    const linksModal = document.getElementById('linksManagerModal');
+    document.getElementById('openLinksManagerBtn').addEventListener('click', () => {
+      const container = document.getElementById('linksInputsContainer');
+      container.innerHTML = '';
+
+      albumPostcards.filter(c => c.unlocked).forEach((card) => {
+        const row = document.createElement('div');
+        row.className = 'bg-black/40 p-3 rounded-xl border border-white/10 flex flex-col gap-1.5';
+        row.innerHTML = `
+          <label class="text-xs font-semibold text-amber-300 flex items-center gap-1.5">
+            <span>${card.emoji}</span>
+            <span>${card.title}</span>
+          </label>
+          <input type="text" id="url-input-${card.id}" value="${card.defaultUrl}" placeholder="Ej. https://mi-postal.netlify.app o archivo.html"
+            class="w-full bg-[#0b0617] border border-amber-400/30 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400">
+        `;
+        container.appendChild(row);
+      });
+
+      linksModal.classList.remove('hidden');
+    });
+
+    function closeLinksManager() {
+      linksModal.classList.add('hidden');
+    }
+
+    function saveCustomLinks() {
+      albumPostcards.filter(c => c.unlocked).forEach(card => {
+        const inp = document.getElementById(`url-input-${card.id}`);
+        if (inp && inp.value.trim() !== '') {
+          card.defaultUrl = inp.value.trim();
+        }
+      });
+      renderAlbumGrid();
+      closeLinksManager();
+      showAlbumToast('¡Enlaces actualizados en todas las postales!', '🔗');
+    }
+
+    /* =====================================================================
+       6. MÚSICA AMBIENTAL DE GALERÍA (CAJA DE MÚSICA / PIANO SUAVE)
+       ===================================================================== */
+    let audioCtx = null;
+    let isAlbumMusicPlaying = false;
+    let musicInterval = null;
+    let noteIdx = 0;
+
+    const galleryNotes = [261.63, 329.63, 392.00, 493.88, 523.25, 392.00, 329.63, 293.66];
+
+    function playGalleryNote(freq) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 2.2);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 2.2);
+    }
+
+    document.getElementById('ambientMusicBtn').addEventListener('click', () => {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      isAlbumMusicPlaying = !isAlbumMusicPlaying;
+      const textEl = document.getElementById('musicText');
+      const iconEl = document.getElementById('musicIcon');
+
+      if (isAlbumMusicPlaying) {
+        textEl.textContent = 'Música del Álbum: ON';
+        iconEl.textContent = '🔊';
+        playGalleryNote(galleryNotes[0]);
+        musicInterval = setInterval(() => {
+          noteIdx = (noteIdx + 1) % galleryNotes.length;
+          playGalleryNote(galleryNotes[noteIdx]);
+        }, 1600);
+      } else {
+        textEl.textContent = 'Música del Álbum: OFF';
+        iconEl.textContent = '🎹';
+        clearInterval(musicInterval);
+      }
+    });
+
+    function showAlbumToast(msg, emoji = '✨') {
+      const toast = document.getElementById('albumToast');
+      document.getElementById('toastEmoji').textContent = emoji;
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(window.albumToastTimer);
+      window.albumToastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3400);
+    }
+
+    /* Partículas doradas de fondo */
+    const dustCanvas = document.getElementById('bgDustCanvas');
+    const dCtx = dustCanvas.getContext('2d');
+    function resizeDust() {
+      dustCanvas.width = window.innerWidth;
+      dustCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeDust);
+    resizeDust();
+
+    const dustParticles = Array.from({ length: 35 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.8 + 0.6,
+      vy: -Math.random() * 0.3 - 0.1,
+      alpha: Math.random() * 0.6 + 0.2
+    }));
+
+    function renderDust() {
+      dCtx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
+      dustParticles.forEach(p => {
+        p.y += p.vy;
+        if (p.y < 0) p.y = dustCanvas.height;
+        dCtx.fillStyle = `rgba(251, 191, 36, ${p.alpha})`;
+        dCtx.beginPath();
+        dCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        dCtx.fill();
+      });
+      requestAnimationFrame(renderDust);
+    }
+
+    window.onload = () => {
+      renderAlbumGrid();
+      renderAllPostcardCanvases();
+      renderDust();
+    };
+  </script>
+</body>
+</html>

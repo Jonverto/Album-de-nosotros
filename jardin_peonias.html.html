@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cultivando Nuestro Amor // Jardín de Peonías al Atardecer</title>
+
+  <!-- Google Fonts para estilo pixel art retro y lectura tierna -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS para disposición ágil -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --sunset-deep: #b33927;
+      --sunset-orange: #f26419;
+      --sunset-amber: #f6ae2d;
+      --sunset-gold: #f7d070;
+      --peony-pink: #ff6584;
+      --peony-soft: #ffb4c6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: #1a0c0a;
+      color: #ffffff;
+      font-family: 'Press Start 2P', monospace;
+      overflow-x: hidden;
+    }
+
+    .font-vt {
+      font-family: 'VT323', monospace;
+    }
+
+    /* Scanlines sutiles estilo consola retro portátil */
+    .crt-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%),
+                  linear-gradient(90deg, rgba(255, 140, 0, 0.02), rgba(0, 0, 0, 0.01), rgba(255, 200, 0, 0.02));
+      background-size: 100% 4px, 6px 100%;
+    }
+
+    /* Botón Pixel Art */
+    .pixel-btn {
+      position: relative;
+      background: #733c2a;
+      border: 3px solid #000000;
+      box-shadow: inset -3px -3px 0px 0px #3d1b11,
+                  inset 3px 3px 0px 0px #ab5f46;
+      color: #fff4ea;
+      text-shadow: 2px 2px 0px #220c06;
+      font-family: 'Press Start 2P', monospace;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: filter 0.08s, transform 0.08s;
+    }
+
+    .pixel-btn:hover {
+      background: #874732;
+    }
+
+    .pixel-btn:active {
+      box-shadow: inset 3px 3px 0px 0px #220c06,
+                  inset -2px -2px 0px 0px #bd6b51;
+      transform: translate(1px, 1px);
+    }
+
+    /* Contenedor estilo caja de madera de jardín */
+    .garden-wood-box {
+      background: #4a2c1b;
+      border: 4px solid #1a0d06;
+      box-shadow: inset 4px 4px 0px #70452b,
+                  inset -4px -4px 0px #29150b,
+                  0 8px 0px #000000;
+    }
+
+    /* Burbuja de logro o notificación */
+    .pixel-toast {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #2b1812;
+      border: 3px solid #d97706;
+      box-shadow: 0 8px 0px #000000;
+      padding: 10px 14px;
+      max-width: 90vw;
+      transform: translateX(130%);
+      transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      pointer-events: none;
+    }
+
+    .pixel-toast.show {
+      transform: translateX(0);
+    }
+
+    /* Gotas y flores flotando */
+    .floating-fx {
+      position: fixed;
+      pointer-events: none;
+      z-index: 90;
+      animation: floatEffect 1.8s forwards steps(8);
+    }
+
+    @keyframes floatEffect {
+      0% { opacity: 1; transform: translate(0, 0) scale(1); }
+      70% { opacity: 1; transform: translate(var(--dx), -45px) scale(1.2); }
+      100% { opacity: 0; transform: translate(var(--dx), -75px) scale(0.8); }
+    }
+  </style>
+</head>
+<body class="relative flex flex-col justify-between w-full h-full min-h-screen">
+
+  <div class="crt-overlay"></div>
+
+  <!-- NOTIFICACIÓN DE LOGRO / MOMENTO ESPECIAL -->
+  <div id="achievementToast" class="pixel-toast">
+    <div class="w-10 h-10 bg-amber-950 border-2 border-amber-500 flex items-center justify-center text-xl shrink-0">
+      🌸
+    </div>
+    <div class="flex flex-col">
+      <span class="text-[8px] text-amber-400 uppercase tracking-wider">¡El jardín florece!</span>
+      <span id="achievementTitle" class="text-[9px] text-white mt-1 leading-snug">Regando con todo mi amor</span>
+    </div>
+  </div>
+
+  <!-- HEADER HUD -->
+  <header class="relative z-30 w-full px-3 py-2 flex items-center justify-between pointer-events-auto">
+    <div class="flex items-center gap-2 bg-black/60 px-3 py-1.5 border-2 border-stone-800 rounded">
+      <span class="text-base">🌸</span>
+      <div class="flex flex-col text-left">
+        <span class="text-[8px] text-amber-300">JARDÍN DE PEONÍAS</span>
+        <span class="text-[7px] text-stone-300 font-vt text-sm">HORA DORADA: ATARDECER</span>
+      </div>
+    </div>
+
+    <!-- Botones de Acción Superior -->
+    <div class="flex items-center gap-2">
+      <button id="waterActionBtn" class="pixel-btn px-2.5 py-1.5 text-[8px] flex items-center gap-1.5">
+        <span>🚿</span>
+        <span class="hidden sm:inline">REGAR</span>
+      </button>
+
+      <button id="musicToggleBtn" class="pixel-btn px-2.5 py-1.5 text-[8px] flex items-center gap-1.5">
+        <span id="musicIcon">🔇</span>
+        <span id="musicLabel" class="hidden sm:inline">MÚSICA</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CANVAS PRINCIPAL DEL JARDÍN PIXEL ART -->
+  <main class="relative z-10 w-full flex-1 flex flex-col items-center justify-center p-2">
+    <div class="relative w-full max-w-2xl aspect-[4/3] sm:aspect-[16/10] bg-black border-4 border-stone-900 shadow-2xl overflow-hidden cursor-pointer" id="stageWrapper">
+      <!-- Indicador de interacción superior -->
+      <div class="absolute top-2 left-1/2 -translate-x-1/2 bg-black/75 border border-amber-400/80 px-3 py-1 text-[8px] text-amber-200 pointer-events-none z-20 animate-pulse text-center">
+        🚿 TOCA A TU NIÑA HERMOSA O A LAS PEONÍAS PARA REGARLAS 🌸
+      </div>
+
+      <canvas id="gardenCanvas" width="320" height="220" class="w-full h-full block"></canvas>
+    </div>
+
+    <!-- CUADRO DE DIÁLOGO / MENSAJERO -->
+    <div class="w-full max-w-2xl mt-2 px-2">
+      <div class="garden-wood-box p-3 text-left flex items-start gap-3 shadow-lg">
+        <div class="w-10 h-10 bg-amber-900/60 border-2 border-amber-500/50 flex items-center justify-center text-xl shrink-0">
+          👩🏻‍🌾
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-between items-center text-[8px] text-amber-300 mb-0.5">
+            <span>&lt;Para Ti, Mi Jardinera Favorita&gt;</span>
+            <span id="bloomsCounter" class="text-amber-400">Floreciendo: 100%</span>
+          </div>
+          <p id="dialogueText" class="text-stone-100 font-vt text-lg sm:text-xl leading-snug">
+            "Así como cuidas de cada florecita bajo este atardecer, yo prometo cuidar de ti, de tu paz y de tu sonrisa todos los días de mi vida."
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER: BOTONES DE INTERACCIÓN Y CARTA -->
+  <footer class="relative z-30 w-full max-w-md mx-auto pb-4 pt-1 flex flex-col items-center pointer-events-auto">
+    <div class="flex gap-2">
+      <button id="giveLoveBtn" class="pixel-btn px-3 py-2 text-[8px] flex items-center gap-1.5">
+        <span>💖</span>
+        <span>DAR AMOR</span>
+      </button>
+
+      <button id="sunsetGlowBtn" class="pixel-btn px-3 py-2 text-[8px] flex items-center gap-1.5">
+        <span>🌅</span>
+        <span>BRILLO DORADO</span>
+      </button>
+
+      <button id="openLetterBtn" class="pixel-btn px-3 py-2 text-[8px] flex items-center gap-1.5">
+        <span>📜</span>
+        <span>CARTA SECRETA</span>
+      </button>
+    </div>
+    <span class="text-[7px] text-amber-500/80 mt-2 font-vt text-base tracking-wider">
+      *HECHO CON AMOR Y PÍXELES EXCLUSIVAMENTE PARA TI*
+    </span>
+  </footer>
+
+  <!-- MODAL DE CARTA ROMÁNTICA ESCRITA A MANO -->
+  <div id="letterModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+    <div class="garden-wood-box max-w-sm sm:max-w-md w-full p-5 sm:p-6 relative flex flex-col bg-[#2e170d]">
+      <div class="border-b-2 border-amber-700/60 pb-2 mb-3 flex items-center justify-between">
+        <span class="text-[9px] text-amber-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+          <span>🌸</span> NUESTRO JARDÍN ETERNO
+        </span>
+        <span class="text-[8px] text-stone-400">Confidencial</span>
+      </div>
+
+      <div class="font-vt text-lg sm:text-xl text-amber-100 leading-snug space-y-3 max-h-[55vh] overflow-y-auto pr-1">
+        <p>
+          <strong>Para la dueña de mi corazón:</strong>
+        </p>
+        <p>
+          Las peonías son símbolo de un amor próspero, sincero y duradero. Cuando te imagino bajo este atardecer, con esa dulzura que tienes al cuidar lo que amas, entiendo que tú eres la flor más hermosa y especial que la vida pudo regalarme.
+        </p>
+        <p class="text-amber-300 bg-black/40 p-2.5 border-l-4 border-amber-500">
+          "Quiero recordarte que nunca me voy a ir. No importa qué tormentas pasen o qué dificultades tengamos que atravesar, siempre estaré a tu lado, apoyándote, protegiéndote y cuidando nuestro jardín juntos."
+        </p>
+        <p>
+          Gracias por darle color y perfume a mis días. Eres mi lugar seguro, mi atardecer favorito y mi amor para siempre.
+        </p>
+      </div>
+
+      <div class="mt-4 pt-3 border-t-2 border-amber-700/60 flex justify-between items-center">
+        <span class="text-[8px] text-amber-400">Siempre a tu lado ❤️</span>
+        <button id="closeLetterBtn" class="pixel-btn px-4 py-2 text-[9px] bg-amber-800 text-white">
+          GUARDAR
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========================================================
+       1. MOTOR DE AUDIO RELAJANTE: SINTETIZADOR DE ATARDECER
+       Cálida melodía estilo Lo-Fi acústico y caja de música
+       ======================================================== */
+    let audioCtx = null;
+    let isMusicActive = false;
+    let musicStep = 0;
+    let musicInterval = null;
+
+    // Frecuencias exactas en Hz (modo pentatónico cálido: F, G, A, C, D)
+    const M = {
+      F3: 174.61, A3: 220.00, C4: 261.63, D4: 293.66, E4: 329.63,
+      F4: 349.23, G4: 392.00, A4: 440.00, C5: 523.25, D5: 587.33,
+      E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00
+    };
+
+    // Secuencia nostálgica de acordes al atardecer
+    const sunsetProgression = [
+      { bass: M.F3, chord: [M.C4, M.E4, M.A4], lead: M.C5, dur: 3.2 },
+      { bass: null, chord: [M.A3, M.C4, M.F4], lead: M.D5, dur: 2.2 },
+      { bass: M.D4 * 0.5, chord: [M.F4, M.A4, M.D5], lead: M.F5, dur: 3.0 },
+      { bass: null, chord: [M.A3, M.D4, M.F4], lead: M.E5, dur: 2.4 },
+      { bass: M.A3 * 0.5, chord: [M.E4, M.A4, M.C5], lead: M.C5, dur: 3.0 },
+      { bass: null, chord: [M.C4, M.E4, M.A4], lead: M.A4, dur: 2.5 },
+      { bass: M.C4 * 0.5, chord: [M.E4, M.G4, M.C5], lead: M.G5, dur: 3.4 },
+      { bass: null, chord: [M.G4, M.C5, M.E5], lead: M.E5, dur: 2.8 }
+    ];
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTone(freq, duration = 2.4, vol = 0.08, type = 'sine') {
+      if (!audioCtx || !freq) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1100, audioCtx.currentTime);
+        filter.frequency.exponentialRampToValueAtTime(320, audioCtx.currentTime + duration);
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function playWaterSound() {
+      if (!audioCtx) return;
+      // Salpicadura suave con tonos agudos burbujeantes
+      [M.G4, M.C5, M.E5].forEach((f, idx) => {
+        setTimeout(() => playTone(f + (Math.random() * 40 - 20), 0.35, 0.05, 'triangle'), idx * 70);
+      });
+    }
+
+    function playChime() {
+      if (!audioCtx) return;
+      playTone(M.A4, 1.8, 0.09, 'sine');
+      setTimeout(() => playTone(M.D5, 2.0, 0.08, 'sine'), 120);
+      setTimeout(() => playTone(M.F5, 2.4, 0.08, 'sine'), 240);
+    }
+
+    function playSunsetStep() {
+      if (!isMusicActive) return;
+      const bar = sunsetProgression[musicStep % sunsetProgression.length];
+      musicStep++;
+
+      if (bar.bass) {
+        playTone(bar.bass, 3.5, 0.14, 'triangle');
+      }
+      if (bar.chord) {
+        bar.chord.forEach((f, idx) => {
+          setTimeout(() => playTone(f, 2.8, 0.04, 'sine'), idx * 55);
+        });
+      }
+      if (bar.lead) {
+        setTimeout(() => playTone(bar.lead, bar.dur, 0.07, 'sine'), 140);
+      }
+    }
+
+    function toggleMusic() {
+      initAudio();
+      isMusicActive = !isMusicActive;
+      const label = document.getElementById('musicLabel');
+      const icon = document.getElementById('musicIcon');
+
+      if (isMusicActive) {
+        label.textContent = "MÚSICA: ON";
+        icon.textContent = "🔊";
+        playSunsetStep();
+        musicInterval = setInterval(playSunsetStep, 2600);
+      } else {
+        label.textContent = "MÚSICA: OFF";
+        icon.textContent = "🔇";
+        clearInterval(musicInterval);
+      }
+    }
+
+    document.getElementById('musicToggleBtn').addEventListener('click', toggleMusic);
+
+    /* ========================================================
+       2. MOTOR GRÁFICO PIXEL ART EN CANVAS (320x220 píxeles)
+       - Atardecer naranja/amarillo difuminado cálido
+       - Sol poniente suave y siluetas de colinas
+       - Peonías en flor con pétalos rosados densos y hojas verdes
+       - Ella vestida de jardinera cute regando con su regadera
+       - Gotas de agua animadas cayendo sobre las flores
+       - Pétalos y luciérnagas flotando por el aire
+       ======================================================== */
+    const canvas = document.getElementById('gardenCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+
+    const CW = 320;
+    const CH = 220;
+
+    let isWatering = true;
+    let waterTimer = 0;
+    let girlBlink = 0;
+    let gardenBloomLevel = 1.0;
+    let sunsetBoost = 0;
+
+    // Gotitas de agua saliendo de la regadera
+    const waterDrops = [];
+    // Pétalos de peonía arrastrados por la brisa
+    const floatingPetals = [];
+    for (let i = 0; i < 22; i++) {
+      floatingPetals.push({
+        x: Math.random() * CW,
+        y: Math.random() * CH,
+        vx: Math.random() * 0.6 + 0.3,
+        vy: Math.random() * 0.4 + 0.2,
+        size: Math.random() > 0.5 ? 3 : 2,
+        color: ['#ff8fa3', '#ff6b8b', '#ffb4c6', '#ffffff'][Math.floor(Math.random() * 4)],
+        pulse: Math.random() * Math.PI * 2
+      });
+    }
+
+    // Luciérnagas doradas en el atardecer
+    const goldenGlows = [];
+    for (let i = 0; i < 14; i++) {
+      goldenGlows.push({
+        x: Math.random() * CW,
+        y: 60 + Math.random() * 110,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        radius: Math.random() * 2 + 1,
+        alpha: Math.random() * 0.6 + 0.3,
+        pulse: Math.random() * Math.PI * 2
+      });
+    }
+
+    function drawPixel(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
+    }
+
+    /* Dibujar Atardecer Naranja y Tonos Amarillos Difuminados */
+    function drawSunsetSky() {
+      // Gradiente suave de atardecer
+      const sunsetGrad = ctx.createLinearGradient(0, 0, 0, 155);
+      sunsetGrad.addColorStop(0, '#781c19');    // rojo borgoña crepuscular superior
+      sunsetGrad.addColorStop(0.25, '#c83f12'); // naranja rojizo intenso
+      sunsetGrad.addColorStop(0.55, '#f26419'); // naranja vibrante
+      sunsetGrad.addColorStop(0.82, '#f6ae2d'); // ámbar cálido
+      sunsetGrad.addColorStop(1, '#f7d070');    // amarillo dorado brillante en el horizonte
+
+      ctx.fillStyle = sunsetGrad;
+      ctx.fillRect(0, 0, CW, CH);
+
+      // Sol poniente suave y grande
+      const sunX = 225;
+      const sunY = 92;
+      const sunR = 26;
+
+      // Resplandor del sol
+      const sunHalo = ctx.createRadialGradient(sunX, sunY, sunR * 0.5, sunX, sunY, sunR * 2.5);
+      sunHalo.addColorStop(0, 'rgba(255, 245, 180, 0.7)');
+      sunHalo.addColorStop(0.5, 'rgba(247, 174, 45, 0.35)');
+      sunHalo.addColorStop(1, 'rgba(242, 100, 25, 0)');
+
+      ctx.fillStyle = sunHalo;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, sunR * 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Disco del sol en pixel art
+      ctx.fillStyle = '#fff4ce';
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, sunR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Nubes alargadas pixeladas iluminadas por el sol
+      drawPixel(20, 42, 75, 7, 'rgba(247, 160, 60, 0.45)');
+      drawPixel(35, 49, 45, 5, 'rgba(247, 160, 60, 0.35)');
+
+      drawPixel(140, 28, 90, 8, 'rgba(255, 195, 100, 0.5)');
+      drawPixel(160, 36, 60, 5, 'rgba(255, 195, 100, 0.35)');
+
+      drawPixel(240, 65, 60, 6, 'rgba(242, 100, 25, 0.4)');
+    }
+
+    /* Siluetas de Colinas y Cerca de Madera */
+    function drawDistantHills() {
+      // Colina lejana 1
+      ctx.fillStyle = '#64221a';
+      ctx.beginPath();
+      ctx.moveTo(0, 140);
+      ctx.quadraticCurveTo(80, 118, 160, 135);
+      ctx.quadraticCurveTo(240, 150, CW, 125);
+      ctx.lineTo(CW, CH);
+      ctx.lineTo(0, CH);
+      ctx.closePath();
+      ctx.fill();
+
+      // Colina media 2
+      ctx.fillStyle = '#481c15';
+      ctx.beginPath();
+      ctx.moveTo(0, 150);
+      ctx.quadraticCurveTo(110, 138, 200, 148);
+      ctx.quadraticCurveTo(270, 142, CW, 145);
+      ctx.lineTo(CW, CH);
+      ctx.lineTo(0, CH);
+      ctx.closePath();
+      ctx.fill();
+
+      // Siluetas de árboles lejanos
+      drawSpruceSilhouette(40, 122);
+      drawSpruceSilhouette(62, 126);
+      drawSpruceSilhouette(270, 118);
+      drawSpruceSilhouette(295, 122);
+    }
+
+    function drawSpruceSilhouette(x, y) {
+      drawPixel(x + 3, y + 12, 2, 8, '#2b100d');
+      drawPixel(x + 1, y + 8, 6, 5, '#2b100d');
+      drawPixel(x + 2, y + 4, 4, 5, '#2b100d');
+      drawPixel(x + 3, y + 1, 2, 4, '#2b100d');
+    }
+
+    /* Suelo del Jardín, Canteros y Cerca Rústica de Madera */
+    function drawGardenGround() {
+      // Tierra fértil del jardín
+      drawPixel(0, 154, CW, 12, '#381f13');
+      drawPixel(0, 166, CW, CH - 166, '#28150c');
+
+      // Césped iluminado por el atardecer dorado
+      drawPixel(0, 152, CW, 4, '#4f3a18');
+      for (let i = 0; i < CW; i += 7) {
+        if ((i % 14) === 0) {
+          drawPixel(i, 150, 3, 3, '#745722');
+        }
+      }
+
+      // Cantero o jardinera de madera donde crecen las peonías
+      const bx = 145;
+      const by = 160;
+      const bw = 165;
+      const bh = 32;
+
+      // Tablones de la jardinera
+      drawPixel(bx, by, bw, bh, '#54321d');
+      drawPixel(bx, by, bw, 3, '#6f4327');
+      drawPixel(bx, by + 15, bw, 2, '#3a2112');
+      drawPixel(bx, by + 30, bw, 2, '#28160b');
+
+      // Postes verticales de la jardinera
+      drawPixel(bx + 4, by - 2, 6, bh + 4, '#3f2414');
+      drawPixel(bx + 55, by - 2, 6, bh + 4, '#3f2414');
+      drawPixel(bx + 105, by - 2, 6, bh + 4, '#3f2414');
+      drawPixel(bx + 155, by - 2, 6, bh + 4, '#3f2414');
+
+      // Tierra abonada húmeda dentro del cantero
+      drawPixel(bx + 2, by + 3, bw - 4, 11, '#211009');
+    }
+
+    /* PEONÍAS EN PIXEL ART (Flores pomposas de pétalos densos) */
+    function drawPeonies() {
+      // Racimo de peonías en el jardín
+      const peonyBushes = [
+        { x: 165, y: 154, scale: 1.0, colorCore: '#ff2d62', colorMid: '#ff6584', colorEdge: '#ffb4c6' },
+        { x: 195, y: 148, scale: 1.15, colorCore: '#e6004c', colorMid: '#ff4d79', colorEdge: '#ffa6bc' },
+        { x: 228, y: 152, scale: 1.05, colorCore: '#ff3d6f', colorMid: '#ff7a98', colorEdge: '#ffc5d3' },
+        { x: 260, y: 147, scale: 1.2, colorCore: '#d80045', colorMid: '#ff4b77', colorEdge: '#ff9ebb' },
+        { x: 290, y: 155, scale: 0.95, colorCore: '#ff547d', colorMid: '#ff8ca4', colorEdge: '#ffd1dc' },
+      ];
+
+      peonyBushes.forEach((p, idx) => {
+        // Tallo verde resistente
+        drawPixel(p.x + 6, p.y + 2, 2, 12, '#2f5223');
+        // Hojas frondosas verde esmeralda
+        drawPixel(p.x - 2, p.y + 6, 5, 3, '#3c692d');
+        drawPixel(p.x + 9, p.y + 8, 6, 3, '#3c692d');
+        drawPixel(p.x + 1, p.y + 10, 4, 2, '#27441c');
+
+        // Flor de Peonía: Capas densas de pétalos redondeados
+        const ox = p.x;
+        const oy = p.y - 12;
+
+        // Capa 1: Sombra y pétalos de base
+        drawPixel(ox + 1, oy + 2, 12, 11, p.colorCore);
+        drawPixel(ox - 1, oy + 4, 16, 8, p.colorCore);
+
+        // Capa 2: Pétalos intermedios voluminosos
+        drawPixel(ox, oy + 1, 14, 10, p.colorMid);
+        drawPixel(ox + 2, oy - 2, 10, 4, p.colorMid);
+        drawPixel(ox - 2, oy + 5, 4, 6, p.colorMid);
+        drawPixel(ox + 12, oy + 5, 4, 6, p.colorMid);
+
+        // Capa 3: Pétalos frontales claros con brillo del atardecer
+        drawPixel(ox + 3, oy + 1, 8, 7, p.colorEdge);
+        drawPixel(ox + 4, oy - 1, 6, 3, p.colorEdge);
+        drawPixel(ox + 2, oy + 4, 10, 4, p.colorEdge);
+
+        // Centro con pistilos dorados sutiles
+        drawPixel(ox + 6, oy + 3, 2, 2, '#ffe066');
+        drawPixel(ox + 7, oy + 4, 1, 1, '#ffffff');
+
+        // Gotitas de rocío / agua brillando en los pétalos
+        if (isWatering || gardenBloomLevel > 0.8) {
+          drawPixel(ox + 3, oy + 2, 1, 1, '#99f6e4');
+          drawPixel(ox + 10, oy + 6, 1, 1, '#99f6e4');
+        }
+      });
+    }
+
+    /* ELLA: LA JARDINERA CUTE REGANDO LAS PEONÍAS EN PIXEL ART */
+    function drawGardenerGirl() {
+      // Posición de ella a la izquierda del cantero
+      const gx = 88;
+      const gy = 124;
+
+      girlBlink++;
+      const isBlinking = (girlBlink % 140 > 134);
+
+      // Sombra proyectada en el suelo
+      ctx.fillStyle = 'rgba(20, 10, 5, 0.45)';
+      ctx.beginPath();
+      ctx.ellipse(gx + 12, gy + 42, 16, 5, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 1. Sombrero de paja de jardinera con lazo rosa
+      drawPixel(gx - 4, gy - 6, 28, 4, '#eab308'); // ala ancha del sombrero
+      drawPixel(gx, gy - 12, 20, 7, '#facc15');   // copa del sombrero
+      drawPixel(gx + 2, gy - 14, 16, 3, '#fef08a'); // brillo superior
+      drawPixel(gx, gy - 6, 20, 2, '#f43f5e');     // cinta/lazo rosa del sombrero
+
+      // 2. Cabello largo castaño muy clarito / rubio miel cálido
+      drawPixel(gx + 1, gy - 2, 18, 18, '#c8924b'); // base castaño claro miel
+      drawPixel(gx + 3, gy - 1, 14, 16, '#dfab62'); // tono medio dorado/rubio claro
+      drawPixel(gx + 5, gy - 1, 10, 4, '#f2ca8a');  // reflejo rubio suave iluminado por el sol
+      drawPixel(gx - 2, gy + 2, 4, 18, '#b8803a');  // mechón izquierdo castaño claro
+      drawPixel(gx - 1, gy + 4, 2, 15, '#d9a257');  // brillo en mechón izquierdo
+      drawPixel(gx + 18, gy + 2, 4, 20, '#b8803a'); // mechón derecho castaño claro
+      drawPixel(gx + 19, gy + 4, 2, 17, '#e4b26d'); // brillo en mechón derecho
+
+      // 3. Rostro cute güerita (tono de piel clara con rubor tierno)
+      drawPixel(gx + 3, gy - 1, 14, 12, '#fff2e5'); // tez blanca / güerita luminosa
+      drawPixel(gx + 4, gy + 9, 12, 2, '#fae1cc');  // sombreado suave bajo el mentón
+
+      // Ojos tiernos color café claros con brillo
+      if (isBlinking) {
+        drawPixel(gx + 6, gy + 4, 3, 1, '#6b431a');
+        drawPixel(gx + 12, gy + 4, 3, 1, '#6b431a');
+      } else {
+        // Iris café claro / ámbar
+        drawPixel(gx + 6, gy + 3, 3, 3, '#7d4f24');
+        drawPixel(gx + 12, gy + 3, 3, 3, '#7d4f24');
+        // Pupila café suave
+        drawPixel(gx + 7, gy + 4, 1, 2, '#996332');
+        drawPixel(gx + 13, gy + 4, 1, 2, '#996332');
+        // Destello / brillo de luz en la mirada
+        drawPixel(gx + 6, gy + 3, 1, 1, '#ffffff');
+        drawPixel(gx + 12, gy + 3, 1, 1, '#ffffff');
+      }
+
+      // Sonrojo dulce en las mejillas sonrosadas
+      drawPixel(gx + 4, gy + 6, 3, 2, '#fca5a5');
+      drawPixel(gx + 14, gy + 6, 3, 2, '#fca5a5');
+
+      // Sonrisa amable
+      drawPixel(gx + 9, gy + 8, 3, 1, '#c2410c');
+
+      // 4. Overol / Vestido de jardinera (Verde menta pastel con blusa blanca)
+      // Blusa
+      drawPixel(gx + 4, gy + 11, 13, 6, '#fff7ed');
+      // Peto del overol
+      drawPixel(gx + 5, gy + 15, 11, 13, '#10b981');
+      drawPixel(gx + 7, gy + 17, 7, 10, '#059669'); // detalle peto
+      // Tirantes del overol
+      drawPixel(gx + 5, gy + 12, 2, 4, '#047857');
+      drawPixel(gx + 14, gy + 12, 2, 4, '#047857');
+      drawPixel(gx + 5, gy + 15, 2, 2, '#facc15'); // botones dorados
+      drawPixel(gx + 14, gy + 15, 2, 2, '#facc15');
+
+      // Brazo izquierdo sosteniendo la manija de la regadera (tez güerita)
+      drawPixel(gx + 16, gy + 13, 10, 3, '#fff2e5');
+      drawPixel(gx + 24, gy + 15, 4, 5, '#fff2e5');
+
+      // Falda o pantalón del overol
+      drawPixel(gx + 4, gy + 27, 13, 8, '#047857');
+
+      // Botas de campo de cuero
+      drawPixel(gx + 5, gy + 35, 4, 7, '#78350f');
+      drawPixel(gx + 12, gy + 35, 4, 7, '#78350f');
+      drawPixel(gx + 4, gy + 40, 6, 3, '#451a03');
+      drawPixel(gx + 11, gy + 40, 6, 3, '#451a03');
+
+      // 5. REGADERA VINTAGE DE METAL
+      const rx = gx + 25;
+      const ry = gy + 16;
+
+      // Cuerpo cilíndrico de la regadera
+      drawPixel(rx, ry, 12, 10, '#64748b');
+      drawPixel(rx + 1, ry + 1, 10, 8, '#94a3b8');
+      // Asa superior curvada
+      drawPixel(rx - 2, ry - 3, 10, 2, '#475569');
+      drawPixel(rx - 2, ry - 3, 2, 5, '#475569');
+      drawPixel(rx + 7, ry - 3, 2, 5, '#475569');
+
+      // Boquilla o pico alargado hacia las peonías
+      drawPixel(rx + 11, ry + 4, 6, 3, '#64748b');
+      drawPixel(rx + 16, ry + 2, 6, 4, '#94a3b8');
+      // Florón / roseta de la regadera
+      drawPixel(rx + 21, ry, 3, 8, '#cbd5e1');
+
+      // 6. CHORROS DE AGUA CAYENDO SOBRE LAS PEONÍAS
+      if (isWatering) {
+        waterTimer++;
+        if (waterTimer % 2 === 0) {
+          // Generar nuevas gotitas desde la boquilla
+          for (let k = 0; k < 2; k++) {
+            waterDrops.push({
+              x: rx + 23 + (Math.random() * 3),
+              y: ry + 4 + (Math.random() * 4),
+              vx: Math.random() * 1.8 + 1.2,
+              vy: Math.random() * 1.6 + 1.2,
+              life: 1.0
+            });
+          }
+        }
+      }
+
+      // Renderizar gotitas de agua cayendo
+      for (let i = waterDrops.length - 1; i >= 0; i--) {
+        const d = waterDrops[i];
+        d.x += d.vx;
+        d.y += d.vy;
+        d.vy += 0.12; // gravedad suave
+        d.life -= 0.035;
+
+        if (d.y > 175 || d.life <= 0) {
+          waterDrops.splice(i, 1);
+          continue;
+        }
+
+        // Color azul celeste brillante
+        ctx.fillStyle = `rgba(125, 211, 252, ${d.life})`;
+        ctx.fillRect(Math.floor(d.x), Math.floor(d.y), 2, 2);
+      }
+    }
+
+    /* Partículas de Pétalos Flotantes y Brillo Dorado */
+    function drawAtmosphereFX() {
+      // 1. Pétalos de peonía meciéndose por el viento
+      floatingPetals.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.pulse += 0.05;
+
+        if (p.x > CW) p.x = -5;
+        if (p.y > CH) p.y = -5;
+
+        const sway = Math.sin(p.pulse) * 1.5;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(Math.floor(p.x + sway), Math.floor(p.y), p.size, p.size);
+      });
+
+      // 2. Luciérnagas doradas al atardecer
+      goldenGlows.forEach(g => {
+        g.x += g.vx;
+        g.y += g.vy;
+        g.pulse += 0.04;
+
+        if (g.x < 0) g.x = CW;
+        if (g.x > CW) g.x = 0;
+        if (g.y < 50) g.y = 170;
+        if (g.y > 175) g.y = 50;
+
+        const a = Math.sin(g.pulse) * 0.3 + g.alpha;
+        ctx.fillStyle = `rgba(254, 240, 138, ${Math.max(0.1, a)})`;
+        ctx.fillRect(Math.floor(g.x), Math.floor(g.y), g.radius, g.radius);
+      });
+
+      // 3. Brillo extra si se activó el botón de Atardecer Dorado
+      if (sunsetBoost > 0) {
+        ctx.fillStyle = `rgba(245, 158, 11, ${sunsetBoost * 0.18})`;
+        ctx.fillRect(0, 0, CW, CH);
+        sunsetBoost -= 0.008;
+      }
+    }
+
+    /* Bucle de Renderizado Continuo */
+    function renderGarden() {
+      ctx.clearRect(0, 0, CW, CH);
+
+      drawSunsetSky();
+      drawDistantHills();
+      drawGardenGround();
+      drawPeonies();
+      drawGardenerGirl();
+      drawAtmosphereFX();
+
+      requestAnimationFrame(renderGarden);
+    }
+
+    renderGarden();
+
+    /* ========================================================
+       3. INTERACCIONES, DIÁLOGOS Y MENSAJES DE AMOR
+       ======================================================== */
+    const stageWrapper = document.getElementById('stageWrapper');
+    const dialogueText = document.getElementById('dialogueText');
+    const bloomsCounter = document.getElementById('bloomsCounter');
+    const achievementToast = document.getElementById('achievementToast');
+    const achievementTitle = document.getElementById('achievementTitle');
+    let toastTimeout = null;
+
+    const loveQuotes = [
+      "Estando juntos soy muy feliz y los momentos a tu lado son sencillamente maravillosos. 🌸",
+      "Tengo tantos momentos lindos en tan poco tiempo contigo que mi corazón no cabe de alegría.",
+      "Me hiciste amarte tanto en tan poco tiempo... eres lo que tanto esperé, mi niña linda. 💖",
+      "Los momentos más lindos los paso todo el tiempo contigo a mi lado.",
+      "Nunca me voy a ir: siempre estaré a tu lado apoyándote en cada dificultad y en cada sueño.",
+      "Bajo este atardecer dorado confirmo que tú eres mi persona favorita en todo el universo."
+    ];
+
+    function showToastAchievement(title) {
+      initAudio();
+      playChime();
+      achievementTitle.textContent = title;
+      achievementToast.classList.add('show');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        achievementToast.classList.remove('show');
+      }, 4000);
+    }
+
+    function spawnFloatingHeart(clientX, clientY, icon = '🌸') {
+      const el = document.createElement('div');
+      el.className = 'floating-fx';
+      el.textContent = icon;
+      el.style.left = `${clientX}px`;
+      el.style.top = `${clientY}px`;
+      el.style.setProperty('--dx', `${(Math.random() - 0.5) * 50}px`);
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1800);
+    }
+
+    // Interacción al tocar la pantalla del jardín
+    stageWrapper.addEventListener('click', (e) => {
+      initAudio();
+      const rect = canvas.getBoundingClientRect();
+      const clickX = ((e.clientX - rect.left) / rect.width) * CW;
+      const clickY = ((e.clientY - rect.top) / rect.height) * CH;
+
+      spawnFloatingHeart(e.clientX, e.clientY, Math.random() > 0.4 ? '🌸' : '💖');
+
+      // Tocar cerca de ella (lado izquierdo)
+      if (clickX >= 70 && clickX <= 140 && clickY >= 110) {
+        playChime();
+        isWatering = true;
+        dialogueText.innerHTML = `"¡Me hiciste amarte tanto en tan poco tiempo! Eres lo que tanto esperé, mi niña linda."`;
+        showToastAchievement("¡La dueña de mi corazón te sonríe!");
+        return;
+      }
+
+      // Tocar en el cantero de peonías (lado derecho)
+      if (clickX >= 150 && clickY >= 135) {
+        playWaterSound();
+        isWatering = true;
+        dialogueText.innerHTML = `"Los momentos más lindos los paso todo el tiempo contigo a mi lado... Nunca me voy a ir."`;
+        showToastAchievement("Peonías en flor plena 🌸");
+        return;
+      }
+
+      // Tocar en el atardecer / sol (cielo)
+      if (clickY < 120) {
+        sunsetBoost = 1.0;
+        playTone(659.25, 2.0, 0.08);
+        dialogueText.innerHTML = `"Estando juntos soy muy feliz; contemplar este atardecer contigo es maravilloso."`;
+        return;
+      }
+
+      const q = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
+      dialogueText.innerHTML = `"${q}"`;
+    });
+
+    // Botón Superior Regar
+    document.getElementById('waterActionBtn').addEventListener('click', (e) => {
+      initAudio();
+      playWaterSound();
+      isWatering = true;
+      for (let i = 0; i < 4; i++) {
+        setTimeout(() => spawnFloatingHeart(e.clientX + (i - 2) * 20, e.clientY, '💧'), i * 120);
+      }
+      dialogueText.innerHTML = `"Tengo tantos momentos lindos en tan poco tiempo a tu lado... Regando este amor para siempre."`;
+      showToastAchievement("Regando las peonías con amor incondicional");
+    });
+
+    // Botón Inferior Dar Amor
+    document.getElementById('giveLoveBtn').addEventListener('click', (e) => {
+      initAudio();
+      playChime();
+      for (let i = 0; i < 6; i++) {
+        setTimeout(() => spawnFloatingHeart(window.innerWidth / 2 + (i - 3) * 35, window.innerHeight * 0.45, '💖'), i * 140);
+      }
+      dialogueText.innerHTML = `"Estando juntos soy muy feliz. Me hiciste amarte tanto en tan poco tiempo, mi niña linda."`;
+      showToastAchievement("Eres lo que tanto esperé ❤️");
+    });
+
+    // Botón Inferior Brillo Dorado
+    document.getElementById('sunsetGlowBtn').addEventListener('click', () => {
+      initAudio();
+      playTone(523.25, 2.5, 0.09);
+      sunsetBoost = 1.0;
+      dialogueText.innerHTML = `"Los momentos más lindos los paso contigo... El atardecer es perfecto a tu lado."`;
+    });
+
+    // Modal Carta Secreta
+    const letterModal = document.getElementById('letterModal');
+    const openLetterBtn = document.getElementById('openLetterBtn');
+    const closeLetterBtn = document.getElementById('closeLetterBtn');
+
+    openLetterBtn.addEventListener('click', () => {
+      initAudio();
+      playChime();
+      letterModal.classList.remove('hidden');
+    });
+
+    closeLetterBtn.addEventListener('click', () => {
+      initAudio();
+      playTone(440, 1.2, 0.05);
+      letterModal.classList.add('hidden');
+    });
+
+    window.onload = function() {
+      setTimeout(() => {
+        showToastAchievement("Bienvenida a nuestro jardín al atardecer 🌸");
+      }, 700);
+    };
+  </script>
+</body>
+</html>
