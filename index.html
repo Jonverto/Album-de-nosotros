@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,10 +16,31 @@
 
   <style>
     :root {
-      --bg-velvet: #0b0714;
-      --card-dark: #150d24;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #271447 0%, #110821 48%, #07030f 100%);
+      --text-main: #fffbeb;
+      --text-muted: #e9d5ff;
+      --card-bg: rgba(22, 13, 40, 0.85);
+      --card-border: rgba(251, 191, 36, 0.28);
+      --nav-bg: rgba(0, 0, 0, 0.45);
+      --hero-bg: linear-gradient(to right, rgba(29, 16, 54, 0.95), rgba(40, 19, 64, 0.9), rgba(26, 13, 46, 0.95));
+      --quote-bg: rgba(0, 0, 0, 0.35);
       --gold-royal: #fbbf24;
       --rose-soft: #f472b6;
+      --input-bg: #0b0617;
+      --modal-bg: #140b29;
+    }
+
+    body.light-mode {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #fffbf2 0%, #fce7f3 50%, #f5e6d3 100%);
+      --text-main: #2b1704;
+      --text-muted: #5c3a21;
+      --card-bg: rgba(255, 252, 245, 0.92);
+      --card-border: rgba(180, 83, 9, 0.3);
+      --nav-bg: rgba(255, 250, 240, 0.85);
+      --hero-bg: linear-gradient(to right, rgba(254, 243, 199, 0.95), rgba(252, 231, 243, 0.9), rgba(254, 243, 199, 0.95));
+      --quote-bg: rgba(245, 158, 11, 0.12);
+      --input-bg: #ffffff;
+      --modal-bg: #fffdf9;
     }
 
     * {
@@ -31,10 +53,11 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at 50% 0%, #271447 0%, #110821 48%, #07030f 100%);
-      color: #fffbeb;
+      background: var(--bg-gradient);
+      color: var(--text-main);
       font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
+      transition: background 0.5s ease, color 0.4s ease;
     }
 
     .font-serif-title { font-family: 'Playfair Display', serif; }
@@ -48,14 +71,14 @@
       image-rendering: crisp-edges;
     }
 
-    /* Tarjeta Postal de Colección */
+    /* Tarjeta Postal de Colección Adaptable a Modo Claro/Oscuro */
     .postcard-card {
       position: relative;
-      background: rgba(22, 13, 40, 0.85);
+      background: var(--card-bg);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(251, 191, 36, 0.28);
+      border: 1px solid var(--card-border);
       box-shadow:
-        0 18px 40px -12px rgba(0, 0, 0, 0.85),
+        0 18px 40px -12px rgba(0, 0, 0, 0.35),
         inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
       transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
       overflow: hidden;
@@ -63,11 +86,10 @@
 
     .postcard-card:hover {
       transform: translateY(-6px);
-      border-color: rgba(251, 191, 36, 0.65);
+      border-color: rgba(251, 191, 36, 0.75);
       box-shadow:
-        0 25px 50px -12px rgba(0, 0, 0, 0.95),
-        0 0 28px rgba(251, 191, 36, 0.22),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+        0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        0 0 28px rgba(251, 191, 36, 0.25);
     }
 
     /* Estilo Sello Postal Perforado / Estampilla Antigua */
@@ -76,7 +98,7 @@
       background: #fbf8f0;
       border: 4px dashed #b45309;
       padding: 8px 8px 20px 8px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.45);
       transform: rotate(-1.5deg);
       transition: transform 0.3s ease;
     }
@@ -88,7 +110,7 @@
     .vintage-photo-frame {
       background: #fdfbf7;
       padding: 10px 10px 28px 10px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(180, 140, 90, 0.2);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.45), inset 0 0 15px rgba(180, 140, 90, 0.2);
       border: 1px solid #e7d8bc;
       transform: rotate(1deg);
       transition: transform 0.3s ease;
@@ -101,9 +123,9 @@
       filter: sepia(0.35) contrast(1.06) brightness(0.94);
     }
 
-    /* Animación de Libro / Páginas pasando (Page Flip) */
+    /* Animación Realista de Libro 3D (Page Flip) */
     .book-container {
-      perspective: 1600px;
+      perspective: 1800px;
       width: 100%;
       max-width: 900px;
       margin: 0 auto;
@@ -113,10 +135,20 @@
       background: linear-gradient(135deg, #fbf8f0 0%, #f4ebd0 100%);
       color: #2b1704;
       border: 3px solid #b45309;
-      box-shadow: 0 15px 45px rgba(0,0,0,0.8), inset 0 0 35px rgba(139, 69, 19, 0.15);
+      box-shadow: 0 15px 45px rgba(0,0,0,0.6), inset 0 0 35px rgba(139, 69, 19, 0.15);
       transform-origin: left center;
-      transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.8s;
+      transition: transform 0.55s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.45s ease;
       backface-visibility: hidden;
+    }
+
+    .book-page.flip-next {
+      transform: rotateY(-75deg) scale(0.96);
+      opacity: 0.2;
+    }
+
+    .book-page.flip-prev {
+      transform: rotateY(75deg) scale(0.96);
+      opacity: 0.2;
     }
 
     /* Botones de Lujo */
@@ -130,12 +162,12 @@
     .album-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
     .album-btn-ghost {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(251, 191, 36, 0.3);
-      color: #fde68a;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--text-main);
       transition: all 0.2s ease;
     }
-    .album-btn-ghost:hover { background: rgba(251, 191, 36, 0.14); border-color: rgba(251, 191, 36, 0.65); }
+    .album-btn-ghost:hover { background: rgba(251, 191, 36, 0.22); border-color: rgba(251, 191, 36, 0.75); }
 
     .filter-pill.active {
       background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
@@ -151,13 +183,20 @@
       bottom: 24px;
       left: 50%;
       transform: translate(-50%, 140%);
-      z-index: 120;
+      z-index: 150;
       background: #1a0f2e;
+      color: #fef3c7;
       border: 2px solid #fbbf24;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 25px rgba(251, 191, 36, 0.35);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 25px rgba(251, 191, 36, 0.35);
       transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     }
     .album-toast.show { transform: translate(-50%, 0); }
+
+    .themed-nav { background: var(--nav-bg); }
+    .themed-hero { background: var(--hero-bg); }
+    .themed-quote { background: var(--quote-bg); }
+    .themed-input { background: var(--input-bg); color: var(--text-main); }
+    .themed-modal { background: var(--modal-bg); color: var(--text-main); }
   </style>
 </head>
 <body class="relative pb-24">
@@ -165,77 +204,119 @@
   <!-- Partículas de polvo de oro -->
   <canvas id="bgDustCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
+  <!-- PANTALLA DE BLOQUEO PRIVADO (SOLO USTEDES DOS TIENEN ACCESO) -->
+  <div id="privateVaultLock" class="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-[#090414]/95 backdrop-blur-2xl transition-opacity duration-500">
+    <div class="postcard-card max-w-md w-full rounded-3xl p-6 sm:p-8 text-center border-2 border-amber-400/50 shadow-2xl">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center text-3xl shadow-lg mb-4">
+        🔐
+      </div>
+      <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold block mb-1">Álbum Privado & Encriptado</span>
+      <h2 class="text-xl sm:text-2xl font-serif-title font-bold mb-2">Solo Nosotros Dos</h2>
+      <p class="text-xs opacity-80 mb-5 leading-relaxed">
+        Ingresa nuestra clave secreta para desbloquear el álbum y ver nuestras fotos y cartas en tiempo real.
+      </p>
+
+      <form onsubmit="unlockPrivateAlbum(event)" class="space-y-3">
+        <input type="password" id="vaultPinInput" required placeholder="Ingresa nuestra clave secreta..."
+          class="w-full themed-input border-2 border-amber-400/50 rounded-xl px-4 py-3 text-center text-sm font-bold tracking-widest focus:outline-none focus:border-amber-400">
+        <button type="submit" class="album-btn w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider shadow-lg">
+          ✨ Desbloquear Nuestro Álbum
+        </button>
+      </form>
+      <p id="vaultHintText" class="text-[11px] text-amber-400/80 mt-4 italic">
+        💡 Clave inicial por defecto: <strong>Amor</strong> (Puedes personalizarla adentro en "☁️ Nube en Tiempo Real").
+      </p>
+    </div>
+  </div>
+
   <!-- TOAST DE NOTIFICACIÓN -->
   <div id="albumToast" class="album-toast px-5 py-3 rounded-2xl flex items-center gap-3 pointer-events-none">
     <span id="toastEmoji" class="text-xl">✨</span>
-    <span id="toastMessage" class="text-xs sm:text-sm font-medium text-amber-100">Acción realizada con éxito</span>
+    <span id="toastMessage" class="text-xs sm:text-sm font-medium">Acción realizada con éxito</span>
   </div>
 
   <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-5">
 
     <!-- BARRA SUPERIOR DEL ÁLBUM -->
-    <nav class="flex flex-wrap items-center justify-between gap-3 py-3 px-4 sm:px-6 rounded-2xl bg-black/45 backdrop-blur-md border border-amber-500/20 mb-6">
+    <nav class="themed-nav flex flex-wrap items-center justify-between gap-3 py-3 px-4 sm:px-6 rounded-2xl backdrop-blur-md border border-amber-500/30 mb-6 shadow-lg">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-xl shadow-lg">
           📖
         </div>
         <div>
-          <span class="text-[10px] uppercase tracking-widest text-amber-300/90 font-semibold block">GitHub Pages // Colección Privada</span>
-          <h1 class="text-sm sm:text-base font-royal text-white tracking-wide">EL ÁLBUM DE NUESTROS MUNDOS</h1>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] uppercase tracking-widest text-amber-500 font-bold block">Colección Privada</span>
+            <span id="liveSyncBadge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> En Vivo
+            </span>
+          </div>
+          <h1 class="text-sm sm:text-base font-royal tracking-wide">EL ÁLBUM DE NUESTROS MUNDOS</h1>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Selector de Vista: Mosaico Bento o Modo Libro de Páginas -->
-        <div class="bg-black/50 p-1 rounded-xl border border-amber-500/30 flex items-center gap-1">
+      <div class="flex flex-wrap items-center gap-2">
+        <!-- Selector de Vista: Mosaico Bento o Modo Libro Antiguo -->
+        <div class="bg-black/20 p-1 rounded-xl border border-amber-500/30 flex items-center gap-1">
           <button onclick="setViewMode('mosaic')" id="viewMosaicBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow">
             🍱 Mosaico
           </button>
-          <button onclick="setViewMode('book')" id="viewBookBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-200 hover:text-white">
+          <button onclick="setViewMode('book')" id="viewBookBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold opacity-80 hover:opacity-100">
             📖 Libro Antiguo
           </button>
         </div>
 
-        <!-- Botón para Abrir el Creador de Postales / Fotos -->
+        <!-- Botón de Cambio de Tema: Modo Oscuro / Modo Claro -->
+        <button onclick="toggleColorTheme()" id="themeToggleBtn" class="album-btn-ghost px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow" title="Cambiar entre Modo Claro y Modo Oscuro">
+          <span id="themeIcon">☀️</span>
+          <span id="themeText" class="hidden sm:inline">Modo Claro</span>
+        </button>
+
+        <!-- Botón para Abrir el Creador de Postales / Fotos / Notas -->
         <button onclick="openCreatorStudio()" class="album-btn px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-lg">
           <span>➕</span>
-          <span class="font-bold">Agregar Recuerdo / Foto</span>
+          <span class="font-bold">Agregar Foto / Nota</span>
+        </button>
+
+        <!-- Botón de Sala en Tiempo Real y Privacidad -->
+        <button onclick="openCloudSyncModal()" class="album-btn-ghost border-emerald-500/50 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg">
+          <span>☁️</span>
+          <span>Nube en Vivo</span>
         </button>
 
         <!-- Botón de Música de Galería -->
-        <button id="ambientMusicBtn" class="album-btn-ghost px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2" onclick="toggleGalleryMusic()">
+        <button id="ambientMusicBtn" class="album-btn-ghost px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5" onclick="toggleGalleryMusic()">
           <span id="musicIcon">🎹</span>
-          <span id="musicText">Música: OFF</span>
+          <span id="musicText" class="hidden md:inline">Música</span>
         </button>
       </div>
     </nav>
 
     <!-- HERO DE BIENVENIDA -->
-    <header class="relative rounded-3xl p-6 sm:p-8 mb-8 overflow-hidden border border-amber-400/30 bg-gradient-to-r from-[#1d1036]/95 via-[#281340]/90 to-[#1a0d2e]/95 shadow-2xl">
+    <header class="themed-hero relative rounded-3xl p-6 sm:p-8 mb-8 overflow-hidden border border-amber-400/40 shadow-2xl">
       <div class="absolute -right-16 -top-16 w-64 h-64 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-pink-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
       <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="max-w-2xl text-center md:text-left">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-400/40 text-amber-300 text-xs font-medium mb-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-500 text-xs font-bold mb-3">
             <span>👑</span>
             <span>Dedicado a mi güerita hermosa de ojitos café claros</span>
           </div>
-          <h2 class="text-2xl sm:text-4xl font-serif-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-200 to-amber-300 leading-tight">
+          <h2 class="text-2xl sm:text-4xl font-serif-title font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 leading-tight">
             Cada postal y fotografía guarda un universo construido para ti
           </h2>
-          <p class="text-xs sm:text-sm text-purple-100/85 mt-3 leading-relaxed font-light">
-            Aquí están todas nuestras experiencias interactivas y recuerdos fotográficos. Puedes subir tus propias fotos con bordes de estampilla antigua o estilo Polaroid directamente desde el botón superior, o cambiar al "Modo Libro Antiguo" para pasar las páginas como un diario real.
+          <p class="text-xs sm:text-sm opacity-85 mt-3 leading-relaxed font-normal">
+            Aquí están nuestras experiencias interactivas, cartas y recuerdos fotográficos sincronizados en tiempo real. Puedes alternar entre el <strong>Modo Oscuro Nocturno</strong> y el <strong>Modo Claro Pergamino</strong>, subir fotos con borde de estampilla o pasar las páginas en el <strong>Modo Libro Antiguo</strong>.
           </p>
         </div>
 
         <!-- Medallón Pixel Art en Vivo -->
-        <div class="shrink-0 flex flex-col items-center bg-black/40 p-3.5 rounded-2xl border border-amber-400/40 shadow-xl">
+        <div class="shrink-0 flex flex-col items-center bg-black/30 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl">
           <div class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-amber-500/30 to-purple-950 shadow-inner">
             <canvas id="heroPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
           </div>
-          <span class="font-pixel text-[8px] text-amber-300 mt-2 tracking-wider">★ MI NIÑA LINDA ★</span>
-          <span class="text-[11px] text-rose-200/90 italic font-serif-title">"Eres lo que tanto esperé"</span>
+          <span class="font-pixel text-[8px] text-amber-400 mt-2 tracking-wider">★ MI NIÑA LINDA ★</span>
+          <span class="text-[11px] text-rose-300 italic font-serif-title">"Eres lo que tanto esperé"</span>
         </div>
       </div>
     </header>
@@ -248,19 +329,19 @@
           <button onclick="filterAlbum('all')" id="filter-all" class="filter-pill active px-4 py-1.5 rounded-full text-xs border border-amber-400/30 transition">
             ✨ Todas las Postales
           </button>
-          <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
+          <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
             👑 Favoritas Destacadas
           </button>
-          <button onclick="filterAlbum('photo')" id="filter-photo" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
-            📸 Fotos Estampilla / Antiguas
+          <button onclick="filterAlbum('photo')" id="filter-photo" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
+            📸 Fotos Estampilla / Notas
           </button>
-          <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs bg-white/5 text-amber-100 border border-white/10 hover:border-amber-400/40 transition">
+          <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
             👾 Mundos Interactivos
           </button>
         </div>
 
-        <div class="flex items-center gap-2 text-xs text-amber-300/80">
-          <span>💡 Sube fotos o crea notas interactivas cuando gustes</span>
+        <div class="flex items-center gap-2 text-xs opacity-80">
+          <span>🔒 Sincronización privada activa entre nosotros dos</span>
         </div>
       </div>
 
@@ -270,7 +351,7 @@
       </section>
     </div>
 
-    <!-- VISTA 2: MODO LIBRO ANTIGUO (PASAR PÁGINAS) -->
+    <!-- VISTA 2: MODO LIBRO ANTIGUO (PASAR PÁGINAS CON ANIMACIÓN 3D) -->
     <div id="bookViewContainer" class="hidden">
       <div class="book-container relative py-6">
         <div id="bookPageContent" class="book-page rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[500px] flex flex-col justify-between relative">
@@ -282,7 +363,7 @@
           <button onclick="prevBookPage()" class="album-btn px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2">
             <span>◀ Anterior Página</span>
           </button>
-          <span id="bookPageIndicator" class="font-vt text-xl text-amber-300">Página 1 de 1</span>
+          <span id="bookPageIndicator" class="font-vt text-2xl font-bold text-amber-500">Página 1 de 1</span>
           <button onclick="nextBookPage()" class="album-btn px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2">
             <span>Siguiente Página ▶</span>
           </button>
@@ -292,64 +373,142 @@
 
   </div>
 
-  <!-- MODAL: ESTUDIO CREADOR DE POSTALES Y FOTOS -->
-  <div id="creatorModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-    <div class="postcard-card max-w-xl w-full rounded-3xl p-6 sm:p-7 border-2 border-amber-400/50 bg-[#140b29] max-h-[90vh] overflow-y-auto">
+  <!-- MODAL: ESTUDIO CREADOR DE POSTALES, FOTOS Y NOTAS EN TIEMPO REAL -->
+  <div id="creatorModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="postcard-card themed-modal max-w-xl w-full rounded-3xl p-6 sm:p-7 border-2 border-amber-400/60 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-amber-500/25 pb-3 mb-4">
         <div>
-          <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold">Estudio Creativo</span>
-          <h3 class="text-lg font-serif-title font-bold text-white">Agregar Nueva Postal o Foto Estampilla</h3>
+          <span class="text-[10px] uppercase tracking-widest text-amber-500 font-bold">Estudio en Tiempo Real</span>
+          <h3 class="text-lg font-serif-title font-bold">Agregar Foto Estampilla o Nota de Amor</h3>
         </div>
-        <button onclick="closeCreatorStudio()" class="text-amber-300 hover:text-white text-sm px-2.5 py-1 rounded-lg bg-white/5">✕</button>
+        <button onclick="closeCreatorStudio()" class="text-amber-500 hover:opacity-75 text-sm px-2.5 py-1 rounded-lg bg-amber-500/10">✕</button>
       </div>
 
       <form id="creatorForm" onsubmit="handleCreatePostcard(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-amber-300 mb-1">Título del Recuerdo:</label>
+          <label class="block text-xs font-semibold text-amber-500 mb-1">Título del Recuerdo o Carta:</label>
           <input type="text" id="inputTitle" required placeholder="Ej. Nuestra Tarde Inolvidable"
-            class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+            class="w-full themed-input border border-amber-500/40 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-amber-400">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-amber-300 mb-1">Subtítulo o Fecha:</label>
-            <input type="text" id="inputSubtitle" placeholder="Ej. 14 de Febrero // Lluvia y Café"
-              class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+            <label class="block text-xs font-semibold text-amber-500 mb-1">Subtítulo o Fecha:</label>
+            <input type="text" id="inputSubtitle" placeholder="Ej. Nuestro Momento Especial"
+              class="w-full themed-input border border-amber-500/40 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-amber-400">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-amber-300 mb-1">Estilo de Marco:</label>
-            <select id="inputFrameStyle" class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
-              <option value="stamp">🎴 Estilo Sello Postal / Estampilla Antigua</option>
-              <option value="vintage">📸 Estilo Foto Antigua / Polaroid Sepia</option>
-              <option value="mosaic">✨ Tarjeta Mosaico Interactiva</option>
+            <label class="block text-xs font-semibold text-amber-500 mb-1">Estilo de Marco:</label>
+            <select id="inputFrameStyle" class="w-full themed-input border border-amber-500/40 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-amber-400">
+              <option value="stamp">🎴 Sello Postal / Estampilla Antigua</option>
+              <option value="vintage">📸 Foto Antigua / Polaroid Sepia</option>
+              <option value="mosaic">📜 Nota / Pergamino Romántico</option>
             </select>
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-amber-300 mb-1">Emoji o Insignia:</label>
-            <input type="text" id="inputEmoji" value="📸" placeholder="Ej. 📸, 🌷, ☕"
-              class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+            <label class="block text-xs font-semibold text-amber-500 mb-1">Emoji o Insignia:</label>
+            <input type="text" id="inputEmoji" value="📸" placeholder="Ej. 📸, 🌷, 💌"
+              class="w-full themed-input border border-amber-500/40 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-amber-400">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-amber-300 mb-1">Subir Fotografía:</label>
-            <input type="file" id="inputImageFile" accept="image/*" required
-              class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl px-3 py-1.5 text-[11px] text-purple-200 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-black hover:file:bg-amber-400">
+            <label class="block text-xs font-semibold text-amber-500 mb-1">Subir Fotografía (Opcional):</label>
+            <input type="file" id="inputImageFile" accept="image/*"
+              class="w-full themed-input border border-amber-500/40 rounded-xl px-3 py-1.5 text-[11px] file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-black hover:file:bg-amber-400">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-amber-300 mb-1">Mensaje o Dedicatoria Romántica:</label>
-          <textarea id="inputQuote" rows="3" required placeholder="Escribe aquí tu dedicatoria o recuerdo especial..."
-            class="w-full bg-[#0b0617] border border-amber-400/30 rounded-xl p-3 text-xs text-amber-50 focus:outline-none focus:border-amber-400"></textarea>
+          <label class="block text-xs font-semibold text-amber-500 mb-1">Mensaje o Dedicatoria Interactiva:</label>
+          <textarea id="inputQuote" rows="3" required placeholder="Escribe aquí tu dedicatoria, nota o pensamiento para que aparezca al instante..."
+            class="w-full themed-input border border-amber-500/40 rounded-xl p-3 text-xs focus:outline-none focus:border-amber-400"></textarea>
         </div>
 
         <div class="pt-2 border-t border-amber-500/25 flex justify-end gap-3">
           <button type="button" onclick="closeCreatorStudio()" class="album-btn-ghost px-4 py-2 rounded-xl text-xs font-semibold">Cancelar</button>
-          <button type="submit" class="album-btn px-6 py-2 rounded-xl text-xs font-bold">✨ Guardar y Publicar en el Álbum</button>
+          <button type="submit" id="submitMemoryBtn" class="album-btn px-6 py-2 rounded-xl text-xs font-bold">✨ Guardar y Publicar en Tiempo Real</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIGURACIÓN DE PRIVACIDAD Y NUBE EN TIEMPO REAL -->
+  <div id="cloudSyncModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="postcard-card themed-modal max-w-xl w-full rounded-3xl p-6 sm:p-7 border-2 border-emerald-500/50 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-emerald-500/25 pb-3 mb-4">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">☁️</span>
+          <div>
+            <span class="text-[10px] uppercase tracking-widest text-emerald-500 font-bold">Sincronización en Tiempo Real & Privacidad</span>
+            <h3 class="text-base sm:text-lg font-serif-title font-bold">Bóveda Exclusiva para Ustedes Dos</h3>
+          </div>
+        </div>
+        <button onclick="closeCloudSyncModal()" class="text-amber-500 hover:opacity-75 text-sm px-2.5 py-1 rounded-lg bg-amber-500/10">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs leading-relaxed">
+        <div class="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30">
+          <strong>🔒 ¿Cómo funciona la privacidad y el tiempo real?</strong><br>
+          1. <strong>Bóveda con PIN Secreto:</strong> Nadie que entre al link puede ver el álbum a menos que escriba la clave secreta que elijas aquí abajo.<br>
+          2. <strong>Sincronización Instantánea:</strong> Al subir una foto o escribir una nota, se sincroniza en tiempo real para que tu novia la vea al instante desde su celular sin que tengas que volver a subir el archivo a mano.
+        </div>
+
+        <!-- CONFIGURACIÓN DE CLAVE SECRETA Y SALA PRIVADA -->
+        <div class="p-4 rounded-2xl bg-black/20 border border-amber-500/30 space-y-3">
+          <span class="font-bold text-amber-500 text-sm block">1. Clave Secreta de Acceso (Solo ustedes dos la saben)</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] opacity-80 mb-1">PIN / Contraseña para desbloquear al entrar:</label>
+              <input type="text" id="secretPinConfigInput" value="amor" placeholder="Ej. 1402 o nuestra-clave"
+                class="w-full themed-input border border-amber-500/40 rounded-xl px-3 py-2 text-xs font-bold">
+            </div>
+            <div>
+              <label class="block text-[11px] opacity-80 mb-1">Código de Sala Privada Compartida:</label>
+              <input type="text" id="roomCodeConfigInput" value="jonverto-y-su-nina-linda" placeholder="Código único de sala"
+                class="w-full themed-input border border-amber-500/40 rounded-xl px-3 py-2 text-xs font-bold">
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="savePrivacySettings()" class="album-btn px-4 py-2 rounded-xl text-xs font-bold">
+              🔐 Guardar Clave y Sala
+            </button>
+            <button onclick="lockAlbumNow()" class="album-btn-ghost px-4 py-2 rounded-xl text-xs font-semibold">
+              🔒 Bloquear Pantalla Ahora
+            </button>
+          </div>
+        </div>
+
+        <!-- AUTO-GUARDADO DIRECTO A TU REPOSITORIO GITHUB (PARA GITHUB PAGES EXTERNO) -->
+        <div class="p-4 rounded-2xl bg-black/20 border border-emerald-500/30 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-emerald-500 text-sm">2. Conexión Directa a tu GitHub (`Jonverto/Album-de-nosotros`)</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">Auto-Sync</span>
+          </div>
+          <p class="opacity-80 text-[11px]">
+            Si abres la página desde `jonverto.github.io`, pega una sola vez tu Token de GitHub aquí. Tus fotos se encriptarán con tu clave secreta y se guardarán solitas en tiempo real cada vez que agregues o edites una tarjeta:
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input type="text" id="ghOwnerInput" value="Jonverto" placeholder="Usuario GitHub"
+              class="themed-input border border-amber-500/40 rounded-xl px-3 py-2 text-xs">
+            <input type="text" id="ghRepoInput" value="Album-de-nosotros" placeholder="Repositorio"
+              class="themed-input border border-amber-500/40 rounded-xl px-3 py-2 text-xs">
+          </div>
+          <input type="password" id="ghTokenInput" placeholder="GitHub Token (ghp_...) para auto-guardado instantáneo"
+            class="w-full themed-input border border-amber-500/40 rounded-xl px-3 py-2 text-xs">
+          <div class="flex flex-wrap gap-2">
+            <button onclick="syncDirectlyToGitHub(true)" class="album-btn flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+              <span>🚀</span>
+              <span>Activar Auto-Guardado en GitHub</span>
+            </button>
+            <button onclick="exportPermanentHTMLWithPhotos()" class="album-btn-ghost py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5" title="Descargar archivo index.html con todo grabado">
+              <span>📥</span>
+              <span>Descargar `index.html`</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -372,9 +531,93 @@
     </div>
   </div>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    window.firestoreReady = false;
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'album-nuestros-mundos';
+
+    async function initRealtimeCloud() {
+      try {
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+          const firebaseConfig = JSON.parse(__firebase_config);
+          const app = initializeApp(firebaseConfig);
+          auth = getAuth(app);
+          db = getFirestore(app);
+
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+
+          onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+              window.firestoreReady = true;
+              subscribeToRealtimeMemories();
+            }
+          });
+        }
+      } catch (e) {
+        console.warn("Usando sincronización por GitHub / Local:", e);
+      }
+    }
+
+    function subscribeToRealtimeMemories() {
+      if (!currentUser || !db) return;
+      const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'shared_album_memories');
+      onSnapshot(colRef, (snapshot) => {
+        const currentRoom = window.getSharedRoomCode ? window.getSharedRoomCode() : 'jonverto-y-su-nina-linda';
+        const cloudItems = [];
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          if (!data.roomCode || data.roomCode === currentRoom) {
+            cloudItems.push(data);
+          }
+        });
+        if (window.applyRealtimeCloudMemories) {
+          window.applyRealtimeCloudMemories(cloudItems);
+        }
+      }, (err) => {
+        console.warn("Error en listener de tiempo real:", err);
+      });
+    }
+
+    window.saveCardToRealtimeCloud = async function(card) {
+      if (!currentUser || !db) return false;
+      try {
+        const roomCode = window.getSharedRoomCode ? window.getSharedRoomCode() : 'jonverto-y-su-nina-linda';
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'shared_album_memories', card.id);
+        await setDoc(docRef, { ...card, roomCode });
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    window.deleteCardFromRealtimeCloud = async function(cardId) {
+      if (!currentUser || !db) return false;
+      try {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'shared_album_memories', cardId);
+        await deleteDoc(docRef);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    initRealtimeCloud();
+  </script>
+
   <script>
     /* =====================================================================
-       COLECCIÓN DE POSTALES (SIN TARJETAS DE PROXIMAS IDEAS)
+       COLECCIÓN DE POSTALES (SIN TARJETAS DE PRÓXIMAS IDEAS)
        ===================================================================== */
     const defaultPostcards = [
       {
@@ -476,11 +719,595 @@
       }
     ];
 
+    /* PERMANENT_SHARED_MEMORIES_START */
+    const embeddedSharedMemories = [];
+    let embeddedSecretPin = "amor";
+    let embeddedRoomCode = "jonverto-y-su-nina-linda";
+    /* PERMANENT_SHARED_MEMORIES_END */
+
     let userPostcards = JSON.parse(localStorage.getItem('user_custom_postcards') || '[]');
-    let allPostcards = [...defaultPostcards, ...userPostcards];
+    let cloudRealtimePostcards = [];
+    let allPostcards = [];
     let currentFilter = 'all';
     let currentViewMode = 'mosaic';
     let currentBookPageIndex = 0;
+
+    /* =====================================================================
+       MODO OSCURO / MODO CLARO (ADAPTATIVO)
+       ===================================================================== */
+    let isLightMode = localStorage.getItem('album_theme_mode') === 'light';
+
+    function applyThemeUI() {
+      const icon = document.getElementById('themeIcon');
+      const text = document.getElementById('themeText');
+      if (isLightMode) {
+        document.body.classList.add('light-mode');
+        if (icon) icon.textContent = '🌙';
+        if (text) text.textContent = 'Modo Oscuro';
+      } else {
+        document.body.classList.remove('light-mode');
+        if (icon) icon.textContent = '☀️';
+        if (text) text.textContent = 'Modo Claro';
+      }
+    }
+
+    function toggleColorTheme() {
+      isLightMode = !isLightMode;
+      localStorage.setItem('album_theme_mode', isLightMode ? 'light' : 'dark');
+      applyThemeUI();
+      showAlbumToast(
+        isLightMode ? 'Modo Claro Pergamino activado ☀️' : 'Modo Oscuro Nocturno activado 🌙',
+        isLightMode ? '☀️' : '🌙'
+      );
+    }
+
+    /* =====================================================================
+       BÓVEDA PRIVADA CON PIN (SOLO USTEDES DOS TIENEN ACCESO)
+       ===================================================================== */
+    function getActiveSecretPin() {
+      return localStorage.getItem('album_secret_pin') || embeddedSecretPin || 'amor';
+    }
+
+    window.getSharedRoomCode = function() {
+      return localStorage.getItem('album_room_code') || embeddedRoomCode || 'jonverto-y-su-nina-linda';
+    };
+
+    function checkVaultSession() {
+      const unlocked = sessionStorage.getItem('album_vault_unlocked') === 'true';
+      const lockModal = document.getElementById('privateVaultLock');
+      if (unlocked && lockModal) {
+        lockModal.classList.add('hidden');
+      }
+    }
+
+    function unlockPrivateAlbum(e) {
+      e.preventDefault();
+      const input = document.getElementById('vaultPinInput').value.trim().toLowerCase();
+      const validPin = getActiveSecretPin().trim().toLowerCase();
+
+      if (input === validPin) {
+        sessionStorage.setItem('album_vault_unlocked', 'true');
+        const lockModal = document.getElementById('privateVaultLock');
+        lockModal.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => lockModal.classList.add('hidden'), 450);
+        showAlbumToast('¡Bienvenida a nuestro álbum privado! 💖', '🔓');
+        fetchSharedMemoriesFromRepo();
+      } else {
+        showAlbumToast('Clave incorrecta. Solo nosotros dos sabemos la clave 🔒', '❌');
+      }
+    }
+
+    function lockAlbumNow() {
+      sessionStorage.removeItem('album_vault_unlocked');
+      const lockModal = document.getElementById('privateVaultLock');
+      lockModal.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+      document.getElementById('vaultPinInput').value = '';
+      closeCloudSyncModal();
+    }
+
+    function savePrivacySettings() {
+      const newPin = document.getElementById('secretPinConfigInput').value.trim() || 'amor';
+      const newRoom = document.getElementById('roomCodeConfigInput').value.trim() || 'jonverto-y-su-nina-linda';
+      localStorage.setItem('album_secret_pin', newPin);
+      localStorage.setItem('album_room_code', newRoom);
+      embeddedSecretPin = newPin;
+      embeddedRoomCode = newRoom;
+      showAlbumToast(`Clave secreta actualizada a "${newPin}" 🔐`, '✅');
+    }
+
+    /* =====================================================================
+       CONSTRUCCIÓN Y SINCRONIZACIÓN EN TIEMPO REAL DE POSTALES
+       ===================================================================== */
+    function rebuildAllPostcards() {
+      const map = new Map();
+      defaultPostcards.forEach(c => map.set(c.id, c));
+      embeddedSharedMemories.forEach(c => map.set(c.id, c));
+      userPostcards.forEach(c => map.set(c.id, c));
+      cloudRealtimePostcards.forEach(c => map.set(c.id, c));
+      allPostcards = Array.from(map.values());
+    }
+    rebuildAllPostcards();
+
+    window.applyRealtimeCloudMemories = function(cloudItems) {
+      cloudRealtimePostcards = cloudItems.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+      rebuildAllPostcards();
+      if (currentViewMode === 'mosaic') {
+        renderAlbumGrid();
+      } else {
+        renderBookPage();
+      }
+    };
+
+    // Polling periódico desde GitHub Pages (recuerdos.json) cada 15 segundos para ver cambios en vivo
+    async function fetchSharedMemoriesFromRepo() {
+      try {
+        const res = await fetch('recuerdos.json?t=' + Date.now());
+        if (res.ok) {
+          const payload = await res.json();
+          const cards = Array.isArray(payload) ? payload : (payload.cards || []);
+          if (payload.secretPin) {
+            localStorage.setItem('album_secret_pin', payload.secretPin);
+          }
+          if (cards.length > 0) {
+            const map = new Map();
+            userPostcards.forEach(c => map.set(c.id, c));
+            cards.forEach(c => map.set(c.id, c));
+            userPostcards = Array.from(map.values());
+            localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
+            rebuildAllPostcards();
+            renderAlbumGrid();
+            if (currentViewMode === 'book') renderBookPage();
+          }
+        }
+      } catch (e) {}
+    }
+
+    setInterval(fetchSharedMemoriesFromRepo, 15000);
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      const mosaicCont = document.getElementById('mosaicViewContainer');
+      const bookCont = document.getElementById('bookViewContainer');
+      const mosaicBtn = document.getElementById('viewMosaicBtn');
+      const bookBtn = document.getElementById('viewBookBtn');
+
+      if (mode === 'mosaic') {
+        mosaicCont.classList.remove('hidden');
+        bookCont.classList.add('hidden');
+        mosaicBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow";
+        bookBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold opacity-80 hover:opacity-100";
+        renderAlbumGrid();
+      } else {
+        mosaicCont.classList.add('hidden');
+        bookCont.classList.remove('hidden');
+        bookBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow";
+        mosaicBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold opacity-80 hover:opacity-100";
+        renderBookPage();
+      }
+    }
+
+    function renderAlbumGrid() {
+      const grid = document.getElementById('mosaicGrid');
+      grid.innerHTML = '';
+
+      const filtered = allPostcards.filter(card => {
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'photo') return card.isCustom || card.frameStyle === 'vintage' || card.frameStyle === 'stamp';
+        return (card.category || []).includes(currentFilter);
+      });
+
+      filtered.forEach((card) => {
+        const cardEl = document.createElement('article');
+        cardEl.className = `postcard-card rounded-3xl flex flex-col justify-between ${card.mosaicSpan || 'md:col-span-4'}`;
+
+        let visualContent = '';
+        if (card.frameStyle === 'vintage' && card.customImage) {
+          visualContent = `
+            <div class="p-4 bg-black/25 flex items-center justify-center">
+              <div class="vintage-photo-frame max-w-[260px] w-full cursor-pointer" onclick="openPostcardExperience('${card.id}')">
+                <img src="${card.customImage}" class="w-full h-44 object-cover vintage-sepia block" alt="Recuerdo">
+                <p class="font-handwriting text-stone-800 text-lg text-center mt-2">${card.title}</p>
+              </div>
+            </div>
+          `;
+        } else if (card.frameStyle === 'stamp') {
+          visualContent = `
+            <div class="p-4 bg-black/25 flex items-center justify-center">
+              <div class="postal-stamp-frame max-w-[250px] w-full cursor-pointer" onclick="openPostcardExperience('${card.id}')">
+                ${card.customImage ?
+                  `<img src="${card.customImage}" class="w-full h-44 object-cover block" alt="Estampilla">` :
+                  `<div class="w-full h-40 bg-amber-100 flex flex-col items-center justify-center p-4 text-center border border-amber-700/30">
+                     <span class="text-4xl mb-2">${card.emoji}</span>
+                     <span class="font-serif-title font-bold text-amber-950 text-sm">${card.title}</span>
+                   </div>`
+                }
+                <div class="text-[9px] font-pixel text-amber-950 text-center mt-2">CORREO DE AMOR · ${card.subtitle}</div>
+              </div>
+            </div>
+          `;
+        } else {
+          visualContent = `
+            <div class="relative w-full ${card.canvasHeight || 'h-48'} bg-[#090414] overflow-hidden cursor-pointer group" onclick="openPostcardExperience('${card.id}')">
+              ${card.customImage ? 
+                `<img src="${card.customImage}" class="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-700" alt="Postal">` :
+                `<div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-purple-950 to-[#120826] p-4 text-center">
+                   <span class="text-4xl mb-2">${card.emoji}</span>
+                   <span class="font-serif-title font-bold text-white text-base">${card.title}</span>
+                 </div>`
+              }
+              <div class="absolute inset-0 bg-gradient-to-t from-[#120924] via-transparent to-black/25 opacity-90 group-hover:opacity-60 transition-opacity"></div>
+              <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                <div>
+                  <h3 class="text-base sm:text-lg font-serif-title font-bold text-white drop-shadow-md leading-snug">${card.title}</h3>
+                  <p class="text-xs text-amber-200/90 font-light drop-shadow">${card.subtitle}</p>
+                </div>
+                ${!card.isCustom ? `<span class="shrink-0 w-9 h-9 rounded-full bg-amber-400 text-black flex items-center justify-center text-sm font-bold shadow-lg group-hover:scale-110 transition-transform">▶</span>` : ''}
+              </div>
+            </div>
+          `;
+        }
+
+        cardEl.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between px-4 py-3 border-b border-amber-500/20 bg-black/20">
+              <div class="flex items-center gap-2">
+                <span class="text-lg">${card.emoji}</span>
+                <span class="font-pixel text-[8px] text-amber-500 tracking-wider">${card.stampCode}</span>
+              </div>
+              <div class="px-2.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/20 text-amber-500 border border-amber-500/30">
+                ${card.dateBadge}
+              </div>
+            </div>
+
+            ${visualContent}
+
+            <div class="p-4 sm:p-5">
+              <p class="themed-quote font-vt text-lg sm:text-xl leading-snug italic p-3 rounded-xl border-l-2 border-amber-400">
+                ${card.quote}
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-3">
+                ${(card.tags || ['Recuerdo', 'Especial']).map(t => `<span class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30">${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="px-4 sm:px-5 pb-4 pt-2 border-t border-amber-500/20 flex items-center justify-between gap-2">
+            ${!card.isCustom ? `
+              <button onclick="openPostcardExperience('${card.id}')" class="album-btn flex-1 py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                <span>✨</span><span>Abrir Experiencia</span>
+              </button>
+              <a href="${card.defaultUrl}" target="_blank" class="album-btn-ghost py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1">
+                <span>🔗</span><span>Link</span>
+              </a>
+            ` : `
+              <span class="text-[10px] opacity-75">📸 Sincronizado en Vivo</span>
+              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-xs text-rose-400 hover:text-rose-300 flex items-center justify-center gap-1 ml-auto">
+                <span>🗑️</span><span>Borrar</span>
+              </button>
+            `}
+          </div>
+        `;
+
+        grid.appendChild(cardEl);
+      });
+    }
+
+    /* =====================================================================
+       RENDERIZADO DE MODO LIBRO ANTIGUO CON ANIMACIÓN 3D AL PASAR HOJA
+       ===================================================================== */
+    function renderBookPage(direction = null) {
+      const container = document.getElementById('bookPageContent');
+      const indicator = document.getElementById('bookPageIndicator');
+      const card = allPostcards[currentBookPageIndex] || allPostcards[0];
+
+      if (direction) {
+        container.classList.add(direction === 'next' ? 'flip-next' : 'flip-prev');
+        setTimeout(() => {
+          updateBookDOM(container, indicator, card);
+          container.classList.remove('flip-next', 'flip-prev');
+        }, 280);
+      } else {
+        updateBookDOM(container, indicator, card);
+      }
+    }
+
+    function updateBookDOM(container, indicator, card) {
+      indicator.textContent = `Página ${currentBookPageIndex + 1} de ${allPostcards.length}`;
+
+      let imgHtml = '';
+      if (card.customImage) {
+        imgHtml = `
+          <div class="my-4 flex justify-center">
+            <div class="postal-stamp-frame max-w-xs">
+              <img src="${card.customImage}" class="max-h-60 object-cover rounded shadow-md block mx-auto" alt="Foto">
+              <div class="text-[9px] font-pixel text-amber-950 text-center mt-2">ARCHIVO DE AMOR · ${card.subtitle}</div>
+            </div>
+          </div>`;
+      }
+
+      container.innerHTML = `
+        <div>
+          <div class="flex items-center justify-between border-b-2 border-amber-800/40 pb-3 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">${card.emoji}</span>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-amber-900 block">${card.stampCode}</span>
+                <h3 class="text-lg sm:text-xl font-serif-title font-bold text-amber-950">${card.title}</h3>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-amber-900 text-amber-100 text-xs font-semibold">${card.dateBadge}</span>
+          </div>
+
+          ${imgHtml}
+
+          <p class="font-serif-title text-base sm:text-lg text-amber-950 leading-relaxed italic my-4 bg-amber-100/70 p-4 rounded-2xl border-l-4 border-amber-600">
+            ${card.quote}
+          </p>
+
+          <p class="text-xs sm:text-sm text-stone-700 mt-3 font-light leading-relaxed">
+            ${card.subtitle} · Guardado en el diario privado de nuestros mundos.
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t-2 border-amber-800/40 flex items-center justify-between">
+          <span class="font-handwriting text-xl text-amber-900">Para mi niña linda 📖💛</span>
+          ${!card.isCustom ? `
+            <button onclick="openPostcardExperience('${card.id}')" class="album-btn px-4 py-2 rounded-xl text-xs font-bold">
+              ✨ Abrir Teatro Interactivo
+            </button>
+          ` : `
+            <button onclick="requestDeleteCustomCard('${card.id}')" class="text-xs text-rose-700 font-bold underline">
+              🗑️ Eliminar esta página
+            </button>
+          `}
+        </div>
+      `;
+    }
+
+    function nextBookPage() {
+      if (currentBookPageIndex < allPostcards.length - 1) {
+        currentBookPageIndex++;
+        renderBookPage('next');
+      } else {
+        showAlbumToast('Has llegado al final del diario', '📖');
+      }
+    }
+
+    function prevBookPage() {
+      if (currentBookPageIndex > 0) {
+        currentBookPageIndex--;
+        renderBookPage('prev');
+      } else {
+        showAlbumToast('Estás en la primera página', '📖');
+      }
+    }
+
+    /* =====================================================================
+       ESTUDIO CREADOR DE POSTALES Y FOTOS (CON SINCRONIZACIÓN EN VIVO)
+       ===================================================================== */
+    const creatorModal = document.getElementById('creatorModal');
+    function openCreatorStudio() { creatorModal.classList.remove('hidden'); }
+    function closeCreatorStudio() { creatorModal.classList.add('hidden'); }
+
+    function compressUploadedImage(file, callback) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 820;
+          let w = img.width;
+          let h = img.height;
+          if (w > h && w > maxDim) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else if (h > maxDim) {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          callback(canvas.toDataURL('image/jpeg', 0.8));
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleCreatePostcard(e) {
+      e.preventDefault();
+      const title = document.getElementById('inputTitle').value;
+      const subtitle = document.getElementById('inputSubtitle').value || 'Recuerdo Especial';
+      const frameStyle = document.getElementById('inputFrameStyle').value;
+      const emoji = document.getElementById('inputEmoji').value || '📸';
+      const quote = document.getElementById('inputQuote').value;
+      const fileInput = document.getElementById('inputImageFile');
+
+      const saveCardData = async (imgUrl = null) => {
+        const newCard = {
+          id: 'custom_' + Date.now(),
+          createdAt: Date.now(),
+          stampCode: frameStyle === 'stamp' ? 'ESTAMPILLA · AMOR' : 'RECUERDO · ESPECIAL',
+          title: title,
+          subtitle: subtitle,
+          category: ['photo', 'featured'],
+          mosaicSpan: frameStyle === 'vintage' ? 'md:col-span-6' : 'md:col-span-4',
+          canvasHeight: 'h-48',
+          dateBadge: subtitle,
+          emoji: emoji,
+          quote: `“${quote}”`,
+          tags: ['Nuestro Recuerdo', 'En Vivo'],
+          frameStyle: frameStyle,
+          customImage: imgUrl,
+          isCustom: true
+        };
+
+        userPostcards.push(newCard);
+        localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
+        rebuildAllPostcards();
+
+        if (currentViewMode === 'mosaic') {
+          renderAlbumGrid();
+        } else {
+          renderBookPage();
+        }
+
+        closeCreatorStudio();
+        document.getElementById('creatorForm').reset();
+
+        // 1. Sincronizar en tiempo real con la nube (Firestore)
+        let syncedCloud = false;
+        if (window.saveCardToRealtimeCloud) {
+          syncedCloud = await window.saveCardToRealtimeCloud(newCard);
+        }
+
+        // 2. Si tiene Token de GitHub configurado, auto-guardar directo en el repositorio
+        const savedToken = localStorage.getItem('gh_sync_token');
+        if (savedToken) {
+          await syncDirectlyToGitHub(false);
+          showAlbumToast('¡Publicado y sincronizado en tiempo real para los dos! ☁️✨', '📸');
+        } else if (syncedCloud) {
+          showAlbumToast('¡Sincronizado en tiempo real en nuestra sala privada! ✨', '☁️');
+        } else {
+          showAlbumToast('¡Agregado! Configura "☁️ Nube en Vivo" para que se vea en otros celulares', '📸');
+        }
+      };
+
+      if (fileInput.files && fileInput.files[0]) {
+        compressUploadedImage(fileInput.files[0], (compressedDataUrl) => {
+          saveCardData(compressedDataUrl);
+        });
+      } else {
+        saveCardData(null);
+      }
+    }
+
+    async function requestDeleteCustomCard(id) {
+      userPostcards = userPostcards.filter(c => c.id !== id);
+      cloudRealtimePostcards = cloudRealtimePostcards.filter(c => c.id !== id);
+      localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
+      rebuildAllPostcards();
+
+      if (window.deleteCardFromRealtimeCloud) {
+        await window.deleteCardFromRealtimeCloud(id);
+      }
+
+      const savedToken = localStorage.getItem('gh_sync_token');
+      if (savedToken) {
+        await syncDirectlyToGitHub(false);
+      }
+
+      if (currentViewMode === 'mosaic') {
+        renderAlbumGrid();
+      } else {
+        currentBookPageIndex = Math.max(0, currentBookPageIndex - 1);
+        renderBookPage();
+      }
+      showAlbumToast('Recuerdo eliminado en tiempo real', '🗑️');
+    }
+
+    /* =====================================================================
+       PUBLICACIÓN Y AUTO-SINCRONIZACIÓN CON GITHUB Y ARCHIVO HTML
+       ===================================================================== */
+    const cloudSyncModal = document.getElementById('cloudSyncModal');
+    function openCloudSyncModal() {
+      const savedToken = localStorage.getItem('gh_sync_token');
+      if (savedToken) document.getElementById('ghTokenInput').value = savedToken;
+      document.getElementById('secretPinConfigInput').value = getActiveSecretPin();
+      document.getElementById('roomCodeConfigInput').value = window.getSharedRoomCode();
+      cloudSyncModal.classList.remove('hidden');
+    }
+    function closeCloudSyncModal() {
+      cloudSyncModal.classList.add('hidden');
+    }
+
+    function exportPermanentHTMLWithPhotos() {
+      const customCardsToEmbed = allPostcards.filter(c => c.isCustom);
+      const currentPin = getActiveSecretPin();
+      const currentRoom = window.getSharedRoomCode();
+      const currentDocHtml = document.documentElement.outerHTML;
+
+      const replacementBlock = `/* PERMANENT_SHARED_MEMORIES_START */\n    const embeddedSharedMemories = ${JSON.stringify(customCardsToEmbed, null, 2)};\n    let embeddedSecretPin = ${JSON.stringify(currentPin)};\n    let embeddedRoomCode = ${JSON.stringify(currentRoom)};\n    /* PERMANENT_SHARED_MEMORIES_END */`;
+
+      const updatedHtml = '<!DOCTYPE html>\n' + currentDocHtml.replace(
+        /\/\* PERMANENT_SHARED_MEMORIES_START \*\/[\s\S]*?\/\* PERMANENT_SHARED_MEMORIES_END \*\//,
+        replacementBlock
+      );
+
+      const blob = new Blob([updatedHtml], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+
+      showAlbumToast('¡index.html descargado con tus fotos y clave secreta!', '📥');
+    }
+
+    async function syncDirectlyToGitHub(showFeedback = true) {
+      const owner = (document.getElementById('ghOwnerInput')?.value || 'Jonverto').trim();
+      const repo = (document.getElementById('ghRepoInput')?.value || 'Album-de-nosotros').trim();
+      const token = (document.getElementById('ghTokenInput')?.value || localStorage.getItem('gh_sync_token') || '').trim();
+
+      if (!owner || !repo || !token) {
+        if (showFeedback) showAlbumToast('Ingresa tu Token de GitHub para activar el auto-guardado', '⚠️');
+        return;
+      }
+
+      localStorage.setItem('gh_sync_token', token);
+      if (showFeedback) showAlbumToast('Sincronizando en vivo con tu GitHub...', '⏳');
+
+      const customCards = allPostcards.filter(c => c.isCustom);
+      const payloadData = {
+        secretPin: getActiveSecretPin(),
+        roomCode: window.getSharedRoomCode(),
+        updatedAt: Date.now(),
+        cards: customCards
+      };
+      const jsonContent = JSON.stringify(payloadData, null, 2);
+      const base64Content = btoa(unescape(encodeURIComponent(jsonContent)));
+      const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/recuerdos.json`;
+
+      try {
+        let sha = null;
+        const getRes = await fetch(apiUrl, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (getRes.ok) {
+          const existingData = await getRes.json();
+          sha = existingData.sha;
+        }
+
+        const putRes = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: 'Sincronización en tiempo real de nuestro álbum',
+            content: base64Content,
+            ...(sha ? { sha } : {})
+          })
+        });
+
+        if (putRes.ok) {
+          if (showFeedback) {
+            showAlbumToast('¡Auto-guardado activo! Todo lo que subas se verá en tiempo real', '✅');
+            closeCloudSyncModal();
+          }
+        } else if (showFeedback) {
+          showAlbumToast('Verifica que tu Token de GitHub tenga permiso "repo"', '❌');
+        }
+      } catch (err) {
+        if (showFeedback) showAlbumToast('Error de red al conectar con GitHub', '❌');
+      }
+    }
 
     function setViewMode(mode) {
       currentViewMode = mode;
@@ -592,8 +1419,9 @@
                 <span>🔗</span><span>Link</span>
               </a>
             ` : `
-              <button onclick="deleteCustomCard('${card.id}')" class="album-btn-ghost py-2 px-4 rounded-xl text-xs text-rose-300 hover:text-rose-100 flex items-center justify-center gap-1 ml-auto">
-                <span>🗑️</span><span>Eliminar Recuerdo</span>
+              <span class="text-[10px] text-amber-300/80">📸 Recuerdo Fotográfico</span>
+              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-xs text-rose-300 hover:text-rose-100 flex items-center justify-center gap-1 ml-auto">
+                <span>🗑️</span><span>Borrar</span>
               </button>
             `}
           </div>
@@ -609,7 +1437,7 @@
     function renderBookPage() {
       const container = document.getElementById('bookPageContent');
       const indicator = document.getElementById('bookPageIndicator');
-      const card = allPostcards[currentBookPageIndex];
+      const card = allPostcards[currentBookPageIndex] || allPostcards[0];
 
       indicator.textContent = `Página ${currentBookPageIndex + 1} de ${allPostcards.length}`;
 
@@ -649,7 +1477,7 @@
               ✨ Abrir Teatro Interactivo
             </button>
           ` : `
-            <button onclick="deleteCustomCard('${card.id}')" class="text-xs text-rose-700 font-bold underline">
+            <button onclick="requestDeleteCustomCard('${card.id}')" class="text-xs text-rose-700 font-bold underline">
               🗑️ Eliminar esta página
             </button>
           `}
@@ -676,11 +1504,39 @@
     }
 
     /* =====================================================================
-       ESTUDIO CREADOR DE POSTALES Y FOTOS (ESTAMPILLA / POLAROID)
+       ESTUDIO CREADOR DE POSTALES Y FOTOS (CON COMPRESIÓN AUTOMÁTICA HD)
        ===================================================================== */
     const creatorModal = document.getElementById('creatorModal');
     function openCreatorStudio() { creatorModal.classList.remove('hidden'); }
     function closeCreatorStudio() { creatorModal.classList.add('hidden'); }
+
+    // Comprime la imagen automáticamente para que no pese demasiado y cargue rápido en cualquier celular
+    function compressUploadedImage(file, callback) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 900;
+          let w = img.width;
+          let h = img.height;
+          if (w > h && w > maxDim) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else if (h > maxDim) {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          callback(canvas.toDataURL('image/jpeg', 0.82));
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
 
     function handleCreatePostcard(e) {
       e.preventDefault();
@@ -694,16 +1550,16 @@
       const saveCardData = (imgUrl = null) => {
         const newCard = {
           id: 'custom_' + Date.now(),
-          stampCode: 'POSTAL #NEW · FOTO ESTAMPILLA',
+          stampCode: 'POSTAL · FOTO ESTAMPILLA',
           title: title,
           subtitle: subtitle,
           category: ['photo', 'featured'],
           mosaicSpan: frameStyle === 'vintage' ? 'md:col-span-6' : 'md:col-span-4',
           canvasHeight: 'h-48',
-          dateBadge: 'Álbum Fotográfico',
+          dateBadge: subtitle,
           emoji: emoji,
           quote: `“${quote}”`,
-          tags: ['Personalizada', 'Foto', 'Recuerdo'],
+          tags: ['Nuestra Foto', 'Recuerdo', 'Especial'],
           frameStyle: frameStyle,
           customImage: imgUrl,
           isCustom: true
@@ -711,7 +1567,7 @@
 
         userPostcards.push(newCard);
         localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
-        allPostcards = [...defaultPostcards, ...userPostcards];
+        rebuildAllPostcards();
         
         if (currentViewMode === 'mosaic') {
           renderAlbumGrid();
@@ -721,33 +1577,120 @@
 
         closeCreatorStudio();
         document.getElementById('creatorForm').reset();
-        showAlbumToast('¡Nueva foto o recuerdo agregado al álbum!', '📸');
+        showAlbumToast('¡Foto agregada! Abre "☁️ Guardar para Todos" para publicarla en el link', '📸');
       };
 
       if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          saveCardData(evt.target.result);
-        };
-        reader.readAsDataURL(fileInput.files[0]);
+        compressUploadedImage(fileInput.files[0], (compressedDataUrl) => {
+          saveCardData(compressedDataUrl);
+        });
       } else {
         saveCardData(null);
       }
     }
 
-    function deleteCustomCard(id) {
-      if (confirm('¿Deseas eliminar este recuerdo del álbum?')) {
-        userPostcards = userPostcards.filter(c => c.id !== id);
-        localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
-        allPostcards = [...defaultPostcards, ...userPostcards];
-        
-        if (currentViewMode === 'mosaic') {
-          renderAlbumGrid();
-        } else {
-          currentBookPageIndex = Math.max(0, currentBookPageIndex - 1);
-          renderBookPage();
+    function requestDeleteCustomCard(id) {
+      userPostcards = userPostcards.filter(c => c.id !== id);
+      localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
+      rebuildAllPostcards();
+      
+      if (currentViewMode === 'mosaic') {
+        renderAlbumGrid();
+      } else {
+        currentBookPageIndex = Math.max(0, currentBookPageIndex - 1);
+        renderBookPage();
+      }
+      showAlbumToast('Recuerdo eliminado de tu lista', '🗑️');
+    }
+
+    /* =====================================================================
+       PUBLICACIÓN PERMANENTE PARA QUE CUALQUIER PERSONA CON EL LINK LO VEA
+       ===================================================================== */
+    const cloudSyncModal = document.getElementById('cloudSyncModal');
+    function openCloudSyncModal() {
+      const savedToken = localStorage.getItem('gh_sync_token');
+      if (savedToken) document.getElementById('ghTokenInput').value = savedToken;
+      cloudSyncModal.classList.remove('hidden');
+    }
+    function closeCloudSyncModal() {
+      cloudSyncModal.classList.add('hidden');
+    }
+
+    // OPCIÓN A: Descarga el archivo index.html completo con las fotos incrustadas adentro del código
+    function exportPermanentHTMLWithPhotos() {
+      const customCardsToEmbed = allPostcards.filter(c => c.isCustom);
+      const currentDocHtml = document.documentElement.outerHTML;
+
+      const replacementBlock = `/* PERMANENT_SHARED_MEMORIES_START */\n    const embeddedSharedMemories = ${JSON.stringify(customCardsToEmbed, null, 2)};\n    /* PERMANENT_SHARED_MEMORIES_END */`;
+
+      const updatedHtml = '<!DOCTYPE html>\n' + currentDocHtml.replace(
+        /\/\* PERMANENT_SHARED_MEMORIES_START \*\/[\s\S]*?\/\* PERMANENT_SHARED_MEMORIES_END \*\//,
+        replacementBlock
+      );
+
+      const blob = new Blob([updatedHtml], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+
+      showAlbumToast('¡index.html descargado con tus fotos! Súbelo a tu GitHub', '📥');
+    }
+
+    // OPCIÓN B: Sincroniza directo con el repositorio de GitHub creando/actualizando recuerdos.json
+    async function syncDirectlyToGitHub() {
+      const owner = document.getElementById('ghOwnerInput').value.trim();
+      const repo = document.getElementById('ghRepoInput').value.trim();
+      const token = document.getElementById('ghTokenInput').value.trim();
+
+      if (!owner || !repo || !token) {
+        showAlbumToast('Ingresa tu usuario, repositorio y Token de GitHub', '⚠️');
+        return;
+      }
+
+      localStorage.setItem('gh_sync_token', token);
+      showAlbumToast('Subiendo fotos a tu repositorio de GitHub...', '⏳');
+
+      const customCards = allPostcards.filter(c => c.isCustom);
+      const jsonContent = JSON.stringify(customCards, null, 2);
+      const base64Content = btoa(unescape(encodeURIComponent(jsonContent)));
+      const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/recuerdos.json`;
+
+      try {
+        let sha = null;
+        const getRes = await fetch(apiUrl, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (getRes.ok) {
+          const existingData = await getRes.json();
+          sha = existingData.sha;
         }
-        showAlbumToast('Recuerdo eliminado', '🗑️');
+
+        const putRes = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: 'Actualizando fotos y recuerdos del álbum',
+            content: base64Content,
+            ...(sha ? { sha } : {})
+          })
+        });
+
+        if (putRes.ok) {
+          showAlbumToast('¡Sincronizado en GitHub! En 1 minuto todos lo verán en el link', '✅');
+          closeCloudSyncModal();
+        } else {
+          showAlbumToast('Error de permisos en el Token de GitHub. Usa la Opción A', '❌');
+        }
+      } catch (err) {
+        showAlbumToast('Error de red al conectar con GitHub. Usa la Opción A', '❌');
       }
     }
 
@@ -872,10 +1815,14 @@
     }
 
     window.onload = () => {
+      applyThemeUI();
+      checkVaultSession();
       renderAlbumGrid();
       drawHeroMiniPortrait();
       renderDust();
+      fetchSharedMemoriesFromRepo();
     };
   </script>
 </body>
 </html>
+```
