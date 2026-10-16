@@ -294,36 +294,84 @@
           </p>
         </div>
 
-        <div class="shrink-0 flex flex-col items-center bg-black/30 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl">
-          <div class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-amber-500/30 to-purple-950 shadow-inner">
-            <canvas id="heroPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
+        <div class="shrink-0 flex items-center gap-3 bg-black/30 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl">
+          <!-- Retrato de Ella -->
+          <div class="flex flex-col items-center">
+            <div class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-amber-500/30 to-purple-950 shadow-inner">
+              <canvas id="heroPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
+            </div>
+            <span class="font-pixel text-[7px] text-amber-400 mt-2 tracking-wider">★ MI NIÑA LINDA ★</span>
           </div>
-          <span class="font-pixel text-[8px] text-amber-400 mt-2 tracking-wider">★ MI NIÑA LINDA ★</span>
-          <span class="text-[11px] text-rose-300 italic font-serif-title">"Eres lo que tanto esperé"</span>
+
+          <div class="text-rose-400 text-lg font-bold animate-pulse">♥</div>
+
+          <!-- Retrato Tuyo (Al tocarlo abre la bóveda secreta, sin parecer botón) -->
+          <div class="flex flex-col items-center">
+            <div onclick="triggerSecretBoyClick()" class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-indigo-500/30 to-slate-950 shadow-inner">
+              <canvas id="heroBoyPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
+            </div>
+            <span class="font-pixel text-[7px] text-amber-400 mt-2 tracking-wider">★ TU NIÑO ★</span>
+          </div>
         </div>
       </div>
     </header>
 
     <div id="mosaicViewContainer">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="filterAlbum('all')" id="filter-all" class="filter-pill active px-4 py-1.5 rounded-full text-xs border border-amber-400/30 transition">
-            ✨ Todos Nuestros Mundos
-          </button>
-          <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-            👑 Favoritas
-          </button>
-          <button onclick="filterAlbum('postit')" id="filter-postit" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-            📝 Nuestros Post-its
-          </button>
-          <button onclick="filterAlbum('photo')" id="filter-photo" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-            📸 Fotos & Estampillas
-          </button>
-          <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-            👾 Pixel Art
+      <div class="flex flex-col gap-3 mb-6">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="filterAlbum('all')" id="filter-all" class="filter-pill active px-4 py-1.5 rounded-full text-xs border border-amber-400/30 transition">
+              ✨ Todos Nuestros Mundos
+            </button>
+            <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
+              👑 Favoritas
+            </button>
+            <button onclick="filterAlbum('postit')" id="filter-postit" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
+              📝 Nuestros Post-its
+            </button>
+            <button onclick="filterAlbum('photo')" id="filter-photo" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
+              📸 Fotos & Estampillas
+            </button>
+            <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
+              👾 Pixel Art
+            </button>
+            <!-- Pestaña del apartado restringido (aparece al desbloquear o permite entrar si ya se desbloqueó) -->
+            <button onclick="handleVaultTabClick()" id="filter-vault" class="filter-pill hidden px-4 py-1.5 rounded-full text-xs border border-rose-400/60 bg-rose-950/60 text-rose-200 transition">
+              🔒 Rincón Secreto ♥
+            </button>
+          </div>
+          <span id="totalMemoriesBadge" class="text-[11px] opacity-80 font-medium">7 Mundos + Tus Notas en Vivo</span>
+        </div>
+
+        <!-- Barra de Álbumes de Eventos -->
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-black/25 px-3.5 py-2.5 rounded-2xl border border-amber-500/20">
+          <div class="flex flex-wrap items-center gap-1.5" id="eventAlbumsFilterBar">
+            <span class="text-[11px] text-amber-300 font-bold mr-1">📂 Álbumes de Eventos:</span>
+          </div>
+          <button onclick="openNewEventAlbumModal()" class="album-btn-ghost px-3 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1">
+            <span>➕</span><span>Nuevo Álbum de Evento</span>
           </button>
         </div>
-        <span id="totalMemoriesBadge" class="text-[11px] opacity-80 font-medium">7 Mundos + Tus Notas en Vivo</span>
+      </div>
+
+      <!-- Cabecera especial cuando están dentro del Rincón Secreto -->
+      <div id="secretVaultBanner" class="hidden mb-6 p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-rose-950/90 via-purple-950/90 to-indigo-950/90 border-2 border-rose-400/50 shadow-2xl flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">🔐💖</span>
+          <div>
+            <span class="text-[10px] uppercase tracking-widest text-rose-300 font-bold block">Espacio Exclusivo Desbloqueado (04·07·2026)</span>
+            <h3 class="text-base sm:text-lg font-serif-title font-bold text-amber-200">Nuestro Rincón Secreto — Solo Tú y Yo</h3>
+            <p class="text-xs text-rose-100/80">Las fotos, cartas y notas que guardemos con llave solo son visibles aquí adentro.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="openCreatorStudio('postit', true)" class="album-btn px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">
+            <span>💌</span><span>Subir Recuerdo Secreto</span>
+          </button>
+          <button onclick="lockSecretVault()" class="album-btn-ghost px-3 py-2 rounded-xl text-xs font-bold text-rose-300">
+            🔒 Cerrar Rincón
+          </button>
+        </div>
       </div>
 
       <div id="mosaicGrid" class="grid grid-cols-1 md:grid-cols-12 gap-5"></div>
@@ -363,9 +411,16 @@
       <form id="creatorForm" onsubmit="handleCreatePostcard(event)" class="space-y-3.5 text-xs">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold mb-1 text-amber-300">¿Quién lo escribe?</label>
-            <input id="inputAuthor" type="text" required placeholder="Ej: Tu Niño / Mi Niña" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none focus:border-amber-400">
+            <label class="block font-bold mb-1 text-amber-300">✍️ De mí (Nombre o apodo):</label>
+            <input id="inputAuthor" type="text" required placeholder="Ej: Tu Niño / Mi Güerita" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none focus:border-amber-400">
           </div>
+          <div>
+            <label class="block font-bold mb-1 text-rose-300">💖 Para (Destinatario):</label>
+            <input id="inputRecipient" type="text" required placeholder="Ej: Para mi niña linda" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none focus:border-rose-400">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold mb-1 text-amber-300">Estilo de Recuerdo</label>
             <select id="inputFrameStyle" onchange="togglePostitFields()" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none">
@@ -374,11 +429,22 @@
               <option value="vintage">📸 Foto Polaroid</option>
             </select>
           </div>
+          <div>
+            <label class="block font-bold mb-1 text-amber-300">📂 Álbum / Evento</label>
+            <select id="inputEventAlbum" onchange="checkNewAlbumOption(this)" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none">
+              <option value="General">✨ Álbum General</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="customNewAlbumInputWrap" class="hidden">
+          <label class="block font-bold mb-1 text-emerald-300">Nombre del Nuevo Álbum de Evento:</label>
+          <input id="inputCustomNewAlbum" type="text" placeholder="Ej: Nuestra Cita, Aniversario, Viaje..." class="themed-input w-full px-3 py-2 rounded-xl border border-emerald-500/50 focus:outline-none">
         </div>
 
         <div id="postitColorSection">
           <label class="block font-bold mb-1.5 text-amber-300">Color del Post-it</label>
-          <div class="flex items-center gap-2.5">
+          <div class="flex flex-wrap items-center gap-2">
             <label class="cursor-pointer flex items-center gap-1 bg-yellow-300 text-black px-2.5 py-1 rounded-lg font-bold">
               <input type="radio" name="postitColor" value="postit-yellow" checked> Amarillo
             </label>
@@ -414,13 +480,86 @@
         </div>
 
         <div>
-          <label class="block font-bold mb-1 text-amber-300">Subir Foto (Opcional)</label>
-          <input id="inputImageFile" type="file" accept="image/*" class="w-full text-[11px] file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-amber-500 file:text-black file:font-bold cursor-pointer">
+          <label class="block font-bold mb-1 text-amber-300">Subir Foto(s) (Puedes elegir una o varias para el álbum)</label>
+          <input id="inputImageFile" type="file" accept="image/*" multiple class="w-full text-[11px] file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-amber-500 file:text-black file:font-bold cursor-pointer">
+        </div>
+
+        <!-- Opción para guardar en el Rincón Secreto (visible si ya desbloquearon la pestaña secreta) -->
+        <div id="secretCheckSection" class="hidden pt-1">
+          <label class="flex items-center gap-2 cursor-pointer bg-rose-950/50 border border-rose-400/40 p-2.5 rounded-xl text-rose-200 font-semibold">
+            <input id="inputIsSecret" type="checkbox" class="rounded accent-rose-500">
+            <span>🔒 Guardar en nuestro Rincón Secreto (Solo con contraseña)</span>
+          </label>
         </div>
 
         <div class="pt-2 flex gap-2">
           <button type="button" onclick="closeCreatorStudio()" class="album-btn-ghost flex-1 py-2.5 rounded-xl font-bold">Cancelar</button>
           <button id="submitMemoryBtn" type="submit" class="album-btn flex-1 py-2.5 rounded-xl font-bold">📌 Pegar en el Álbum</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONTRASEÑA SECRETA (AL TOCAR TU PERSONAJE PIXEL ART) -->
+  <div id="secretPasswordModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="themed-modal max-w-sm w-full rounded-3xl p-6 border-2 border-rose-400/60 shadow-2xl text-center">
+      <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-rose-500/20 border border-rose-400/50 flex items-center justify-center text-2xl">
+        🔐
+      </div>
+      <h3 class="text-base font-serif-title font-bold text-amber-300">Nuestro Rincón Secreto</h3>
+      <p class="text-xs opacity-80 mt-1 mb-4">Ingresa nuestra fecha especial para abrir el apartado privado de nosotros dos</p>
+      <form onsubmit="verifySecretPassword(event)" class="space-y-3">
+        <input id="secretPassInput" type="password" inputmode="numeric" placeholder="••••••••" class="themed-input w-full px-4 py-2.5 rounded-xl border border-rose-400/50 text-center tracking-widest text-base font-bold focus:outline-none focus:border-amber-400">
+        <p id="secretPassError" class="hidden text-[11px] text-rose-400 font-bold">Contraseña incorrecta, intenta de nuevo ♥</p>
+        <div class="flex gap-2 pt-1">
+          <button type="button" onclick="closeSecretPasswordModal()" class="album-btn-ghost flex-1 py-2 rounded-xl text-xs font-bold">Cancelar</button>
+          <button type="submit" class="album-btn flex-1 py-2 rounded-xl text-xs font-bold">✨ Entrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL PARA CREAR UN NUEVO ÁLBUM DE EVENTO -->
+  <div id="newEventAlbumModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="themed-modal max-w-sm w-full rounded-3xl p-6 border-2 border-amber-400/60 shadow-2xl">
+      <h3 class="text-sm sm:text-base font-bold text-amber-400 mb-1">📂 Crear Álbum de Evento</h3>
+      <p class="text-xs opacity-75 mb-4">Agrupa varias fotos o notas de una salida, fecha especial o viaje juntos.</p>
+      <form onsubmit="handleCreateEventAlbum(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold mb-1 text-amber-300">Nombre del Álbum / Evento:</label>
+          <input id="newEventAlbumName" type="text" required placeholder="Ej: Nuestro Primer Viaje, Cita Especial..." class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40 focus:outline-none">
+        </div>
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="closeNewEventAlbumModal()" class="album-btn-ghost flex-1 py-2 rounded-xl font-bold">Cancelar</button>
+          <button type="submit" class="album-btn flex-1 py-2 rounded-xl font-bold">✨ Crear Álbum</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL PARA MOVER UNA FOTO O NOTA A OTRO ÁLBUM POSTERIORMENTE -->
+  <div id="moveAlbumModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="themed-modal max-w-sm w-full rounded-3xl p-6 border-2 border-amber-400/60 shadow-2xl">
+      <h3 class="text-sm sm:text-base font-bold text-amber-400 mb-1">📂 Mover Recuerdo de Álbum</h3>
+      <p id="moveModalCardTitle" class="text-xs text-rose-300 font-semibold mb-4">Selecciona a qué álbum deseas mover esta foto/nota:</p>
+      <form onsubmit="confirmMoveToAlbum(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold mb-1 text-amber-300">Álbum destino:</label>
+          <select id="moveTargetAlbumSelect" onchange="toggleMoveCustomAlbumInput(this)" class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40 focus:outline-none"></select>
+        </div>
+        <div id="moveCustomAlbumWrap" class="hidden">
+          <label class="block font-bold mb-1 text-emerald-300">Nombre del nuevo álbum:</label>
+          <input id="moveCustomAlbumInput" type="text" placeholder="Ej: Cumpleaños, Salida al Cine..." class="themed-input w-full px-3 py-2 rounded-xl border border-emerald-500/50 focus:outline-none">
+        </div>
+        <div class="pt-1">
+          <label class="flex items-center gap-2 cursor-pointer text-rose-200 font-semibold">
+            <input id="moveCardSecretToggle" type="checkbox" class="rounded accent-rose-500">
+            <span>🔒 Guardar dentro del Rincón Secreto</span>
+          </label>
+        </div>
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="closeMoveAlbumModal()" class="album-btn-ghost flex-1 py-2 rounded-xl font-bold">Cancelar</button>
+          <button type="submit" class="album-btn flex-1 py-2 rounded-xl font-bold">💾 Guardar Cambio</button>
         </div>
       </form>
     </div>
@@ -830,6 +969,11 @@
     let currentBookPageIndex = 0;
     let isLightMode = false;
 
+    let isSecretVaultUnlocked = false;
+    let currentEventAlbum = 'ALL';
+    let customEventAlbums = new Set(['General', 'Nuestras Citas', 'Momentos Especiales']);
+    let cardIdBeingMoved = null;
+
     function applyThemeUI() {
       const icon = document.getElementById('themeIcon');
       if (isLightMode) {
@@ -850,11 +994,207 @@
       );
     }
 
+    function syncEventAlbumsFromCards() {
+      cloudRealtimePostcards.forEach(c => {
+        if (c.albumName && c.albumName.trim() !== '') {
+          customEventAlbums.add(c.albumName.trim());
+        }
+      });
+      renderEventAlbumPills();
+      populateAlbumSelectDropdowns();
+    }
+
+    function renderEventAlbumPills() {
+      const bar = document.getElementById('eventAlbumsFilterBar');
+      if (!bar) return;
+      let html = `<span class="text-[11px] text-amber-300 font-bold mr-1">📂 Álbumes:</span>`;
+      const allActive = currentEventAlbum === 'ALL' ? 'bg-amber-500 text-black font-bold shadow' : 'album-btn-ghost opacity-85';
+      html += `<button onclick="setEventAlbumFilter('ALL')" class="px-2.5 py-1 rounded-xl text-[11px] transition ${allActive}">Todos</button>`;
+
+      Array.from(customEventAlbums).forEach(albumName => {
+        const count = cloudRealtimePostcards.filter(c => {
+          const inVault = Boolean(c.isSecret);
+          if (currentFilter === 'vault' && !inVault) return false;
+          if (currentFilter !== 'vault' && inVault) return false;
+          return (c.albumName || 'General') === albumName;
+        }).length;
+        const isSelected = currentEventAlbum === albumName;
+        const btnCls = isSelected ? 'bg-amber-500 text-black font-bold shadow' : 'album-btn-ghost opacity-85';
+        const safeAlbum = albumName.replace(/'/g, "\\'");
+        html += `<button onclick="setEventAlbumFilter('${safeAlbum}')" class="px-2.5 py-1 rounded-xl text-[11px] transition flex items-center gap-1 ${btnCls}">
+          <span>📁 ${albumName}</span>
+          ${count > 0 ? `<span class="px-1.5 py-0.2 rounded-full text-[9px] bg-black/25">${count}</span>` : ''}
+        </button>`;
+      });
+      bar.innerHTML = html;
+    }
+
+    function populateAlbumSelectDropdowns() {
+      const creatorSelect = document.getElementById('inputEventAlbum');
+      const moveSelect = document.getElementById('moveTargetAlbumSelect');
+      const albums = Array.from(customEventAlbums);
+
+      if (creatorSelect) {
+        const prev = creatorSelect.value;
+        creatorSelect.innerHTML = albums.map(a => `<option value="${a}">📁 ${a}</option>`).join('') +
+          `<option value="__NEW__">➕ Crear nuevo álbum...</option>`;
+        if (albums.includes(prev)) creatorSelect.value = prev;
+      }
+
+      if (moveSelect) {
+        moveSelect.innerHTML = albums.map(a => `<option value="${a}">📁 ${a}</option>`).join('') +
+          `<option value="__NEW__">➕ Crear nuevo álbum...</option>`;
+      }
+    }
+
+    function setEventAlbumFilter(albumName) {
+      currentEventAlbum = albumName;
+      renderEventAlbumPills();
+      renderAlbumGrid();
+    }
+
+    function checkNewAlbumOption(selectEl) {
+      const wrap = document.getElementById('customNewAlbumInputWrap');
+      if (selectEl.value === '__NEW__') {
+        wrap.classList.remove('hidden');
+      } else {
+        wrap.classList.add('hidden');
+      }
+    }
+
+    function openNewEventAlbumModal() {
+      document.getElementById('newEventAlbumName').value = '';
+      document.getElementById('newEventAlbumModal').classList.remove('hidden');
+    }
+
+    function closeNewEventAlbumModal() {
+      document.getElementById('newEventAlbumModal').classList.add('hidden');
+    }
+
+    function handleCreateEventAlbum(e) {
+      e.preventDefault();
+      const name = document.getElementById('newEventAlbumName').value.trim();
+      if (!name) return;
+      customEventAlbums.add(name);
+      currentEventAlbum = name;
+      syncEventAlbumsFromCards();
+      closeNewEventAlbumModal();
+      renderAlbumGrid();
+      showAlbumToast(`Álbum "${name}" creado. ¡Sube tus fotos ahí! 📂`, '✨');
+    }
+
+    /* ACCESO SECRETO DESDE TU PERSONAJE PIXEL ART (CONTRASEÑA: 04072026) */
+    function triggerSecretBoyClick() {
+      if (isSecretVaultUnlocked) {
+        filterAlbum('vault');
+        showAlbumToast('Abriendo Nuestro Rincón Secreto ♥', '🔒');
+      } else {
+        document.getElementById('secretPassInput').value = '';
+        document.getElementById('secretPassError').classList.add('hidden');
+        document.getElementById('secretPasswordModal').classList.remove('hidden');
+        setTimeout(() => document.getElementById('secretPassInput').focus(), 100);
+      }
+    }
+
+    function closeSecretPasswordModal() {
+      document.getElementById('secretPasswordModal').classList.add('hidden');
+    }
+
+    function verifySecretPassword(e) {
+      e.preventDefault();
+      const input = document.getElementById('secretPassInput').value.trim();
+      if (input === '04072026') {
+        isSecretVaultUnlocked = true;
+        closeSecretPasswordModal();
+        const vaultBtn = document.getElementById('filter-vault');
+        if (vaultBtn) vaultBtn.classList.remove('hidden');
+        filterAlbum('vault');
+        showAlbumToast('¡Rincón Secreto desbloqueado! Bienvenida mi amor 💖', '🔓');
+      } else {
+        document.getElementById('secretPassError').classList.remove('hidden');
+      }
+    }
+
+    function handleVaultTabClick() {
+      if (!isSecretVaultUnlocked) {
+        triggerSecretBoyClick();
+      } else {
+        filterAlbum('vault');
+      }
+    }
+
+    function lockSecretVault() {
+      isSecretVaultUnlocked = false;
+      const vaultBtn = document.getElementById('filter-vault');
+      if (vaultBtn) vaultBtn.classList.add('hidden');
+      filterAlbum('all');
+      showAlbumToast('Rincón Secreto protegido con llave 🔒', '🔒');
+    }
+
+    /* MOVER FOTOS O NOTAS A OTRO ÁLBUM POSTERIORMENTE */
+    function openMoveCardModal(cardId) {
+      const card = cloudRealtimePostcards.find(c => c.id === cardId);
+      if (!card) return;
+      cardIdBeingMoved = cardId;
+      populateAlbumSelectDropdowns();
+      document.getElementById('moveModalCardTitle').textContent = `Mover "${card.title}" a otro álbum:`;
+      const select = document.getElementById('moveTargetAlbumSelect');
+      select.value = card.albumName || 'General';
+      document.getElementById('moveCustomAlbumWrap').classList.add('hidden');
+      document.getElementById('moveCardSecretToggle').checked = Boolean(card.isSecret);
+      document.getElementById('moveAlbumModal').classList.remove('hidden');
+    }
+
+    function toggleMoveCustomAlbumInput(selectEl) {
+      const wrap = document.getElementById('moveCustomAlbumWrap');
+      if (selectEl.value === '__NEW__') {
+        wrap.classList.remove('hidden');
+      } else {
+        wrap.classList.add('hidden');
+      }
+    }
+
+    function closeMoveAlbumModal() {
+      cardIdBeingMoved = null;
+      document.getElementById('moveAlbumModal').classList.add('hidden');
+    }
+
+    async function confirmMoveToAlbum(e) {
+      e.preventDefault();
+      if (!cardIdBeingMoved) return;
+      const card = cloudRealtimePostcards.find(c => c.id === cardIdBeingMoved);
+      if (!card) return;
+
+      const selectVal = document.getElementById('moveTargetAlbumSelect').value;
+      let targetAlbum = selectVal;
+      if (selectVal === '__NEW__') {
+        targetAlbum = document.getElementById('moveCustomAlbumInput').value.trim() || 'General';
+      }
+      customEventAlbums.add(targetAlbum);
+      card.albumName = targetAlbum;
+      card.isSecret = document.getElementById('moveCardSecretToggle').checked;
+
+      syncEventAlbumsFromCards();
+      rebuildAllPostcards();
+      if (currentViewMode === 'mosaic') {
+        renderAlbumGrid();
+      } else {
+        renderBookPage();
+      }
+      closeMoveAlbumModal();
+
+      if (window.saveCardToRealtimeCloud) {
+        await window.saveCardToRealtimeCloud(card);
+      }
+      showAlbumToast(`Movido al álbum "${targetAlbum}" exitosamente 📂`, '✨');
+    }
+
     function rebuildAllPostcards() {
       const map = new Map();
       defaultPostcards.forEach(c => map.set(c.id, c));
       cloudRealtimePostcards.forEach(c => map.set(c.id, c));
       allPostcards = Array.from(map.values());
+      syncEventAlbumsFromCards();
     }
     rebuildAllPostcards();
 
@@ -892,32 +1232,81 @@
 
     function renderAlbumGrid() {
       const grid = document.getElementById('mosaicGrid');
+      const vaultBanner = document.getElementById('secretVaultBanner');
+      if (vaultBanner) {
+        if (currentFilter === 'vault' && isSecretVaultUnlocked) {
+          vaultBanner.classList.remove('hidden');
+        } else {
+          vaultBanner.classList.add('hidden');
+        }
+      }
+
       grid.innerHTML = '';
 
       const filtered = allPostcards.filter(card => {
-        if (currentFilter === 'all') return true;
+        const cardIsSecret = Boolean(card.isSecret);
+
+        // Si estamos en el Rincón Secreto, mostrar solo los recuerdos secretos
+        if (currentFilter === 'vault') {
+          if (!isSecretVaultUnlocked || !cardIsSecret) return false;
+        } else {
+          // Fuera del Rincón Secreto, jamás mostrar tarjetas secretas
+          if (cardIsSecret) return false;
+        }
+
+        // Filtro por Álbum de Evento
+        if (currentEventAlbum !== 'ALL') {
+          if (!card.isCustom) return false;
+          if ((card.albumName || 'General') !== currentEventAlbum) return false;
+        }
+
+        if (currentFilter === 'all' || currentFilter === 'vault') return true;
         if (currentFilter === 'postit') return card.frameStyle === 'postit';
         if (currentFilter === 'photo') return card.frameStyle === 'vintage' || card.frameStyle === 'stamp';
         return (card.category || []).includes(currentFilter);
       });
 
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-12 text-center py-12 px-4 rounded-3xl bg-black/20 border border-amber-500/20">
+            <div class="text-4xl mb-2">${currentFilter === 'vault' ? '🔐💖' : '📂✨'}</div>
+            <h4 class="font-serif-title text-base sm:text-lg text-amber-300 font-bold">
+              ${currentFilter === 'vault' ? 'Nuestro Rincón Secreto está listo para estrenarse' : 'Aún no hay recuerdos en este álbum'}
+            </h4>
+            <p class="text-xs opacity-75 mt-1 mb-4">Sube la primera foto o nota dedicada para guardarla aquí.</p>
+            <button onclick="openCreatorStudio('postit', ${currentFilter === 'vault'})" class="album-btn px-4 py-2 rounded-xl text-xs font-bold">
+              💌 Agregar Recuerdo Aquí
+            </button>
+          </div>
+        `;
+        return;
+      }
+
       filtered.forEach((card) => {
         const cardEl = document.createElement('article');
         cardEl.className = `postcard-card rounded-3xl flex flex-col justify-between ${card.mosaicSpan || 'md:col-span-4'}`;
 
+        const authorName = card.author || 'Con Amor';
+        const recipientName = card.recipient || 'Para Ti';
+        const albumTag = card.albumName || 'General';
+
         if (card.frameStyle === 'postit') {
           const colorClass = card.postitColor || 'postit-yellow';
-          const authorName = card.author || 'Con Amor';
           cardEl.innerHTML = `
             <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
               <div class="postit-note ${colorClass} flex-1 flex flex-col justify-between">
                 <div class="postit-tape"></div>
                 <div>
-                  <div class="flex items-center justify-between border-b border-black/15 pb-2 mb-3">
-                    <span class="text-xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/15 text-black flex items-center gap-1">
-                      <span>✍️ De:</span> <span>${authorName}</span>
-                    </span>
-                    <span class="text-xl">${card.emoji || '💌'}</span>
+                  <div class="flex flex-wrap items-center justify-between gap-1 border-b border-black/15 pb-2 mb-3">
+                    <div class="flex flex-col text-left">
+                      <span class="text-[11px] font-extrabold uppercase tracking-wider text-stone-900">
+                        ✍️ De mí: <span class="underline">${authorName}</span>
+                      </span>
+                      <span class="text-[11px] font-bold text-rose-900">
+                        💖 Para: <span>${recipientName}</span>
+                      </span>
+                    </div>
+                    <span class="text-2xl">${card.emoji || '💌'}</span>
                   </div>
                   <h3 class="font-serif-title font-bold text-base sm:text-lg text-stone-900 mb-2">${card.title}</h3>
                   ${card.customImage ? `<img src="${card.customImage}" class="w-full h-36 object-cover rounded-lg mb-3 border border-black/20 shadow-sm" alt="Foto Post-it">` : ''}
@@ -925,15 +1314,17 @@
                     ${card.quote}
                   </p>
                 </div>
-                <div class="mt-4 pt-2 border-t border-black/10 flex items-center justify-between text-[11px] text-stone-800 font-semibold">
-                  <span>📅 ${card.dateBadge || 'Nota Adhesiva'}</span>
-                  <span>📌 Post-it</span>
+                <div class="mt-4 pt-2 border-t border-black/10 flex items-center justify-between text-[10px] text-stone-800 font-semibold">
+                  <span>📅 ${card.dateBadge || 'Nota'}</span>
+                  <span>📁 ${albumTag}</span>
                 </div>
               </div>
             </div>
-            <div class="px-5 pb-4 pt-1 flex items-center justify-between">
-              <span class="text-[10px] opacity-75">✍️ Escrito por <strong>${authorName}</strong></span>
-              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1 px-2.5 rounded-lg text-[11px] text-rose-400 hover:text-rose-300 flex items-center gap-1">
+            <div class="px-5 pb-4 pt-1 flex items-center justify-between gap-2">
+              <button onclick="openMoveCardModal('${card.id}')" class="album-btn-ghost py-1 px-2.5 rounded-lg text-[10px] text-amber-300 flex items-center gap-1" title="Cambiar de álbum">
+                <span>📂</span><span>Mover a Álbum</span>
+              </button>
+              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1 px-2.5 rounded-lg text-[10px] text-rose-400 hover:text-rose-300 flex items-center gap-1">
                 <span>🗑️</span><span>Quitar</span>
               </button>
             </div>
@@ -963,7 +1354,7 @@
                      <span class="font-serif-title font-bold text-amber-950 text-sm">${card.title}</span>
                    </div>`
                 }
-                <div class="text-[9px] font-pixel text-amber-950 text-center mt-2">CORREO DE AMOR · ${card.subtitle}</div>
+                <div class="text-[9px] font-pixel text-amber-950 text-center mt-2">DE: ${authorName.toUpperCase()} ➔ PARA: ${recipientName.toUpperCase()}</div>
               </div>
             </div>
           `;
@@ -994,13 +1385,19 @@
                 <span class="font-pixel text-[8px] text-amber-500 tracking-wider">${card.stampCode}</span>
               </div>
               <div class="px-2.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/20 text-amber-500 border border-amber-500/30">
-                ${card.dateBadge}
+                ${card.isCustom ? `📁 ${albumTag}` : card.dateBadge}
               </div>
             </div>
 
             ${visualContent}
 
             <div class="p-4 sm:p-5">
+              ${card.isCustom ? `
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5 text-xs bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/25">
+                  <span>✍️ <strong>De mí:</strong> ${authorName}</span>
+                  <span>💖 <strong>Para:</strong> ${recipientName}</span>
+                </div>
+              ` : ''}
               <p class="themed-quote font-vt text-lg sm:text-xl leading-snug italic p-3 rounded-xl border-l-2 border-amber-400">
                 ${card.quote}
               </p>
@@ -1019,8 +1416,10 @@
                 <span>🔗</span><span>Link</span>
               </a>
             ` : `
-              <span class="text-[10px] opacity-85">✍️ De: <strong>${card.author || 'Nosotros'}</strong></span>
-              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-xs text-rose-400 hover:text-rose-300 flex items-center justify-center gap-1 ml-auto">
+              <button onclick="openMoveCardModal('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-[11px] text-amber-300 flex items-center gap-1">
+                <span>📂</span><span>Mover de Álbum</span>
+              </button>
+              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-[11px] text-rose-400 hover:text-rose-300 flex items-center justify-center gap-1 ml-auto">
                 <span>🗑️</span><span>Borrar</span>
               </button>
             `}
@@ -1233,7 +1632,7 @@
           </p>
 
           <p class="text-xs sm:text-sm text-stone-700 mt-3 font-semibold leading-relaxed">
-            ${card.author ? `✍️ Dejado por: ${card.author} · ` : ''}${card.subtitle}
+            ${card.author ? `✍️ De mí: ${card.author} · 💖 Para: ${card.recipient || 'Ti'} · 📁 Álbum: ${card.albumName || 'General'}` : card.subtitle}
           </p>
         </div>
 
@@ -1271,8 +1670,21 @@
     }
 
     const creatorModal = document.getElementById('creatorModal');
-    function openCreatorStudio(defaultMode = 'postit') {
+    function openCreatorStudio(defaultMode = 'postit', defaultSecret = false) {
+      populateAlbumSelectDropdowns();
       document.getElementById('inputFrameStyle').value = defaultMode;
+      if (currentEventAlbum !== 'ALL') {
+        document.getElementById('inputEventAlbum').value = currentEventAlbum;
+      }
+      const secretSection = document.getElementById('secretCheckSection');
+      const secretCheckbox = document.getElementById('inputIsSecret');
+      if (isSecretVaultUnlocked || defaultSecret) {
+        secretSection.classList.remove('hidden');
+        secretCheckbox.checked = Boolean(defaultSecret || currentFilter === 'vault');
+      } else {
+        secretSection.classList.add('hidden');
+        secretCheckbox.checked = false;
+      }
       togglePostitFields();
       creatorModal.classList.remove('hidden');
     }
@@ -1325,23 +1737,35 @@
 
       const title = document.getElementById('inputTitle').value.trim();
       const author = document.getElementById('inputAuthor').value.trim() || 'Con Amor';
+      const recipient = document.getElementById('inputRecipient').value.trim() || 'Para Ti';
       const frameStyle = document.getElementById('inputFrameStyle').value;
       const emoji = document.getElementById('inputEmoji').value || '💌';
       const quote = document.getElementById('inputQuote').value.trim();
       const fileInput = document.getElementById('inputImageFile');
       const selectedColorRadio = document.querySelector('input[name="postitColor"]:checked');
       const postitColor = selectedColorRadio ? selectedColorRadio.value : 'postit-yellow';
+      const isSecret = document.getElementById('inputIsSecret') ? document.getElementById('inputIsSecret').checked : false;
+
+      let albumName = document.getElementById('inputEventAlbum').value;
+      if (albumName === '__NEW__') {
+        albumName = document.getElementById('inputCustomNewAlbum').value.trim() || 'General';
+      }
+      customEventAlbums.add(albumName);
 
       const nowStr = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
 
-      const saveCardData = async (imgUrl = null) => {
+      const buildAndSaveSingleCard = async (imgUrl = null, indexSuffix = '') => {
+        const cardTitle = indexSuffix ? `${title} (${indexSuffix})` : title;
         const newCard = {
-          id: 'custom_' + Date.now(),
+          id: 'custom_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
           createdAt: Date.now(),
-          stampCode: frameStyle === 'postit' ? `POST-IT · ${author.toUpperCase()}` : (frameStyle === 'stamp' ? 'ESTAMPILLA · AMOR' : 'FOTO · VINTAGE'),
-          title: title,
-          subtitle: `De: ${author} (${nowStr})`,
+          stampCode: frameStyle === 'postit' ? `DE: ${author.toUpperCase()}` : (frameStyle === 'stamp' ? 'ESTAMPILLA · AMOR' : 'FOTO · VINTAGE'),
+          title: cardTitle,
+          subtitle: `De: ${author} ➔ Para: ${recipient}`,
           author: author,
+          recipient: recipient,
+          albumName: albumName,
+          isSecret: isSecret,
           postitColor: postitColor,
           category: [frameStyle === 'postit' ? 'postit' : 'photo', 'featured'],
           mosaicSpan: frameStyle === 'vintage' ? 'md:col-span-6' : 'md:col-span-4',
@@ -1349,45 +1773,51 @@
           dateBadge: nowStr,
           emoji: emoji,
           quote: `“${quote}”`,
-          tags: [`De: ${author}`, frameStyle === 'postit' ? 'Post-it' : 'Recuerdo'],
+          tags: [`De: ${author}`, `Para: ${recipient}`, `📁 ${albumName}`],
           frameStyle: frameStyle,
           customImage: imgUrl || '',
           isCustom: true
         };
 
-        // Mostrar inmediatamente en pantalla para respuesta instantánea
         cloudRealtimePostcards.push(newCard);
+        if (window.saveCardToRealtimeCloud) {
+          await window.saveCardToRealtimeCloud(newCard);
+        }
+      };
+
+      const finishCreationFlow = () => {
         rebuildAllPostcards();
         if (currentViewMode === 'mosaic') {
           renderAlbumGrid();
         } else {
           renderBookPage();
         }
-
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.textContent = '📌 Pegar en el Álbum';
         }
         closeCreatorStudio();
         document.getElementById('creatorForm').reset();
+        document.getElementById('customNewAlbumInputWrap').classList.add('hidden');
         togglePostitFields();
-
-        if (window.saveCardToRealtimeCloud) {
-          const success = await window.saveCardToRealtimeCloud(newCard);
-          if (success) {
-            showAlbumToast(`¡Nota de "${author}" sincronizada en todos los dispositivos! 📌✨`, emoji);
-          } else {
-            showAlbumToast('Visible aquí · Activa reglas públicas en Firebase para otros equipos', '⚠️');
-          }
-        }
+        showAlbumToast(`¡Recuerdo de "${author}" para "${recipient}" guardado en "${albumName}"! 📌✨`, emoji);
       };
 
-      if (fileInput.files && fileInput.files[0]) {
-        compressUploadedImage(fileInput.files[0], (compressedDataUrl) => {
-          saveCardData(compressedDataUrl);
+      if (fileInput.files && fileInput.files.length > 0) {
+        const filesArr = Array.from(fileInput.files);
+        let processed = 0;
+        filesArr.forEach((file, idx) => {
+          compressUploadedImage(file, async (compressedDataUrl) => {
+            const suffix = filesArr.length > 1 ? `${idx + 1}/${filesArr.length}` : '';
+            await buildAndSaveSingleCard(compressedDataUrl, suffix);
+            processed++;
+            if (processed === filesArr.length) {
+              finishCreationFlow();
+            }
+          });
         });
       } else {
-        saveCardData(null);
+        buildAndSaveSingleCard(null, '').then(() => finishCreationFlow());
       }
     }
 
@@ -1692,7 +2122,73 @@
       document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
       const activeBtn = document.getElementById(`filter-${cat}`);
       if (activeBtn) activeBtn.classList.add('active');
+      renderEventAlbumPills();
       renderAlbumGrid();
+    }
+
+    function drawHeroMiniPortrait() {
+      const c = document.getElementById('heroPortraitCanvas');
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+
+      ctx.fillStyle = '#2a144a';
+      ctx.fillRect(0, 0, 32, 32);
+
+      ctx.fillStyle = '#eab66a';
+      ctx.fillRect(5, 5, 22, 23);
+      ctx.fillStyle = '#f7d694';
+      ctx.fillRect(7, 5, 18, 4);
+
+      ctx.fillStyle = '#fff3e6';
+      ctx.fillRect(8, 9, 16, 14);
+
+      ctx.fillStyle = '#7d4f24';
+      ctx.fillRect(10, 13, 4, 4);
+      ctx.fillRect(18, 13, 4, 4);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(10, 13, 1, 1);
+      ctx.fillRect(18, 13, 1, 1);
+
+      ctx.fillStyle = '#c084fc';
+      ctx.fillRect(8, 25, 16, 7);
+
+      // Dibujar también tu retrato en Pixel Art al lado del de ella
+      const b = document.getElementById('heroBoyPortraitCanvas');
+      if (!b) return;
+      const bCtx = b.getContext('2d');
+      bCtx.imageSmoothingEnabled = false;
+
+      bCtx.fillStyle = '#141b38';
+      bCtx.fillRect(0, 0, 32, 32);
+
+      // Cabello oscuro masculino
+      bCtx.fillStyle = '#1c1917';
+      bCtx.fillRect(6, 4, 20, 9);
+      bCtx.fillRect(5, 7, 3, 8);
+      bCtx.fillRect(24, 7, 3, 8);
+
+      // Rostro cálido
+      bCtx.fillStyle = '#f5cbaf';
+      bCtx.fillRect(8, 10, 16, 13);
+
+      // Ojos expresivos con brillo
+      bCtx.fillStyle = '#1e293b';
+      bCtx.fillRect(10, 13, 4, 4);
+      bCtx.fillRect(18, 13, 4, 4);
+      bCtx.fillStyle = '#ffffff';
+      bCtx.fillRect(10, 13, 1, 1);
+      bCtx.fillRect(18, 13, 1, 1);
+
+      // Sonrisa tierna
+      bCtx.fillStyle = '#b45309';
+      bCtx.fillRect(13, 19, 6, 1);
+
+      // Atuendo elegante azul noche y camisa crema
+      bCtx.fillStyle = '#1e3a8a';
+      bCtx.fillRect(7, 24, 18, 8);
+      bCtx.fillStyle = '#fef3c7';
+      bCtx.fillRect(12, 24, 8, 6);
     }
 
     function drawHeroMiniPortrait() {
