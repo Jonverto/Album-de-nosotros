@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>El Álbum de Nuestros Mundos // Para Mi Niña Linda 📖✨</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Press+Start+2P&family=VT323&family=Caveat:wght@600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #271447 0%, #110821 48%, #07030f 100%);
+      --text-main: #fffbeb;
+      --text-muted: #e9d5ff;
+      --card-bg: rgba(22, 13, 40, 0.85);
+      --card-border: rgba(251, 191, 36, 0.28);
+      --nav-bg: rgba(0, 0, 0, 0.45);
+      --hero-bg: linear-gradient(to right, rgba(29, 16, 54, 0.95), rgba(40, 19, 64, 0.9), rgba(26, 13, 46, 0.95));
+      --quote-bg: rgba(0, 0, 0, 0.35);
+      --gold-royal: #fbbf24;
+      --rose-soft: #f472b6;
+      --input-bg: #0b0617;
+      --modal-bg: #140b29;
+    }
+
+    body.light-mode {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #fffbf2 0%, #fce7f3 50%, #f5e6d3 100%);
+      --text-main: #2b1704;
+      --text-muted: #5c3a21;
+      --card-bg: rgba(255, 252, 245, 0.92);
+      --card-border: rgba(180, 83, 9, 0.3);
+      --nav-bg: rgba(255, 250, 240, 0.85);
+      --hero-bg: linear-gradient(to right, rgba(254, 243, 199, 0.95), rgba(252, 231, 243, 0.9), rgba(254, 243, 199, 0.95));
+      --quote-bg: rgba(245, 158, 11, 0.12);
+      --input-bg: #ffffff;
+      --modal-bg: #fffdf9;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.4s ease;
+    }
+
+    .font-serif-title { font-family: 'Playfair Display', serif; }
+    .font-royal { font-family: 'Cinzel Decorative', cursive; }
+    .font-pixel { font-family: 'Press Start 2P', monospace; }
+    .font-vt { font-family: 'VT323', monospace; }
+    .font-handwriting { font-family: 'Caveat', cursive; }
+
+    .pixel-canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    .postcard-card {
+      position: relative;
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      box-shadow:
+        0 18px 40px -12px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow: hidden;
+    }
+
+    .postcard-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(251, 191, 36, 0.75);
+      box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        0 0 28px rgba(251, 191, 36, 0.25);
+    }
+
+    .postal-stamp-frame {
+      position: relative;
+      background: #fbf8f0;
+      border: 4px dashed #b45309;
+      padding: 8px 8px 20px 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+      transform: rotate(-1.5deg);
+      transition: transform 0.3s ease;
+    }
+    .postal-stamp-frame:hover {
+      transform: rotate(0deg) scale(1.02);
+    }
+
+    .vintage-photo-frame {
+      background: #fdfbf7;
+      padding: 10px 10px 28px 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.45), inset 0 0 15px rgba(180, 140, 90, 0.2);
+      border: 1px solid #e7d8bc;
+      transform: rotate(1deg);
+      transition: transform 0.3s ease;
+    }
+    .vintage-photo-frame:hover {
+      transform: rotate(0deg) scale(1.02);
+    }
+
+    .vintage-sepia {
+      filter: sepia(0.35) contrast(1.06) brightness(0.94);
+    }
+
+    .postit-note {
+      position: relative;
+      padding: 22px 18px 18px 18px;
+      border-radius: 4px 4px 18px 4px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), inset 0 -10px 20px rgba(0, 0, 0, 0.06);
+      transform: rotate(-1.5deg);
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+      color: #1f1605;
+    }
+    .postit-note:nth-child(even) {
+      transform: rotate(1.5deg);
+    }
+    .postit-note:hover {
+      transform: rotate(0deg) scale(1.03);
+      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.55);
+    }
+    .postit-tape {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 76px;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.48);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      backdrop-filter: blur(2px);
+    }
+
+    .postit-yellow { background: linear-gradient(135deg, #fef08a 0%, #fde047 100%); border-bottom: 3px solid #eab308; }
+    .postit-pink   { background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%); border-bottom: 3px solid #db2777; }
+    .postit-mint   { background: linear-gradient(135deg, #a7f3d0 0%, #34d399 100%); border-bottom: 3px solid #059669; }
+    .postit-lilac  { background: linear-gradient(135deg, #e9d5ff 0%, #c084fc 100%); border-bottom: 3px solid #9333ea; }
+    .postit-sky    { background: linear-gradient(135deg, #bae6fd 0%, #38bdf8 100%); border-bottom: 3px solid #0284c7; }
+
+    .book-container {
+      perspective: 1800px;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .book-page {
+      background: linear-gradient(135deg, #fbf8f0 0%, #f4ebd0 100%);
+      color: #2b1704;
+      border: 3px solid #b45309;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.6), inset 0 0 35px rgba(139, 69, 19, 0.15);
+      transform-origin: left center;
+      transition: transform 0.55s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.45s ease;
+      backface-visibility: hidden;
+    }
+
+    .book-page.flip-next {
+      transform: rotateY(-75deg) scale(0.96);
+      opacity: 0.2;
+    }
+
+    .book-page.flip-prev {
+      transform: rotateY(75deg) scale(0.96);
+      opacity: 0.2;
+    }
+
+    .album-btn {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #1c0a00;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transition: all 0.2s ease;
+    }
+    .album-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    .album-btn-ghost {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+    .album-btn-ghost:hover { background: rgba(251, 191, 36, 0.22); border-color: rgba(251, 191, 36, 0.75); }
+
+    .filter-pill.active {
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+      color: #170902;
+      font-weight: 700;
+      border-color: transparent;
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.4);
+    }
+
+    .album-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translate(-50%, 140%);
+      z-index: 150;
+      background: #1a0f2e;
+      color: #fef3c7;
+      border: 2px solid #fbbf24;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 25px rgba(251, 191, 36, 0.35);
+      transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+    .album-toast.show { transform: translate(-50%, 0); }
+
+    .themed-nav { background: var(--nav-bg); }
+    .themed-hero { background: var(--hero-bg); }
+    .themed-quote { background: var(--quote-bg); }
+    .themed-input { background: var(--input-bg); color: var(--text-main); }
+    .themed-modal { background: var(--modal-bg); color: var(--text-main); }
+  </style>
+</head>
+<body class="relative pb-24">
+
+  <canvas id="bgDustCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <div id="albumToast" class="album-toast px-5 py-3 rounded-2xl flex items-center gap-3 pointer-events-none">
+    <span id="toastEmoji" class="text-xl">✨</span>
+    <span id="toastMessage" class="text-xs sm:text-sm font-medium">Acción realizada con éxito</span>
+  </div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-5">
+
+    <nav class="themed-nav flex flex-wrap items-center justify-between gap-3 py-3 px-4 sm:px-6 rounded-2xl backdrop-blur-md border border-amber-500/30 mb-6 shadow-lg">
+      <div class="flex items-center gap-3">
+        <!-- 3 clics rápidos aquí abren panel técnico oculto si fuera necesario -->
+        <div id="secretConfigTrigger" class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-xl shadow-lg cursor-pointer" title="El Álbum de Nuestros Mundos">
+          📖
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] uppercase tracking-widest text-amber-500 font-bold block">Colección Especial</span>
+            <span id="liveSyncBadge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              <span id="syncDot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> <span id="syncBadgeText">Conectados ♥</span>
+            </span>
+          </div>
+          <h1 class="text-sm sm:text-base font-royal tracking-wide">EL ÁLBUM DE NUESTROS MUNDOS</h1>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="bg-black/20 p-1 rounded-xl border border-amber-500/30 flex items-center gap-1">
+          <button onclick="setViewMode('mosaic')" id="viewMosaicBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow">
+            🍱 Mosaico
+          </button>
+          <button onclick="setViewMode('book')" id="viewBookBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold opacity-80 hover:opacity-100">
+            📖 Libro
+          </button>
+        </div>
+
+        <button onclick="toggleColorTheme()" id="themeToggleBtn" class="album-btn-ghost px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow" title="Cambiar ambiente de luz">
+          <span id="themeIcon">☀️</span>
+        </button>
+
+        <button onclick="openCreatorStudio('postit')" class="album-btn px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-lg">
+          <span>💌</span>
+          <span class="font-bold">Dejar Nota / Foto</span>
+        </button>
+      </div>
+    </nav>
+
+    <header class="themed-hero relative rounded-3xl p-6 sm:p-8 mb-8 overflow-hidden border border-amber-400/40 shadow-2xl">
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-pink-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="max-w-2xl text-center md:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-500 text-xs font-bold mb-3">
+            <span>👑</span>
+            <span>Dedicado a mi güerita hermosa de ojitos café claros</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-serif-title font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 leading-tight">
+            Cada postal y fotografía guarda un universo construido para ti
+          </h2>
+          <p class="text-xs sm:text-sm opacity-85 mt-3 leading-relaxed font-normal">
+            Aquí viven nuestros mundos, cartas secretas, fotografías y las notitas que nos vamos dejando en el camino. Cada rincón de este álbum late por ti, mi niña linda.
+          </p>
+        </div>
+
+        <div class="shrink-0 flex flex-col items-center bg-black/30 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl">
+          <div class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-amber-500/30 to-purple-950 shadow-inner">
+            <canvas id="heroPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
+          </div>
+          <span class="font-pixel text-[8px] text-amber-400 mt-2 tracking-wider">★ MI NIÑA LINDA ★</span>
+          <span class="text-[11px] text-rose-300 italic font-serif-title">"Eres lo que tanto esperé"</span>
+        </div>
+      </div>
+    </header>
+
+    <div id="mosaicViewContainer">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="filterAlbum('all')" id="filter-all" class="filter-pill active px-4 py-1.5 rounded-full text-xs border border-amber-400/30 transition">
+            ✨ Todos Nuestros Mundos
+          </button>
+          <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
+            👑 Favoritas
+          </button>
+          <button onclick="filterAlbum('postit')" id="filter-postit" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
+            📝 Nuestros Post-its
+    <div id="theaterModal" class="hidden fixed inset-0 z-50 flex flex-col bg-black/92 backdrop-blur-xl p-2 sm:p-5">
+    <div class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between gap-2 bg-[#170d2b] border border-amber-400/40 rounded-t-2xl px-4 py-2.5">
+      <div class="flex items-center gap-2.5">
+        <span id="theaterIcon" class="text-xl">🏮</span>
+        <div>
+          <h3 id="theaterTitle" class="text-xs sm:text-sm font-bold text-amber-300">Teatro Interactivo</h3>
+          <p id="theaterSubtitle" class="text-[11px] text-purple-200/80">Experiencia en vivo</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a id="theaterExternalLink" href="#" target="_blank" class="px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-400/50 text-amber-300 hover:bg-amber-500/30 text-xs font-bold transition">
+          ↗ Pantalla Completa
+        </a>
+        <button onclick="closeTheaterModal()" class="px-3.5 py-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-bold transition">
+          ✕ Cerrar
+        </button>
+      </div>
+    </div>
+    <div class="max-w-5xl w-full mx-auto flex-1 bg-[#090414] border-x border-b border-amber-400/40 rounded-b-2xl overflow-hidden relative flex flex-col">
+      <iframe id="theaterIframe" class="w-full h-full flex-1 border-0" sandbox="allow-scripts allow-same-origin allow-modals"></iframe>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getDatabase, ref, set as rtdbSet, remove as rtdbRemove, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'album-compt-us-realtime';
+
+    // 1. Configuración directa de tu proyecto Firebase (Realtime Database + Firestore)
+    const userFirebaseConfig = {
+      apiKey: "AIzaSyBLgylENlDXij8732zpKhUSHBHbJTZtTlA",
+      authDomain: "album-compt-us.firebaseapp.com",
+      databaseURL: "https://album-compt-us-default-rtdb.firebaseio.com",
+      projectId: "album-compt-us",
+      storageBucket: "album-compt-us.firebasestorage.app",
+      messagingSenderId: "225405777645",
+      appId: "1:225405777645:web:1a8786fbf4998fa3e2bee4",
+      measurementId: "G-Q4MXELWHRB"
+    };
+
+    let rtdb = null;
+    let userFs = null;
+    let envFs = null;
+    let envUser = null;
+
+    let itemsFromRTDB = {};
+    let itemsFromUserFs = {};
+    let itemsFromEnvFs = {};
+
+    function setSyncStatus(isOnline, labelText) {
+      const dot = document.getElementById('syncDot');
+      const txt = document.getElementById('syncBadgeText');
+      if (dot) {
+        dot.className = isOnline
+          ? 'w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping'
+          : 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse';
+      }
+      if (txt) txt.textContent = labelText;
+    }
+
+    function mergeAndBroadcastCloudMemories() {
+      const mergedMap = new Map();
+      Object.values(itemsFromEnvFs).forEach(item => { if (item && item.id) mergedMap.set(item.id, item); });
+      Object.values(itemsFromUserFs).forEach(item => { if (item && item.id) mergedMap.set(item.id, item); });
+      Object.values(itemsFromRTDB).forEach(item => { if (item && item.id) mergedMap.set(item.id, item); });
+
+      const list = Array.from(mergedMap.values());
+      if (window.applyRealtimeCloudMemories) {
+        window.applyRealtimeCloudMemories(list);
+      }
+    }
+
+    async function startCloudSync() {
+      // A) Conectar a tu proyecto Firebase (Realtime Database + Firestore)
+      try {
+        const userApp = initializeApp(userFirebaseConfig, 'userAlbumCloud');
+        const userAuth = getAuth(userApp);
+        rtdb = getDatabase(userApp);
+        userFs = getFirestore(userApp);
+
+        // Intentar login anónimo si está habilitado, pero NO bloquear si está desactivado en consola
+        try {
+          await signInAnonymously(userAuth);
+        } catch (authErr) {
+          console.warn("Acceso directo sin Auth anónimo en userApp:", authErr.message);
+        }
+
+        // Listener 1: Realtime Database (https://album-compt-us-default-rtdb.firebaseio.com)
+        const rtdbRef = ref(rtdb, 'shared_album_memories');
+        onValue(rtdbRef, (snapshot) => {
+          itemsFromRTDB = snapshot.val() || {};
+          setSyncStatus(true, 'Conectados en Vivo ♥');
+          mergeAndBroadcastCloudMemories();
+        }, (err) => {
+          console.warn("Aviso RTDB:", err.message);
+        });
+
+        // Listener 2: Firestore de tu proyecto
+        const userColRef = collection(userFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories');
+        onSnapshot(userColRef, (snapshot) => {
+          const temp = {};
+          snapshot.forEach(d => { temp[d.id] = d.data(); });
+          itemsFromUserFs = temp;
+          setSyncStatus(true, 'Conectados en Vivo ♥');
+          mergeAndBroadcastCloudMemories();
+        }, (err) => {
+          console.warn("Aviso User Firestore:", err.message);
+        });
+      } catch (err) {
+        console.warn("Error iniciando userApp:", err);
+      }
+
+      // B) Conectar también al entorno si existe __firebase_config
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        try {
+          const envConfig = JSON.parse(__firebase_config);
+          const envApp = initializeApp(envConfig, 'envAlbumCloud');
+          const envAuth = getAuth(envApp);
+          envFs = getFirestore(envApp);
+
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(envAuth, __initial_auth_token);
+          } else {
+            await signInAnonymously(envAuth);
+          }
+
+          onAuthStateChanged(envAuth, (u) => {
+            envUser = u;
+            if (u) {
+              const envColRef = collection(envFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories');
+              onSnapshot(envColRef, (snapshot) => {
+                const temp = {};
+                snapshot.forEach(d => { temp[d.id] = d.data(); });
+                itemsFromEnvFs = temp;
+                setSyncStatus(true, 'Conectados en Vivo ♥');
+                mergeAndBroadcastCloudMemories();
+              }, (err) => console.warn("Error Env Firestore:", err));
+            }
+          });
+        } catch (e) {
+          console.warn("Entorno secundario no requerido:", e);
+        }
+      }
+    }
+
+    // Guardar en todas las nubes disponibles simultáneamente
+    window.saveCardToRealtimeCloud = async function(card) {
+      let savedSomewhere = false;
+
+      // 1. Guardar en tu Realtime Database
+      if (rtdb) {
+        try {
+          await rtdbSet(ref(rtdb, 'shared_album_memories/' + card.id), card);
+          savedSomewhere = true;
+        } catch (e) {
+          console.warn("No se pudo escribir en RTDB:", e.message);
+        }
+      }
+
+      // 2. Guardar en tu Firestore
+      if (userFs) {
+        try {
+          const docRef = doc(userFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', card.id);
+          await setDoc(docRef, card);
+          savedSomewhere = true;
+        } catch (e) {
+          console.warn("No se pudo escribir en User Firestore:", e.message);
+        }
+      }
+
+      // 3. Guardar en Firestore del entorno si aplica
+      if (envFs && envUser) {
+        try {
+          const docRef = doc(envFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', card.id);
+          await setDoc(docRef, card);
+          savedSomewhere = true;
+        } catch (e) {
+          console.warn("No se pudo escribir en Env Firestore:", e.message);
+        }
+      }
+
+      return savedSomewhere;
+    };
+
+    window.deleteCardFromRealtimeCloud = async function(cardId) {
+      let deletedSomewhere = false;
+      if (rtdb) {
+        try {
+          await rtdbRemove(ref(rtdb, 'shared_album_memories/' + cardId));
+          deletedSomewhere = true;
+        } catch (e) {}
+      }
+      if (userFs) {
+        try {
+          await deleteDoc(doc(userFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', cardId));
+          deletedSomewhere = true;
+        } catch (e) {}
+      }
+      if (envFs && envUser) {
+        try {
+          await deleteDoc(doc(envFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', cardId));
+          deletedSomewhere = true;
+        } catch (e) {}
+      }
+      return deletedSomewhere;
+    };
+
+    startCloudSync();
+  </script>
+
+  <script>
+    const defaultPostcards = [
+      {
+        id: 'linternas',
+        stampCode: 'POSTAL #07 · DESTACADA',
+        title: 'Nuestro Cielo de Luces',
+        subtitle: 'El Lago de las Linternas Flotantes',
+        category: ['featured', 'pixel'],
+        mosaicSpan: 'md:col-span-8',
+        canvasHeight: 'h-60 sm:h-72',
+        dateBadge: 'Estilo Enredados',
+        emoji: '🏮',
+        defaultUrl: 'festival_linternas.html',
+        quote: '“Antes de ti mi mundo navegaba a oscuras, pero llegaste con tu luz cálida y en tan poco tiempo te convertiste en mi hogar entero.”',
+        tags: ['Pixel Art HD', 'Lago Espejo', 'Arpa Celta'],
+        frameStyle: 'mosaic',
+        isCustom: false
+      },
+      {
+        id: 'peonias',
+        stampCode: 'POSTAL #06 · FAVORITA',
+        title: 'Santuario de Peonías al Atardecer',
+        subtitle: 'Mi Güerita Regando Nuestro Jardín',
+        category: ['featured', 'pixel'],
+        mosaicSpan: 'md:col-span-4',
+        canvasHeight: 'h-60 sm:h-72',
+        dateBadge: 'Edición Especial',
+        emoji: '🌸',
+        defaultUrl: 'jardin_peonias.html',
+        quote: '“Estando juntos soy muy feliz y los momentos a tu lado son maravillosos. Eres lo que tanto esperé, mi niña linda.”',
+        tags: ['Sol Dorado', 'Peonías', 'Invernadero'],
+        frameStyle: 'mosaic',
+        isCustom: false
+      },
+      {
+        id: 'minecraft',
+        stampCode: 'POSTAL #05 · GAMER',
+        title: 'Nuestro Refugio en Minecraft',
+        subtitle: 'Cabaña Acogedora y Fogata',
+        category: ['pixel'],
+        mosaicSpan: 'md:col-span-4',
+        canvasHeight: 'h-48',
+        dateBadge: 'Nivel ∞ Amor',
+        emoji: '🏕️',
+        defaultUrl: 'minecraft_amor.html',
+        quote: '“Nunca me voy a ir. No importa qué tan fría se ponga la noche, esta cabaña y mi corazón siempre serán tu lugar seguro.”',
+        tags: ['Cabaña Roble', 'Lobito', 'Piano C418'],
+        frameStyle: 'mosaic',
+        isCustom: false
+      },
+      {
+        id: 'batman',
+        stampCode: 'POSTAL #04 · 16-BIT',
+        title: 'Gotham Love: Bat-Señal de Corazón',
+        subtitle: 'Vigilando tu Paz',
+        category: ['pixel'],
+        mosaicSpan: 'md:col-span-4',
+        canvasHeight: 'h-48',
+        dateBadge: 'Wayne Tech',
+        emoji: '🦇',
+        defaultUrl: 'bat_amor_pixel.html',
+        quote: '“Hasta en la noche más oscura de Gotham, tú eres la luz que proyecta mi corazón en las nubes.”',
+        tags: ['Arcade 16-Bit', 'Batiseñal', 'Chiptune'],
+        frameStyle: 'mosaic',
+        isCustom: false
+      },
+      {
+        id: 'tulipanes',
+        stampCode: 'POSTAL #01 · ORIGEN',
+        title: 'Carta de Tulipanes Eternos',
+        subtitle: 'Nuestra Primera Sorpresa',
+        category: ['featured'],
+        mosaicSpan: 'md:col-span-4',
+        canvasHeight: 'h-48',
+        dateBadge: 'Primera Carta',
+        emoji: '🌷',
+        defaultUrl: 'carta_de_amor.html',
+        quote: '“Quise darte tulipanes que nunca se marchiten, tal como mis sentimientos por ti.”',
+        tags: ['Sobre 3D', 'Tulipanes', 'Caja Musical'],
+        frameStyle: 'mosaic',
+        isCustom: false
+      },
+      {
+        id: 'universo',
+        stampCode: 'POSTAL #02 · CÓSMICA',
+        title: 'Mi Centro de Gravedad: Universo',
+        subtitle: 'Agujero Negro & Constelación de Amor',
+        category: ['featured'],
+        mosaicSpan: 'md:col-span-6',
+        canvasHeight: 'h-52 sm:h-60',
+        dateBadge: 'Cosmos Infinito',
+        emoji: '🌌',
+        defaultUrl: 'universo_amor.html',
+        quote: '“Eres el centro de gravedad de mi universo; todos mis pensamientos, mis sueños y mis sonrisas orbitan alrededor de ti.”',
+        tags: ['Agujero Negro', 'Constelación', 'Deseo Fugaz'],
+        frameStyle: 'mosaic',
+        isCustom: false
+      },
+      {
+        id: 'altar_eterno',
+        stampCode: 'POSTAL #03 · TRADICIÓN',
+        title: 'Amor Eterno: Altar de Veladoras 3D',
+        subtitle: 'Las 4 Velas Sagradas y Calaverita',
+        category: ['featured'],
+        mosaicSpan: 'md:col-span-6',
+        canvasHeight: 'h-52 sm:h-60',
+        dateBadge: 'Voto Eterno',
+        emoji: '🕯️',
+        defaultUrl: 'amor_eterno.html',
+        quote: '“No hay tormenta que apague este fuego, ni camino en el que vayas a caminar sola. Que vivan miles de años y en la otra vida también.”',
+        tags: ['Veladoras 3D', 'Calaverita', 'Cempasúchil'],
+        frameStyle: 'mosaic',
+        isCustom: false
+      }
+    ];
+
+    let cloudRealtimePostcards = [];
+    let allPostcards = [];
+    let currentFilter = 'all';
+    let currentViewMode = 'mosaic';
+    let currentBookPageIndex = 0;
+    let isLightMode = false;
+
+    function applyThemeUI() {
+      const icon = document.getElementById('themeIcon');
+      if (isLightMode) {
+        document.body.classList.add('light-mode');
+        if (icon) icon.textContent = '🌙';
+      } else {
+        document.body.classList.remove('light-mode');
+        if (icon) icon.textContent = '☀️';
+      }
+    }
+
+    function toggleColorTheme() {
+      isLightMode = !isLightMode;
+      applyThemeUI();
+      showAlbumToast(
+        isLightMode ? 'Modo Claro Pergamino activado ☀️' : 'Modo Oscuro Nocturno activado 🌙',
+        isLightMode ? '☀️' : '🌙'
+      );
+    }
+
+    function rebuildAllPostcards() {
+      const map = new Map();
+      defaultPostcards.forEach(c => map.set(c.id, c));
+      cloudRealtimePostcards.forEach(c => map.set(c.id, c));
+      allPostcards = Array.from(map.values());
+    }
+    rebuildAllPostcards();
+
+    window.applyRealtimeCloudMemories = function(cloudItems) {
+      cloudRealtimePostcards = cloudItems.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+      rebuildAllPostcards();
+      if (currentViewMode === 'mosaic') {
+        renderAlbumGrid();
+      } else {
+        renderBookPage();
+      }
+    };
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      const mosaicCont = document.getElementById('mosaicViewContainer');
+      const bookCont = document.getElementById('bookViewContainer');
+      const mosaicBtn = document.getElementById('viewMosaicBtn');
+      const bookBtn = document.getElementById('viewBookBtn');
+
+      if (mode === 'mosaic') {
+        mosaicCont.classList.remove('hidden');
+        bookCont.classList.add('hidden');
+        mosaicBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow";
+        bookBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold opacity-80 hover:opacity-100";
+        renderAlbumGrid();
+      } else {
+        mosaicCont.classList.add('hidden');
+        bookCont.classList.remove('hidden');
+        bookBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow";
+        mosaicBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold opacity-80 hover:opacity-100";
+        renderBookPage();
+      }
+    }
+
+    function renderAlbumGrid() {
+      const grid = document.getElementById('mosaicGrid');
+      grid.innerHTML = '';
+
+      const filtered = allPostcards.filter(card => {
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'postit') return card.frameStyle === 'postit';
+        if (currentFilter === 'photo') return card.frameStyle === 'vintage' || card.frameStyle === 'stamp';
+        return (card.category || []).includes(currentFilter);
+      });
+
+      filtered.forEach((card) => {
+        const cardEl = document.createElement('article');
+        cardEl.className = `postcard-card rounded-3xl flex flex-col justify-between ${card.mosaicSpan || 'md:col-span-4'}`;
+
+        if (card.frameStyle === 'postit') {
+          const colorClass = card.postitColor || 'postit-yellow';
+          const authorName = card.author || 'Con Amor';
+          cardEl.innerHTML = `
+            <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+              <div class="postit-note ${colorClass} flex-1 flex flex-col justify-between">
+                <div class="postit-tape"></div>
+                <div>
+                  <div class="flex items-center justify-between border-b border-black/15 pb-2 mb-3">
+                    <span class="text-xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/15 text-black flex items-center gap-1">
+                      <span>✍️ De:</span> <span>${authorName}</span>
+                    </span>
+                    <span class="text-xl">${card.emoji || '💌'}</span>
+                  </div>
+                  <h3 class="font-serif-title font-bold text-base sm:text-lg text-stone-900 mb-2">${card.title}</h3>
+                  ${card.customImage ? `<img src="${card.customImage}" class="w-full h-36 object-cover rounded-lg mb-3 border border-black/20 shadow-sm" alt="Foto Post-it">` : ''}
+                  <p class="font-handwriting text-2xl sm:text-3xl leading-snug text-stone-900 my-2">
+                    ${card.quote}
+                  </p>
+                </div>
+                <div class="mt-4 pt-2 border-t border-black/10 flex items-center justify-between text-[11px] text-stone-800 font-semibold">
+                  <span>📅 ${card.dateBadge || 'Nota Adhesiva'}</span>
+                  <span>📌 Post-it</span>
+                </div>
+              </div>
+            </div>
+            <div class="px-5 pb-4 pt-1 flex items-center justify-between">
+              <span class="text-[10px] opacity-75">✍️ Escrito por <strong>${authorName}</strong></span>
+              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1 px-2.5 rounded-lg text-[11px] text-rose-400 hover:text-rose-300 flex items-center gap-1">
+                <span>🗑️</span><span>Quitar</span>
+              </button>
+            </div>
+          `;
+          grid.appendChild(cardEl);
+          return;
+        }
+
+        let visualContent = '';
+        if (card.frameStyle === 'vintage' && card.customImage) {
+          visualContent = `
+            <div class="p-4 bg-black/25 flex items-center justify-center">
+              <div class="vintage-photo-frame max-w-[260px] w-full cursor-pointer" onclick="openPostcardExperience('${card.id}')">
+                <img src="${card.customImage}" class="w-full h-44 object-cover vintage-sepia block" alt="Recuerdo">
+                <p class="font-handwriting text-stone-800 text-lg text-center mt-2">${card.title}</p>
+              </div>
+            </div>
+          `;
+        } else if (card.frameStyle === 'stamp') {
+          visualContent = `
+            <div class="p-4 bg-black/25 flex items-center justify-center">
+              <div class="postal-stamp-frame max-w-[250px] w-full cursor-pointer" onclick="openPostcardExperience('${card.id}')">
+                ${card.customImage ?
+                  `<img src="${card.customImage}" class="w-full h-44 object-cover block" alt="Estampilla">` :
+                  `<div class="w-full h-40 bg-amber-100 flex flex-col items-center justify-center p-4 text-center border border-amber-700/30">
+                     <span class="text-4xl mb-2">${card.emoji}</span>
+                     <span class="font-serif-title font-bold text-amber-950 text-sm">${card.title}</span>
+                   </div>`
+                }
+                <div class="text-[9px] font-pixel text-amber-950 text-center mt-2">CORREO DE AMOR · ${card.subtitle}</div>
+              </div>
+            </div>
+          `;
+        } else {
+          visualContent = `
+            <div class="relative w-full ${card.canvasHeight || 'h-48'} bg-[#090414] overflow-hidden cursor-pointer group" onclick="openPostcardExperience('${card.id}')">
+              ${card.customImage ? 
+                `<img src="${card.customImage}" class="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-700" alt="Postal">` :
+                `<canvas id="preview-canvas-${card.id}" width="320" height="180" class="w-full h-full object-cover pixel-canvas block group-hover:scale-105 transition-transform duration-700"></canvas>`
+              }
+              <div class="absolute inset-0 bg-gradient-to-t from-[#120924] via-transparent to-black/25 opacity-90 group-hover:opacity-60 transition-opacity"></div>
+              <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                <div>
+                  <h3 class="text-base sm:text-lg font-serif-title font-bold text-white drop-shadow-md leading-snug">${card.title}</h3>
+                  <p class="text-xs text-amber-200/90 font-light drop-shadow">${card.subtitle}</p>
+                </div>
+                ${!card.isCustom ? `<span class="shrink-0 w-9 h-9 rounded-full bg-amber-400 text-black flex items-center justify-center text-sm font-bold shadow-lg group-hover:scale-110 transition-transform">▶</span>` : ''}
+              </div>
+            </div>
+          `;
+        }
+
+        cardEl.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between px-4 py-3 border-b border-amber-500/20 bg-black/20">
+              <div class="flex items-center gap-2">
+                <span class="text-lg">${card.emoji}</span>
+                <span class="font-pixel text-[8px] text-amber-500 tracking-wider">${card.stampCode}</span>
+              </div>
+              <div class="px-2.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/20 text-amber-500 border border-amber-500/30">
+                ${card.dateBadge}
+              </div>
+            </div>
+
+            ${visualContent}
+
+            <div class="p-4 sm:p-5">
+              <p class="themed-quote font-vt text-lg sm:text-xl leading-snug italic p-3 rounded-xl border-l-2 border-amber-400">
+                ${card.quote}
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-3">
+                ${(card.tags || ['Recuerdo', 'Especial']).map(t => `<span class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30">${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="px-4 sm:px-5 pb-4 pt-2 border-t border-amber-500/20 flex items-center justify-between gap-2">
+            ${!card.isCustom ? `
+              <button onclick="openPostcardExperience('${card.id}')" class="album-btn flex-1 py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                <span>✨</span><span>Abrir Experiencia</span>
+              </button>
+              <a href="${card.defaultUrl}" target="_blank" class="album-btn-ghost py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1">
+                <span>🔗</span><span>Link</span>
+              </a>
+            ` : `
+              <span class="text-[10px] opacity-85">✍️ De: <strong>${card.author || 'Nosotros'}</strong></span>
+              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-xs text-rose-400 hover:text-rose-300 flex items-center justify-center gap-1 ml-auto">
+                <span>🗑️</span><span>Borrar</span>
+              </button>
+            `}
+          </div>
+        `;
+
+        grid.appendChild(cardEl);
+      });
+
+      drawPostcardMiniCanvases();
+    }
+
+    function drawPostcardMiniCanvases() {
+      allPostcards.forEach(card => {
+        if (card.isCustom) return;
+        const c = document.getElementById(`preview-canvas-${card.id}`);
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        const w = c.width;
+        const h = c.height;
+
+        if (card.id === 'linternas') {
+          const g = ctx.createLinearGradient(0, 0, 0, h);
+          g.addColorStop(0, '#090418');
+          g.addColorStop(0.65, '#2d1657');
+          g.addColorStop(1, '#12072b');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, w, h);
+          ctx.fillStyle = 'rgba(251, 191, 36, 0.18)';
+          ctx.fillRect(0, 125, w, 55);
+          [[55, 35], [120, 22], [200, 42], [260, 28], [85, 70], [230, 68], [160, 52]].forEach(([lx, ly]) => {
+            ctx.fillStyle = 'rgba(254, 240, 138, 0.3)';
+            ctx.fillRect(lx - 4, ly - 4, 16, 18);
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(lx, ly, 8, 10);
+            ctx.fillStyle = '#fef08a';
+            ctx.fillRect(lx + 2, ly + 2, 4, 6);
+          });
+          ctx.fillStyle = '#5c280e';
+          ctx.fillRect(110, 118, 95, 14);
+          ctx.fillStyle = '#eab66a';
+          ctx.fillRect(132, 102, 10, 16);
+          ctx.fillStyle = '#1c1917';
+          ctx.fillRect(168, 102, 10, 16);
+        } else if (card.id === 'peonias') {
+          const g = ctx.createLinearGradient(0, 0, 0, h);
+          g.addColorStop(0, '#7c1d2f');
+          g.addColorStop(0.5, '#f26419');
+          g.addColorStop(1, '#fde047');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, w, h);
+          ctx.fillStyle = '#fffbeb';
+          ctx.beginPath();
+          ctx.arc(240, 75, 26, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#2d4c1e';
+          ctx.fillRect(0, 132, w, 48);
+          [150, 185, 220, 255, 285].forEach(px => {
+            ctx.fillStyle = '#1f4722';
+            ctx.fillRect(px - 8, 124, 16, 12);
+            ctx.fillStyle = '#f43f5e';
+            ctx.fillRect(px - 6, 114, 12, 10);
+            ctx.fillStyle = '#fda4af';
+            ctx.fillRect(px - 3, 116, 6, 5);
+          });
+          ctx.fillStyle = '#eab308';
+          ctx.fillRect(72, 92, 22, 5);
+          ctx.fillStyle = '#f3c97e';
+          ctx.fillRect(75, 97, 16, 18);
+          ctx.fillStyle = '#10b981';
+          ctx.fillRect(76, 115, 14, 22);
+        } else if (card.id === 'minecraft') {
+          ctx.fillStyle = '#070a14';
+          ctx.fillRect(0, 0, w, h);
+          ctx.fillStyle = '#f8fafc';
+          ctx.fillRect(250, 22, 20, 20);
+          ctx.fillStyle = '#1e3a1e';
+          ctx.fillRect(0, 128, w, 52);
+          ctx.fillStyle = '#7c532f';
+          ctx.fillRect(28, 72, 74, 56);
+          ctx.fillStyle = '#4a3019';
+          ctx.fillRect(22, 62, 86, 14);
+          ctx.fillStyle = '#fde047';
+          ctx.fillRect(42, 88, 18, 18);
+          ctx.fillStyle = '#ff5500';
+          ctx.fillRect(154, 114, 16, 14);
+          ctx.fillStyle = '#fde047';
+          ctx.fillRect(158, 118, 8, 10);
+        } else if (card.id === 'batman') {
+          ctx.fillStyle = '#060814';
+          ctx.fillRect(0, 0, w, h);
+          ctx.fillStyle = 'rgba(255, 204, 0, 0.88)';
+          ctx.fillRect(130, 28, 56, 30);
+          ctx.fillStyle = '#ff1a40';
+          ctx.fillRect(153, 39, 10, 8);
+          [15, 65, 115, 185, 240].forEach((bx, idx) => {
+            const bh = 65 + (idx % 3) * 22;
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(bx, h - bh, 42, bh);
+          });
+        } else if (card.id === 'tulipanes') {
+          const g = ctx.createLinearGradient(0, 0, 0, h);
+          g.addColorStop(0, '#fff1f2');
+          g.addColorStop(1, '#fbcfe8');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, w, h);
+          const colors = ['#e11d48', '#facc15', '#ec4899', '#a855f7', '#f43f5e'];
+          [90, 125, 160, 195, 230].forEach((tx, idx) => {
+            ctx.fillStyle = '#22c55e';
+            ctx.fillRect(tx, 85, 4, 65);
+            ctx.fillStyle = colors[idx];
+            ctx.beginPath();
+            ctx.arc(tx + 2, 78, 13, 0, Math.PI * 2);
+            ctx.fill();
+          });
+        } else if (card.id === 'universo') {
+          ctx.fillStyle = '#040309';
+          ctx.fillRect(0, 0, w, h);
+          const halo = ctx.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, 75);
+          halo.addColorStop(0, '#000000');
+          halo.addColorStop(0.35, '#f59e0b');
+          halo.addColorStop(0.65, '#ec4899');
+          halo.addColorStop(1, 'transparent');
+          ctx.fillStyle = halo;
+          ctx.beginPath();
+          ctx.arc(w / 2, h / 2, 75, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#000000';
+          ctx.beginPath();
+          ctx.arc(w / 2, h / 2, 22, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (card.id === 'altar_eterno') {
+          const g = ctx.createLinearGradient(0, 0, 0, h);
+          g.addColorStop(0, '#200833');
+          g.addColorStop(1, '#090212');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, w, h);
+          // Papel picado superior
+          ['#f59e0b', '#9333ea', '#e11d48', '#d97706', '#4f46e5'].forEach((col, i) => {
+            ctx.fillStyle = col;
+            ctx.fillRect(15 + i * 60, 0, 48, 22);
+          });
+          // Repisa de madera y 4 veladoras encendidas
+          ctx.fillStyle = '#3d1b06';
+          ctx.fillRect(30, 138, 260, 16);
+          [68, 125, 182, 238].forEach((vx) => {
+            ctx.fillStyle = 'rgba(255, 170, 0, 0.28)';
+            ctx.beginPath();
+            ctx.arc(vx + 10, 88, 22, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fde68a';
+            ctx.fillRect(vx, 98, 20, 40);
+            ctx.fillStyle = '#ea580c';
+            ctx.fillRect(vx + 2, 108, 16, 28);
+            ctx.fillStyle = '#fef08a';
+            ctx.fillRect(vx + 7, 84, 6, 12);
+          });
+        }
+      });
+    }
+
+    function renderBookPage(direction = null) {
+      const container = document.getElementById('bookPageContent');
+      const indicator = document.getElementById('bookPageIndicator');
+      const card = allPostcards[currentBookPageIndex] || allPostcards[0];
+
+      if (direction) {
+        container.classList.add(direction === 'next' ? 'flip-next' : 'flip-prev');
+        setTimeout(() => {
+          updateBookDOM(container, indicator, card);
+          container.classList.remove('flip-next', 'flip-prev');
+        }, 280);
+      } else {
+        updateBookDOM(container, indicator, card);
+      }
+    }
+
+    function updateBookDOM(container, indicator, card) {
+      indicator.textContent = `Página ${currentBookPageIndex + 1} de ${allPostcards.length}`;
+
+      let imgHtml = '';
+      if (card.customImage) {
+        imgHtml = `
+          <div class="my-4 flex justify-center">
+            <div class="postal-stamp-frame max-w-xs">
+              <img src="${card.customImage}" class="max-h-60 object-cover rounded shadow-md block mx-auto" alt="Foto">
+              <div class="text-[9px] font-pixel text-amber-950 text-center mt-2">ARCHIVO DE AMOR · ${card.subtitle}</div>
+            </div>
+          </div>`;
+      }
+
+      container.innerHTML = `
+        <div>
+          <div class="flex items-center justify-between border-b-2 border-amber-800/40 pb-3 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">${card.emoji}</span>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-amber-900 block">${card.stampCode}</span>
+                <h3 class="text-lg sm:text-xl font-serif-title font-bold text-amber-950">${card.title}</h3>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-amber-900 text-amber-100 text-xs font-semibold">${card.dateBadge}</span>
+          </div>
+
+          ${imgHtml}
+
+          <p class="font-serif-title text-base sm:text-lg text-amber-950 leading-relaxed italic my-4 bg-amber-100/70 p-4 rounded-2xl border-l-4 border-amber-600">
+            ${card.quote}
+          </p>
+
+          <p class="text-xs sm:text-sm text-stone-700 mt-3 font-semibold leading-relaxed">
+            ${card.author ? `✍️ Dejado por: ${card.author} · ` : ''}${card.subtitle}
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t-2 border-amber-800/40 flex items-center justify-between">
+          <span class="font-handwriting text-xl text-amber-900">Para mi niña linda 📖💛</span>
+          ${!card.isCustom ? `
+            <button onclick="openPostcardExperience('${card.id}')" class="album-btn px-4 py-2 rounded-xl text-xs font-bold">
+              ✨ Abrir Teatro Interactivo
+            </button>
+          ` : `
+            <button onclick="requestDeleteCustomCard('${card.id}')" class="text-xs text-rose-700 font-bold underline">
+              🗑️ Eliminar esta página
+            </button>
+          `}
+        </div>
+      `;
+    }
+
+    function nextBookPage() {
+      if (currentBookPageIndex < allPostcards.length - 1) {
+        currentBookPageIndex++;
+        renderBookPage('next');
+      } else {
+        showAlbumToast('Has llegado al final del diario', '📖');
+      }
+    }
+
+    function prevBookPage() {
+      if (currentBookPageIndex > 0) {
+        currentBookPageIndex--;
+        renderBookPage('prev');
+      } else {
+        showAlbumToast('Estás en la primera página', '📖');
+      }
+    }
+
+    const creatorModal = document.getElementById('creatorModal');
+    function openCreatorStudio(defaultMode = 'postit') {
+      document.getElementById('inputFrameStyle').value = defaultMode;
+      togglePostitFields();
+      creatorModal.classList.remove('hidden');
+    }
+    function closeCreatorStudio() { creatorModal.classList.add('hidden'); }
+
+    function togglePostitFields() {
+      const style = document.getElementById('inputFrameStyle').value;
+      const colorSec = document.getElementById('postitColorSection');
+      if (style === 'postit') {
+        colorSec.classList.remove('hidden');
+      } else {
+        colorSec.classList.add('hidden');
+      }
+    }
+
+    function compressUploadedImage(file, callback) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 520;
+          let w = img.width;
+          let h = img.height;
+          if (w > h && w > maxDim) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else if (h > maxDim) {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          callback(canvas.toDataURL('image/jpeg', 0.65));
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleCreatePostcard(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitMemoryBtn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '⏳ Guardando en nube...';
+      }
+
+      const title = document.getElementById('inputTitle').value.trim();
+      const author = document.getElementById('inputAuthor').value.trim() || 'Con Amor';
+      const frameStyle = document.getElementById('inputFrameStyle').value;
+      const emoji = document.getElementById('inputEmoji').value || '💌';
+      const quote = document.getElementById('inputQuote').value.trim();
+      const fileInput = document.getElementById('inputImageFile');
+      const selectedColorRadio = document.querySelector('input[name="postitColor"]:checked');
+      const postitColor = selectedColorRadio ? selectedColorRadio.value : 'postit-yellow';
+
+      const nowStr = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
+
+      const saveCardData = async (imgUrl = null) => {
+        const newCard = {
+          id: 'custom_' + Date.now(),
+          createdAt: Date.now(),
+          stampCode: frameStyle === 'postit' ? `POST-IT · ${author.toUpperCase()}` : (frameStyle === 'stamp' ? 'ESTAMPILLA · AMOR' : 'FOTO · VINTAGE'),
+          title: title,
+          subtitle: `De: ${author} (${nowStr})`,
+          author: author,
+          postitColor: postitColor,
+          category: [frameStyle === 'postit' ? 'postit' : 'photo', 'featured'],
+          mosaicSpan: frameStyle === 'vintage' ? 'md:col-span-6' : 'md:col-span-4',
+          canvasHeight: 'h-48',
+          dateBadge: nowStr,
+          emoji: emoji,
+          quote: `“${quote}”`,
+          tags: [`De: ${author}`, frameStyle === 'postit' ? 'Post-it' : 'Recuerdo'],
+          frameStyle: frameStyle,
+          customImage: imgUrl || '',
+          isCustom: true
+        };
+
+        // Mostrar inmediatamente en pantalla para respuesta instantánea
+        cloudRealtimePostcards.push(newCard);
+        rebuildAllPostcards();
+        if (currentViewMode === 'mosaic') {
+          renderAlbumGrid();
+        } else {
+          renderBookPage();
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = '📌 Pegar en el Álbum';
+        }
+        closeCreatorStudio();
+        document.getElementById('creatorForm').reset();
+        togglePostitFields();
+
+        if (window.saveCardToRealtimeCloud) {
+          const success = await window.saveCardToRealtimeCloud(newCard);
+          if (success) {
+            showAlbumToast(`¡Nota de "${author}" sincronizada en todos los dispositivos! 📌✨`, emoji);
+          } else {
+            showAlbumToast('Visible aquí · Activa reglas públicas en Firebase para otros equipos', '⚠️');
+          }
+        }
+      };
+
+      if (fileInput.files && fileInput.files[0]) {
+        compressUploadedImage(fileInput.files[0], (compressedDataUrl) => {
+          saveCardData(compressedDataUrl);
+        });
+      } else {
+        saveCardData(null);
+      }
+    }
+
+    async function requestDeleteCustomCard(id) {
+      cloudRealtimePostcards = cloudRealtimePostcards.filter(c => c.id !== id);
+      rebuildAllPostcards();
+
+      if (currentViewMode === 'mosaic') {
+        renderAlbumGrid();
+      } else {
+        currentBookPageIndex = Math.max(0, currentBookPageIndex - 1);
+        renderBookPage();
+      }
+
+      if (window.deleteCardFromRealtimeCloud) {
+        await window.deleteCardFromRealtimeCloud(id);
+      }
+      showAlbumToast('Nota o foto eliminada del álbum', '🗑️');
+    }
+
+    // Generador de experiencia interactiva integrada en caso de que el archivo externo no esté en el mismo directorio
+    function buildSelfContainedExperienceHTML(card) {
+      return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"><\/script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=VT323&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; min-height:100vh; background: radial-gradient(circle at 50% 20%, #2a144a, #090414 80%); color:#fffbeb; font-family:'Playfair Display',serif; display:flex; align-items:center; justify-content:center; padding:20px; text-align:center; overflow:hidden; }
+  .card-box { background:rgba(24,12,48,0.9); border:2px solid #fbbf24; border-radius:24px; padding:32px 24px; max-width:540px; width:100%; box-shadow:0 0 45px rgba(251,191,36,0.25); position:relative; z-index:10; }
+  .quote { font-family:'VT323',monospace; font-size:26px; color:#fef08a; line-height:1.35; margin:20px 0; }
+</style>
+</head>
+<body>
+  <div class="card-box">
+    <div class="text-5xl mb-3 animate-bounce">${card.emoji}</div>
+    <div class="text-xs uppercase tracking-widest text-amber-400 font-sans font-bold mb-1">${card.stampCode}</div>
+    <h1 class="text-2xl sm:text-3xl font-bold text-white mb-1">${card.title}</h1>
+    <p class="text-xs text-rose-300 font-sans mb-4">${card.subtitle}</p>
+    <div class="quote bg-black/40 p-4 rounded-2xl border-l-4 border-amber-400">${card.quote}</div>
+    <p class="text-xs text-amber-200/80 font-sans mt-4">✨ Asegúrate de subir el archivo <strong>${card.defaultUrl}</strong> a tu repositorio de GitHub para ver el escenario completo o ábrelo desde tu carpeta.</p>
+  </div>
+</body>
+</html>`;
+    }
+
+    async function openPostcardExperience(cardId) {
+      const card = allPostcards.find(c => c.id === cardId);
+      if (!card || !card.defaultUrl) return;
+
+      const theaterModal = document.getElementById('theaterModal');
+      const iframe = document.getElementById('theaterIframe');
+      const extLink = document.getElementById('theaterExternalLink');
+
+      document.getElementById('theaterTitle').textContent = card.title;
+      document.getElementById('theaterSubtitle').textContent = card.subtitle;
+      document.getElementById('theaterIcon').textContent = card.emoji;
+      if (extLink) extLink.href = card.defaultUrl;
+
+      iframe.removeAttribute('srcdoc');
+      theaterModal.classList.remove('hidden');
+      showAlbumToast(`Abriendo: ${card.title}`, card.emoji);
+
+      // Verificar si el archivo HTML de la postal existe en el servidor actual (ej. GitHub Pages)
+      try {
+        const res = await fetch(card.defaultUrl, { method: 'HEAD' });
+        if (res.ok) {
+          iframe.src = card.defaultUrl;
+        } else {
+          iframe.srcdoc = buildSelfContainedExperienceHTML(card);
+        }
+      } catch (err) {
+        // En vista previa local donde fetch puede fallar, cargar src directo con respaldo
+        iframe.src = card.defaultUrl;
+      }
+    }
+
+    function closeTheaterModal() {
+      const modal = document.getElementById('theaterModal');
+      const iframe = document.getElementById('theaterIframe');
+      iframe.removeAttribute('srcdoc');
+      iframe.src = 'about:blank';
+      modal.classList.add('hidden');
+    }
+
+    function filterAlbum(cat) {
+      currentFilter = cat;
+      document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`filter-${cat}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      renderAlbumGrid();
+    }
+
+    function drawHeroMiniPortrait() {
+      const c = document.getElementById('heroPortraitCanvas');
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+
+      ctx.fillStyle = '#2a144a';
+      ctx.fillRect(0, 0, 32, 32);
+
+      ctx.fillStyle = '#eab66a';
+      ctx.fillRect(5, 5, 22, 23);
+      ctx.fillStyle = '#f7d694';
+      ctx.fillRect(7, 5, 18, 4);
+
+      ctx.fillStyle = '#fff3e6';
+      ctx.fillRect(8, 9, 16, 14);
+
+      ctx.fillStyle = '#7d4f24';
+      ctx.fillRect(10, 13, 4, 4);
+      ctx.fillRect(18, 13, 4, 4);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(10, 13, 1, 1);
+      ctx.fillRect(18, 13, 1, 1);
+
+      ctx.fillStyle = '#c084fc';
+      ctx.fillRect(8, 25, 16, 7);
+    }
+
+    function showAlbumToast(msg, emoji = '✨') {
+      const toast = document.getElementById('albumToast');
+      document.getElementById('toastEmoji').textContent = emoji;
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(window.albumToastTimer);
+      window.albumToastTimer = setTimeout(() => toast.classList.remove('show'), 3400);
+    }
+
+    const dustCanvas = document.getElementById('bgDustCanvas');
+    const dCtx = dustCanvas.getContext('2d');
+    function resizeDust() {
+      dustCanvas.width = window.innerWidth;
+      dustCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeDust);
+    resizeDust();
+
+    const dustParticles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.8 + 0.5,
+      vy: -Math.random() * 0.3 - 0.1,
+      alpha: Math.random() * 0.5 + 0.2
+    }));
+
+    function renderDust() {
+      dCtx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
+      dustParticles.forEach(p => {
+        p.y += p.vy;
+        if (p.y < 0) p.y = dustCanvas.height;
+        dCtx.fillStyle = `rgba(251, 191, 36, ${p.alpha})`;
+        dCtx.beginPath();
+        dCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        dCtx.fill();
+      });
+      requestAnimationFrame(renderDust);
+    }
+
+    window.onload = () => {
+      applyThemeUI();
+      renderAlbumGrid();
+      drawHeroMiniPortrait();
+      renderDust();
+    };
+  </script>
+</body>
+</html>
