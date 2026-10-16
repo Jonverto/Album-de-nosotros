@@ -317,126 +317,116 @@
             📝 Nuestros Post-its
           </button>
           <button onclick="filterAlbum('photo')" id="filter-photo" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-            📸 Fotografías
+            📸 Fotos & Estampillas
           </button>
           <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-            👾 Interactivos
+            👾 Pixel Art
           </button>
         </div>
+        <span id="totalMemoriesBadge" class="text-[11px] opacity-80 font-medium">7 Mundos + Tus Notas en Vivo</span>
       </div>
 
-      <div id="mosaicGrid" class="grid grid-cols-1 md:grid-cols-12 gap-6"></div>
+      <div id="mosaicGrid" class="grid grid-cols-1 md:grid-cols-12 gap-5"></div>
     </div>
 
-    <div id="bookViewContainer" class="hidden py-4">
+    <!-- VISTA MODO LIBRO ANTIGUO CON PÁGINAS 3D -->
+    <div id="bookViewContainer" class="hidden py-2">
       <div class="book-container">
         <div id="bookPageContent" class="book-page rounded-3xl p-6 sm:p-10 min-h-[420px] flex flex-col justify-between"></div>
-      </div>
-      <div class="flex items-center justify-center gap-4 mt-6">
-        <button onclick="prevBookPage()" class="album-btn-ghost px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">
-          <span>◀</span> <span>Página Anterior</span>
-        </button>
-        <span id="bookPageIndicator" class="text-xs font-serif-title italic opacity-90">Página 1</span>
-        <button onclick="nextBookPage()" class="album-btn px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">
-          <span>Siguiente Página</span> <span>▶</span>
-        </button>
+        <div class="flex items-center justify-between mt-5 px-2">
+          <button onclick="prevBookPage()" class="album-btn-ghost px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2">
+            <span>←</span> <span>Página Anterior</span>
+          </button>
+          <span id="bookPageIndicator" class="font-serif-title italic text-sm text-amber-400">Página 1 de 7</span>
+          <button onclick="nextBookPage()" class="album-btn px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2">
+            <span>Siguiente Página</span> <span>→</span>
+          </button>
+        </div>
       </div>
     </div>
 
   </div>
 
   <div id="creatorModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-    <div class="postcard-card themed-modal max-w-xl w-full rounded-3xl p-6 sm:p-7 border-2 border-amber-400/60 max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-amber-500/25 pb-3 mb-4">
-        <div>
-          <span class="text-[10px] uppercase tracking-widest text-amber-500 font-bold">Muro Compartido en Tiempo Real</span>
-          <h3 class="text-lg font-serif-title font-bold">Dejar un Post-it de Amor o Subir Foto</h3>
+    <div class="themed-modal max-w-md w-full rounded-3xl p-6 border-2 border-amber-400/60 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-amber-500/30 pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">💌</span>
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-amber-400">Dejar Nota o Fotografía</h3>
+            <p class="text-[11px] opacity-75">Se sincroniza en vivo en todos nuestros dispositivos</p>
+          </div>
         </div>
-        <button onclick="closeCreatorStudio()" class="text-amber-500 hover:opacity-75 text-sm px-2.5 py-1 rounded-lg bg-amber-500/10">✕</button>
+        <button onclick="closeCreatorStudio()" class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-300 hover:bg-rose-500/40 font-bold text-xs">✕</button>
       </div>
 
-      <form id="creatorForm" onsubmit="handleCreatePostcard(event)" class="space-y-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <form id="creatorForm" onsubmit="handleCreatePostcard(event)" class="space-y-3.5 text-xs">
+        <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-amber-500 mb-1">¿Qué quieres agregar hoy?</label>
-            <select id="inputFrameStyle" onchange="togglePostitFields()" class="w-full themed-input border border-amber-500/40 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-amber-400 font-semibold">
-              <option value="postit">📝 Nota Post-it Adhesiva (Con Color y Firma)</option>
-              <option value="stamp">🎴 Foto con Borde de Estampilla Antigua</option>
-              <option value="vintage">📸 Foto Polaroid / Sepia Vintage</option>
+            <label class="block font-bold mb-1 text-amber-300">¿Quién lo escribe?</label>
+            <input id="inputAuthor" type="text" required placeholder="Ej: Tu Niño / Mi Niña" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none focus:border-amber-400">
+          </div>
+          <div>
+            <label class="block font-bold mb-1 text-amber-300">Estilo de Recuerdo</label>
+            <select id="inputFrameStyle" onchange="togglePostitFields()" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none">
+              <option value="postit">📌 Nota Post-it</option>
+              <option value="stamp">🎴 Estampilla Postal</option>
+              <option value="vintage">📸 Foto Polaroid</option>
             </select>
           </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-amber-500 mb-1">¿Quién deja esta nota / foto?:</label>
-            <input type="text" id="inputAuthor" required placeholder="Ej. Tu niño, Mi Niña Linda..."
-              class="w-full themed-input border border-amber-500/40 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-amber-400 font-bold">
-          </div>
         </div>
 
-        <div id="postitColorSection" class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30">
-          <label class="block text-xs font-semibold text-amber-400 mb-2">🎨 Elige el color de tu Post-it:</label>
-          <div class="grid grid-cols-5 gap-2">
-            <label class="cursor-pointer flex flex-col items-center gap-1">
-              <input type="radio" name="postitColor" value="postit-yellow" checked class="sr-only peer">
-              <span class="w-8 h-8 rounded-lg bg-yellow-300 border-2 border-transparent peer-checked:border-white peer-checked:scale-110 transition shadow"></span>
-              <span class="text-[10px]">Amarillo Sol</span>
+        <div id="postitColorSection">
+          <label class="block font-bold mb-1.5 text-amber-300">Color del Post-it</label>
+          <div class="flex items-center gap-2.5">
+            <label class="cursor-pointer flex items-center gap-1 bg-yellow-300 text-black px-2.5 py-1 rounded-lg font-bold">
+              <input type="radio" name="postitColor" value="postit-yellow" checked> Amarillo
             </label>
-            <label class="cursor-pointer flex flex-col items-center gap-1">
-              <input type="radio" name="postitColor" value="postit-pink" class="sr-only peer">
-              <span class="w-8 h-8 rounded-lg bg-pink-300 border-2 border-transparent peer-checked:border-white peer-checked:scale-110 transition shadow"></span>
-              <span class="text-[10px]">Rosa Amor</span>
+            <label class="cursor-pointer flex items-center gap-1 bg-pink-300 text-black px-2.5 py-1 rounded-lg font-bold">
+              <input type="radio" name="postitColor" value="postit-pink"> Rosa
             </label>
-            <label class="cursor-pointer flex flex-col items-center gap-1">
-              <input type="radio" name="postitColor" value="postit-mint" class="sr-only peer">
-              <span class="w-8 h-8 rounded-lg bg-emerald-300 border-2 border-transparent peer-checked:border-white peer-checked:scale-110 transition shadow"></span>
-              <span class="text-[10px]">Verde Menta</span>
+            <label class="cursor-pointer flex items-center gap-1 bg-emerald-300 text-black px-2.5 py-1 rounded-lg font-bold">
+              <input type="radio" name="postitColor" value="postit-mint"> Menta
             </label>
-            <label class="cursor-pointer flex flex-col items-center gap-1">
-              <input type="radio" name="postitColor" value="postit-lilac" class="sr-only peer">
-              <span class="w-8 h-8 rounded-lg bg-purple-300 border-2 border-transparent peer-checked:border-white peer-checked:scale-110 transition shadow"></span>
-              <span class="text-[10px]">Lila Sueño</span>
+            <label class="cursor-pointer flex items-center gap-1 bg-purple-300 text-black px-2.5 py-1 rounded-lg font-bold">
+              <input type="radio" name="postitColor" value="postit-lilac"> Lila
             </label>
-            <label class="cursor-pointer flex flex-col items-center gap-1">
-              <input type="radio" name="postitColor" value="postit-sky" class="sr-only peer">
-              <span class="w-8 h-8 rounded-lg bg-sky-300 border-2 border-transparent peer-checked:border-white peer-checked:scale-110 transition shadow"></span>
-              <span class="text-[10px]">Azul Cielo</span>
+            <label class="cursor-pointer flex items-center gap-1 bg-sky-300 text-black px-2.5 py-1 rounded-lg font-bold">
+              <input type="radio" name="postitColor" value="postit-sky"> Cielo
             </label>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-amber-500 mb-1">Título de la Nota o Recuerdo:</label>
-            <input type="text" id="inputTitle" required placeholder="Ej. Para cuando despiertes ☀️"
-              class="w-full themed-input border border-amber-500/40 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-amber-400">
+        <div class="grid grid-cols-3 gap-2">
+          <div class="col-span-2">
+            <label class="block font-bold mb-1 text-amber-300">Título corto</label>
+            <input id="inputTitle" type="text" required placeholder="Ej: Te pienso siempre..." class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-amber-500 mb-1">Emoji o Insignia:</label>
-            <input type="text" id="inputEmoji" value="💌" placeholder="Ej. 💌, 🌸, 😍, ✨"
-              class="w-full themed-input border border-amber-500/40 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-amber-400">
+            <label class="block font-bold mb-1 text-amber-300">Emoji</label>
+            <input id="inputEmoji" type="text" value="💖" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 text-center">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-amber-500 mb-1">Subir Fotografía (Opcional):</label>
-          <input type="file" id="inputImageFile" accept="image/*"
-            class="w-full themed-input border border-amber-500/40 rounded-xl px-3 py-1.5 text-[11px] file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-black hover:file:bg-amber-400">
+          <label class="block font-bold mb-1 text-amber-300">Mensaje o Dedicatoria</label>
+          <textarea id="inputQuote" rows="3" required placeholder="Escribe aquí tu nota o recuerdo..." class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none"></textarea>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-amber-500 mb-1">Escribe tu Nota o Dedicatoria:</label>
-          <textarea id="inputQuote" rows="3" required placeholder="Escribe aquí lo que sientes..."
-            class="w-full themed-input border border-amber-500/40 rounded-xl p-3 text-xs focus:outline-none focus:border-amber-400"></textarea>
+          <label class="block font-bold mb-1 text-amber-300">Subir Foto (Opcional)</label>
+          <input id="inputImageFile" type="file" accept="image/*" class="w-full text-[11px] file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-amber-500 file:text-black file:font-bold cursor-pointer">
         </div>
 
-        <div class="pt-2 border-t border-amber-500/25 flex justify-end gap-3">
-          <button type="button" onclick="closeCreatorStudio()" class="album-btn-ghost px-4 py-2 rounded-xl text-xs font-semibold">Cancelar</button>
-          <button type="submit" id="submitMemoryBtn" class="album-btn px-6 py-2 rounded-xl text-xs font-bold">📌 Pegar en el Álbum</button>
+        <div class="pt-2 flex gap-2">
+          <button type="button" onclick="closeCreatorStudio()" class="album-btn-ghost flex-1 py-2.5 rounded-xl font-bold">Cancelar</button>
+          <button id="submitMemoryBtn" type="submit" class="album-btn flex-1 py-2.5 rounded-xl font-bold">📌 Pegar en el Álbum</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- MODAL TEATRO INTERACTIVO -->
   <div id="theaterModal" class="hidden fixed inset-0 z-50 flex flex-col bg-black/92 backdrop-blur-xl p-2 sm:p-5">
     <div class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between gap-2 bg-[#170d2b] border border-amber-400/40 rounded-t-2xl px-4 py-2.5">
       <div class="flex items-center gap-2.5">
@@ -446,27 +436,31 @@
           <p id="theaterSubtitle" class="text-[11px] text-purple-200/80">Experiencia en vivo</p>
         </div>
       </div>
-      <button onclick="closeTheaterModal()" class="px-3.5 py-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-bold transition">
-        ✕ Cerrar
-      </button>
+      <div class="flex items-center gap-2">
+        <a id="theaterExternalLink" href="#" target="_blank" class="px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-400/50 text-amber-300 hover:bg-amber-500/30 text-xs font-bold transition">
+          ↗ Abrir en Pestaña Nueva
+        </a>
+        <button onclick="closeTheaterModal()" class="px-3.5 py-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-bold transition">
+          ✕ Cerrar
+        </button>
+      </div>
     </div>
     <div class="max-w-5xl w-full mx-auto flex-1 bg-[#090414] border-x border-b border-amber-400/40 rounded-b-2xl overflow-hidden relative flex flex-col">
       <iframe id="theaterIframe" class="w-full h-full flex-1 border-0" sandbox="allow-scripts allow-same-origin allow-modals"></iframe>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getDatabase, ref, set as rtdbSet, remove as rtdbRemove, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-    window.firestoreReady = false;
-    let db = null;
-    let auth = null;
-    let currentUser = null;
-    const appId = 'album-compt-us-realtime';
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'album-compt-us-realtime';
 
-    const embeddedUserFirebaseConfig = {
+    const userFirebaseConfig = {
       apiKey: "AIzaSyBLgylENlDXij8732zpKhUSHBHbJTZtTlA",
       authDomain: "album-compt-us.firebaseapp.com",
       databaseURL: "https://album-compt-us-default-rtdb.firebaseio.com",
@@ -477,77 +471,247 @@
       measurementId: "G-Q4MXELWHRB"
     };
 
-    window.initRealtimeCloud = async function() {
-      try {
-        const app = initializeApp(embeddedUserFirebaseConfig, 'albumApp_' + Date.now());
-        auth = getAuth(app);
-        db = getFirestore(app);
+    let rtdb = null;
+    let userFs = null;
+    let envFs = null;
+    let envUser = null;
+    let gunNode = null;
 
-        await signInAnonymously(auth);
+    let itemsFromGun = {};
+    let itemsFromRTDB = {};
+    let itemsFromUserFs = {};
+    let itemsFromEnvFs = {};
 
-        onAuthStateChanged(auth, (user) => {
-          currentUser = user;
-          if (user) {
-            window.firestoreReady = true;
-            const dot = document.getElementById('syncDot');
-            const txt = document.getElementById('syncBadgeText');
-            if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping';
-            if (txt) txt.textContent = 'Conectados ♥';
-            subscribeToRealtimeMemories();
+    function setSyncStatus(isOnline, labelText) {
+      const dot = document.getElementById('syncDot');
+      const txt = document.getElementById('syncBadgeText');
+      if (dot) {
+        dot.className = isOnline
+          ? 'w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping'
+          : 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse';
+      }
+      if (txt) txt.textContent = labelText;
+    }
+
+    function mergeAndBroadcastCloudMemories() {
+      const mergedMap = new Map();
+      const deletedIds = window.deletedMemoryIds || new Set();
+
+      [itemsFromEnvFs, itemsFromUserFs, itemsFromRTDB, itemsFromGun].forEach(sourceObj => {
+        Object.values(sourceObj).forEach(item => {
+          if (item && item.id && !item._deleted && !deletedIds.has(item.id)) {
+            mergedMap.set(item.id, item);
           }
         });
-      } catch (e) {
-        console.warn("Aviso al iniciar nube en tiempo real:", e);
-      }
-    };
-
-    function subscribeToRealtimeMemories() {
-      if (!currentUser || !db) return;
-      const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'shared_album_memories');
-      onSnapshot(colRef, (snapshot) => {
-        const cloudItems = [];
-        snapshot.forEach((docSnap) => {
-          cloudItems.push(docSnap.data());
-        });
-        if (window.applyRealtimeCloudMemories) {
-          window.applyRealtimeCloudMemories(cloudItems);
-        }
-      }, (err) => {
-        console.warn("Error en listener de tiempo real:", err);
       });
+
+      const list = Array.from(mergedMap.values());
+      if (window.applyRealtimeCloudMemories) {
+        window.applyRealtimeCloudMemories(list);
+      }
+    }
+
+    async function startCloudSync() {
+      // CANAL 1: GunDB P2P Global Relay (Funciona 100% en tiempo real entre cualquier celular/PC sin permisos ni tokens)
+      try {
+        if (typeof Gun !== 'undefined') {
+          const gun = Gun([
+            'https://gun-manhattan.herokuapp.com/gun',
+            'https://peer.wallie.io/gun',
+            'https://gundb-relay-mlccl.ondigitalocean.app/gun'
+          ]);
+          gunNode = gun.get('jonverto_album_nuestros_mundos_v2026_sync');
+          gunNode.map().on((data, key) => {
+            if (!data) {
+              delete itemsFromGun[key];
+            } else if (data._deleted) {
+              if (!window.deletedMemoryIds) window.deletedMemoryIds = new Set();
+              window.deletedMemoryIds.add(key);
+              delete itemsFromGun[key];
+            } else {
+              try {
+                const parsed = typeof data.jsonPayload === 'string' ? JSON.parse(data.jsonPayload) : data;
+                if (parsed && parsed.id) {
+                  itemsFromGun[key] = parsed;
+                }
+              } catch (e) {}
+            }
+            setSyncStatus(true, 'Conectados en Vivo ♥');
+            mergeAndBroadcastCloudMemories();
+          });
+        }
+      } catch (gunErr) {
+        console.warn("Aviso Gun relay:", gunErr);
+      }
+
+      // CANAL 2: Firebase Realtime Database REST Polling (Respaldo directo HTTP cada 4s)
+      async function pollFirebaseRest() {
+        try {
+          const resp = await fetch(`${userFirebaseConfig.databaseURL}/shared_album_memories.json`);
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data && typeof data === 'object') {
+              itemsFromRTDB = data;
+              setSyncStatus(true, 'Conectados en Vivo ♥');
+              mergeAndBroadcastCloudMemories();
+            }
+          }
+        } catch (e) {}
+      }
+      pollFirebaseRest();
+      setInterval(pollFirebaseRest, 4500);
+
+      // CANAL 3: SDK Oficial de tu proyecto Firebase (RTDB + Firestore)
+      try {
+        const userApp = initializeApp(userFirebaseConfig, 'userAlbumCloud');
+        const userAuth = getAuth(userApp);
+        rtdb = getDatabase(userApp);
+        userFs = getFirestore(userApp);
+
+        try {
+          await signInAnonymously(userAuth);
+        } catch (authErr) {}
+
+        const rtdbRef = ref(rtdb, 'shared_album_memories');
+        onValue(rtdbRef, (snapshot) => {
+          itemsFromRTDB = snapshot.val() || {};
+          setSyncStatus(true, 'Conectados en Vivo ♥');
+          mergeAndBroadcastCloudMemories();
+        }, () => {});
+
+        const userColRef = collection(userFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories');
+        onSnapshot(userColRef, (snapshot) => {
+          const temp = {};
+          snapshot.forEach(d => { temp[d.id] = d.data(); });
+          itemsFromUserFs = temp;
+          setSyncStatus(true, 'Conectados en Vivo ♥');
+          mergeAndBroadcastCloudMemories();
+        }, () => {});
+      } catch (err) {}
+
+      // CANAL 4: Firestore del entorno interactivo
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        try {
+          const envConfig = JSON.parse(__firebase_config);
+          const envApp = initializeApp(envConfig, 'envAlbumCloud');
+          const envAuth = getAuth(envApp);
+          envFs = getFirestore(envApp);
+
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(envAuth, __initial_auth_token);
+          } else {
+            await signInAnonymously(envAuth);
+          }
+
+          onAuthStateChanged(envAuth, (u) => {
+            envUser = u;
+            if (u) {
+              const envColRef = collection(envFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories');
+              onSnapshot(envColRef, (snapshot) => {
+                const temp = {};
+                snapshot.forEach(d => { temp[d.id] = d.data(); });
+                itemsFromEnvFs = temp;
+                setSyncStatus(true, 'Conectados en Vivo ♥');
+                mergeAndBroadcastCloudMemories();
+              }, () => {});
+            }
+          });
+        } catch (e) {}
+      }
     }
 
     window.saveCardToRealtimeCloud = async function(card) {
-      if (!currentUser || !db) return false;
-      try {
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'shared_album_memories', card.id);
-        await setDoc(docRef, card);
-        return true;
-      } catch (e) {
-        console.warn("Error guardando en nube:", e);
-        return false;
+      let savedSomewhere = false;
+
+      // 1. Guardar instantáneamente vía GunDB P2P (Cero configuración requerida)
+      if (gunNode) {
+        try {
+          gunNode.get(card.id).put({
+            id: card.id,
+            createdAt: card.createdAt,
+            jsonPayload: JSON.stringify(card),
+            _deleted: false
+          });
+          savedSomewhere = true;
+        } catch (e) {}
       }
+
+      // 2. Guardar vía REST en tu Realtime Database
+      try {
+        const res = await fetch(`${userFirebaseConfig.databaseURL}/shared_album_memories/${card.id}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(card)
+        });
+        if (res.ok) savedSomewhere = true;
+      } catch (e) {}
+
+      // 3. Guardar vía SDK RTDB
+      if (rtdb) {
+        try {
+          await rtdbSet(ref(rtdb, 'shared_album_memories/' + card.id), card);
+          savedSomewhere = true;
+        } catch (e) {}
+      }
+
+      // 4. Guardar en tu Firestore
+      if (userFs) {
+        try {
+          const docRef = doc(userFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', card.id);
+          await setDoc(docRef, card);
+          savedSomewhere = true;
+        } catch (e) {}
+      }
+
+      // 5. Guardar en Env Firestore
+      if (envFs && envUser) {
+        try {
+          const docRef = doc(envFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', card.id);
+          await setDoc(docRef, card);
+          savedSomewhere = true;
+        } catch (e) {}
+      }
+
+      return savedSomewhere;
     };
 
     window.deleteCardFromRealtimeCloud = async function(cardId) {
-      if (!currentUser || !db) return false;
-      try {
-        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'shared_album_memories', cardId);
-        await deleteDoc(docRef);
-        return true;
-      } catch (e) {
-        return false;
+      if (!window.deletedMemoryIds) window.deletedMemoryIds = new Set();
+      window.deletedMemoryIds.add(cardId);
+
+      delete itemsFromGun[cardId];
+      delete itemsFromRTDB[cardId];
+      delete itemsFromUserFs[cardId];
+      delete itemsFromEnvFs[cardId];
+
+      if (gunNode) {
+        try {
+          gunNode.get(cardId).put({ id: cardId, _deleted: true });
+        } catch (e) {}
       }
+      try {
+        await fetch(`${userFirebaseConfig.databaseURL}/shared_album_memories/${cardId}.json`, { method: 'DELETE' });
+      } catch (e) {}
+      if (rtdb) {
+        try { await rtdbRemove(ref(rtdb, 'shared_album_memories/' + cardId)); } catch (e) {}
+      }
+      if (userFs) {
+        try { await deleteDoc(doc(userFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', cardId)); } catch (e) {}
+      }
+      if (envFs && envUser) {
+        try { await deleteDoc(doc(envFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', cardId)); } catch (e) {}
+      }
+      return true;
     };
 
-    window.initRealtimeCloud();
+    startCloudSync();
   </script>
 
   <script>
     const defaultPostcards = [
       {
         id: 'linternas',
-        stampCode: 'POSTAL #06 · DESTACADA',
+        stampCode: 'POSTAL #07 · DESTACADA',
         title: 'Nuestro Cielo de Luces',
         subtitle: 'El Lago de las Linternas Flotantes',
         category: ['featured', 'pixel'],
@@ -563,7 +727,7 @@
       },
       {
         id: 'peonias',
-        stampCode: 'POSTAL #05 · FAVORITA',
+        stampCode: 'POSTAL #06 · FAVORITA',
         title: 'Santuario de Peonías al Atardecer',
         subtitle: 'Mi Güerita Regando Nuestro Jardín',
         category: ['featured', 'pixel'],
@@ -579,7 +743,7 @@
       },
       {
         id: 'minecraft',
-        stampCode: 'POSTAL #04 · GAMER',
+        stampCode: 'POSTAL #05 · GAMER',
         title: 'Nuestro Refugio en Minecraft',
         subtitle: 'Cabaña Acogedora y Fogata',
         category: ['pixel'],
@@ -595,7 +759,7 @@
       },
       {
         id: 'batman',
-        stampCode: 'POSTAL #03 · 16-BIT',
+        stampCode: 'POSTAL #04 · 16-BIT',
         title: 'Gotham Love: Bat-Señal de Corazón',
         subtitle: 'Vigilando tu Paz',
         category: ['pixel'],
@@ -628,23 +792,37 @@
       {
         id: 'universo',
         stampCode: 'POSTAL #02 · CÓSMICA',
-        title: 'Mi Centro de Gravedad & Altar 3D',
-        subtitle: 'Agujero Negro & Veladoras Sagradas',
+        title: 'Mi Centro de Gravedad: Universo',
+        subtitle: 'Agujero Negro & Constelación de Amor',
         category: ['featured'],
-        mosaicSpan: 'md:col-span-12',
+        mosaicSpan: 'md:col-span-6',
         canvasHeight: 'h-52 sm:h-60',
-        dateBadge: 'Colección Eterna',
+        dateBadge: 'Cosmos Infinito',
         emoji: '🌌',
         defaultUrl: 'universo_amor.html',
-        secondaryUrl: 'amor_eterno.html',
-        quote: '“Entre millones de galaxias y en todas las vidas posibles, mi alma siempre te buscaría a ti.”',
-        tags: ['Agujero Negro', 'Altar 3D', 'Cempasúchil'],
+        quote: '“Eres el centro de gravedad de mi universo; todos mis pensamientos, mis sueños y mis sonrisas orbitan alrededor de ti.”',
+        tags: ['Agujero Negro', 'Constelación', 'Deseo Fugaz'],
+        frameStyle: 'mosaic',
+        isCustom: false
+      },
+      {
+        id: 'altar_eterno',
+        stampCode: 'POSTAL #03 · TRADICIÓN',
+        title: 'Amor Eterno: Altar de Veladoras 3D',
+        subtitle: 'Las 4 Velas Sagradas y Calaverita',
+        category: ['featured'],
+        mosaicSpan: 'md:col-span-6',
+        canvasHeight: 'h-52 sm:h-60',
+        dateBadge: 'Voto Eterno',
+        emoji: '🕯️',
+        defaultUrl: 'amor_eterno.html',
+        quote: '“No hay tormenta que apague este fuego, ni camino en el que vayas a caminar sola. Que vivan miles de años y en la otra vida también.”',
+        tags: ['Veladoras 3D', 'Calaverita', 'Cempasúchil'],
         frameStyle: 'mosaic',
         isCustom: false
       }
     ];
 
-    let userPostcards = [];
     let cloudRealtimePostcards = [];
     let allPostcards = [];
     let currentFilter = 'all';
@@ -675,7 +853,6 @@
     function rebuildAllPostcards() {
       const map = new Map();
       defaultPostcards.forEach(c => map.set(c.id, c));
-      userPostcards.forEach(c => map.set(c.id, c));
       cloudRealtimePostcards.forEach(c => map.set(c.id, c));
       allPostcards = Array.from(map.values());
     }
@@ -976,6 +1153,32 @@
           ctx.beginPath();
           ctx.arc(w / 2, h / 2, 22, 0, Math.PI * 2);
           ctx.fill();
+        } else if (card.id === 'altar_eterno') {
+          const g = ctx.createLinearGradient(0, 0, 0, h);
+          g.addColorStop(0, '#200833');
+          g.addColorStop(1, '#090212');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, w, h);
+          // Papel picado superior
+          ['#f59e0b', '#9333ea', '#e11d48', '#d97706', '#4f46e5'].forEach((col, i) => {
+            ctx.fillStyle = col;
+            ctx.fillRect(15 + i * 60, 0, 48, 22);
+          });
+          // Repisa de madera y 4 veladoras encendidas
+          ctx.fillStyle = '#3d1b06';
+          ctx.fillRect(30, 138, 260, 16);
+          [68, 125, 182, 238].forEach((vx) => {
+            ctx.fillStyle = 'rgba(255, 170, 0, 0.28)';
+            ctx.beginPath();
+            ctx.arc(vx + 10, 88, 22, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fde68a';
+            ctx.fillRect(vx, 98, 20, 40);
+            ctx.fillStyle = '#ea580c';
+            ctx.fillRect(vx + 2, 108, 16, 28);
+            ctx.fillStyle = '#fef08a';
+            ctx.fillRect(vx + 7, 84, 6, 12);
+          });
         }
       });
     }
@@ -1091,7 +1294,7 @@
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          const maxDim = 820;
+          const maxDim = 520;
           let w = img.width;
           let h = img.height;
           if (w > h && w > maxDim) {
@@ -1105,7 +1308,7 @@
           canvas.height = h;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, w, h);
-          callback(canvas.toDataURL('image/jpeg', 0.8));
+          callback(canvas.toDataURL('image/jpeg', 0.65));
         };
         img.src = evt.target.result;
       };
@@ -1114,6 +1317,12 @@
 
     function handleCreatePostcard(e) {
       e.preventDefault();
+      const submitBtn = document.getElementById('submitMemoryBtn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '⏳ Guardando en nube...';
+      }
+
       const title = document.getElementById('inputTitle').value.trim();
       const author = document.getElementById('inputAuthor').value.trim() || 'Con Amor';
       const frameStyle = document.getElementById('inputFrameStyle').value;
@@ -1142,29 +1351,35 @@
           quote: `“${quote}”`,
           tags: [`De: ${author}`, frameStyle === 'postit' ? 'Post-it' : 'Recuerdo'],
           frameStyle: frameStyle,
-          customImage: imgUrl,
+          customImage: imgUrl || '',
           isCustom: true
         };
 
-        userPostcards.push(newCard);
-        localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
+        // Mostrar inmediatamente en pantalla para respuesta instantánea
+        cloudRealtimePostcards.push(newCard);
         rebuildAllPostcards();
-
         if (currentViewMode === 'mosaic') {
           renderAlbumGrid();
         } else {
           renderBookPage();
         }
 
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = '📌 Pegar en el Álbum';
+        }
         closeCreatorStudio();
         document.getElementById('creatorForm').reset();
         togglePostitFields();
 
         if (window.saveCardToRealtimeCloud) {
-          await window.saveCardToRealtimeCloud(newCard);
+          const success = await window.saveCardToRealtimeCloud(newCard);
+          if (success) {
+            showAlbumToast(`¡Nota de "${author}" sincronizada en todos los dispositivos! 📌✨`, emoji);
+          } else {
+            showAlbumToast('Visible aquí · Activa reglas públicas en Firebase para otros equipos', '⚠️');
+          }
         }
-
-        showAlbumToast(`¡Recuerdo de "${author}" pegado en el álbum! 📌✨`, emoji);
       };
 
       if (fileInput.files && fileInput.files[0]) {
@@ -1177,14 +1392,8 @@
     }
 
     async function requestDeleteCustomCard(id) {
-      userPostcards = userPostcards.filter(c => c.id !== id);
-      localStorage.setItem('user_custom_postcards', JSON.stringify(userPostcards));
       cloudRealtimePostcards = cloudRealtimePostcards.filter(c => c.id !== id);
       rebuildAllPostcards();
-
-      if (window.deleteCardFromRealtimeCloud) {
-        await window.deleteCardFromRealtimeCloud(id);
-      }
 
       if (currentViewMode === 'mosaic') {
         renderAlbumGrid();
@@ -1192,27 +1401,289 @@
         currentBookPageIndex = Math.max(0, currentBookPageIndex - 1);
         renderBookPage();
       }
-      showAlbumToast('Nota o foto eliminada en tiempo real', '🗑️');
+
+      if (window.deleteCardFromRealtimeCloud) {
+        await window.deleteCardFromRealtimeCloud(id);
+      }
+      showAlbumToast('Nota o foto eliminada en todos los dispositivos', '🗑️');
     }
 
-    function openPostcardExperience(cardId) {
+    function buildSelfContainedExperienceHTML(card) {
+      // POSTAL #01: CARTA DE TULIPANES ETERNOS INTERACTIVA COMPLETA
+      if (card.id === 'tulipanes') {
+        return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"><\/script>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; min-height:100vh; background:radial-gradient(circle at top,#fff1f3 0%,#fed7e2 50%,#fbb6ce 100%); font-family:'Montserrat',sans-serif; display:flex; align-items:center; justify-content:center; padding:16px; overflow-x:hidden; }
+  .font-calligraphy { font-family:'Great Vibes',cursive; }
+  .tulip-btn { cursor:pointer; transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); transform-origin:bottom center; }
+  .tulip-btn:hover { transform:scale(1.14) translateY(-8px); }
+</style>
+</head>
+<body>
+  <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 max-w-lg w-full text-center shadow-2xl border border-pink-200 relative">
+    <div class="flex justify-between items-center border-b border-pink-100 pb-2 mb-3 text-xs text-rose-500 font-semibold">
+      <span>🌷 POSTAL #01 · NUESTRO ORIGEN</span>
+      <span id="cnt">Toca cada tulipán ✨</span>
+    </div>
+    <h1 class="text-5xl sm:text-6xl font-calligraphy text-rose-600 my-1">¡Te amo!</h1>
+    <p class="text-xs sm:text-sm text-stone-600 italic mb-4">"En un jardín lleno de estrellas y mil maravillas, mis ojos siempre te elegirían a ti."</p>
+
+    <div class="h-56 flex items-end justify-center gap-1 sm:gap-3 my-2 pb-2 relative">
+      <div onclick="showMsg(0)" class="tulip-btn" style="transform:rotate(-14deg)">
+        <svg class="w-16 sm:w-20 h-44" viewBox="0 0 100 220"><path d="M50 70 L50 215" stroke="#4ade80" stroke-width="6"/><ellipse cx="50" cy="50" rx="22" ry="30" fill="#e11d48"/><path d="M32 50 C30 22,50 18,50 48 Z" fill="#fb7185"/></svg>
+      </div>
+      <div onclick="showMsg(1)" class="tulip-btn" style="transform:rotate(-6deg)">
+        <svg class="w-16 sm:w-20 h-48" viewBox="0 0 100 220"><path d="M50 70 L50 215" stroke="#22c55e" stroke-width="6"/><ellipse cx="50" cy="48" rx="22" ry="30" fill="#facc15"/><path d="M32 48 C30 20,50 16,50 46 Z" fill="#fef08a"/></svg>
+      </div>
+      <div onclick="showMsg(2)" class="tulip-btn">
+        <svg class="w-20 sm:w-24 h-52" viewBox="0 0 100 220"><path d="M50 65 L50 215" stroke="#16a34a" stroke-width="7"/><ellipse cx="50" cy="44" rx="25" ry="34" fill="#ec4899"/><path d="M30 44 C28 15,50 12,50 42 Z" fill="#fbcfe8"/></svg>
+      </div>
+      <div onclick="showMsg(3)" class="tulip-btn" style="transform:rotate(7deg)">
+        <svg class="w-16 sm:w-20 h-48" viewBox="0 0 100 220"><path d="M50 70 L50 215" stroke="#22c55e" stroke-width="6"/><ellipse cx="50" cy="48" rx="22" ry="30" fill="#a855f7"/><path d="M32 48 C30 20,50 16,50 46 Z" fill="#e9d5ff"/></svg>
+      </div>
+      <div onclick="showMsg(4)" class="tulip-btn" style="transform:rotate(15deg)">
+        <svg class="w-16 sm:w-20 h-44" viewBox="0 0 100 220"><path d="M50 70 L50 215" stroke="#4ade80" stroke-width="6"/><ellipse cx="50" cy="50" rx="22" ry="30" fill="#f43f5e"/><path d="M32 50 C30 22,50 18,50 48 Z" fill="#fecdd3"/></svg>
+      </div>
+    </div>
+
+    <div id="msgBox" class="bg-rose-50 border border-rose-200 rounded-2xl p-3.5 text-xs sm:text-sm text-rose-800 font-medium mb-3">
+      🌷 Toca cualquiera de los 5 tulipanes para escuchar su nota y descubrir su mensaje secreto...
+    </div>
+
+    <p class="text-xs text-stone-600 leading-relaxed bg-pink-50/70 p-3 rounded-xl border border-pink-100">
+      "Quise darte tulipanes que nunca se marchiten, tal como mis sentimientos por ti. Gracias por llenar mis días de paz y ser lo más lindo que me ha pasado."
+    </p>
+  </div>
+  <script>
+    const notes = [
+      "❤️ Tulipán Rojo: Tu sonrisa es mi motivo favorito para sonreír cada día.",
+      "☀️ Tulipán Dorado: Gracias por iluminar mi mundo incluso en días grises.",
+      "🌸 Tulipán Rosa: En tus abrazos encontré el lugar más cálido y seguro.",
+      "✨ Tulipán Violeta: Contigo hasta los momentos más simples se vuelven mágicos.",
+      "🕊️ Tulipán Coral: Te amo de la forma más honesta, bonita e incondicional."
+    ];
+    const freqs = [523.25, 587.33, 659.25, 783.99, 880];
+    let ctx;
+    function showMsg(i) {
+      document.getElementById('msgBox').textContent = notes[i];
+      try {
+        ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'triangle'; o.frequency.value = freqs[i];
+        g.gain.setValueAtTime(0.12, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
+        o.connect(g); g.connect(ctx.destination);
+        o.start(); o.stop(ctx.currentTime + 1.2);
+      } catch(e){}
+    }
+  <\/script>
+</body>
+</html>`;
+      }
+
+      // POSTAL #06: SANTUARIO DE PEONÍAS AL ATARDECER INTERACTIVO COMPLETO
+      if (card.id === 'peonias') {
+        return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"><\/script>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  * { image-rendering:pixelated; user-select:none; }
+  body { margin:0; min-height:100vh; background:radial-gradient(circle at 50% 15%,#3d1410 0%,#120504 100%); color:#fff8f0; font-family:'Press Start 2P',monospace; display:flex; align-items:center; justify-content:center; padding:12px; }
+  .font-vt { font-family:'VT323',monospace; }
+  .frame { background:#2b160e; border:4px solid #120804; box-shadow:0 0 0 2px #d97706,0 15px 35px rgba(0,0,0,0.85); }
+  .btn-cozy { background:linear-gradient(180deg,#e11d48 0%,#9f1239 100%); border:2px solid #140804; color:#fff; font-size:9px; padding:10px 12px; cursor:pointer; }
+</style>
+</head>
+<body>
+  <div class="frame max-w-2xl w-full p-3 sm:p-4 rounded-xl flex flex-col gap-3">
+    <div class="flex items-center justify-between border-b border-amber-500/30 pb-2">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🌸</span>
+        <div>
+          <div class="text-[9px] sm:text-[10px] text-amber-300">SANTUARIO DE PEONÍAS AL ATARDECER</div>
+          <div class="font-vt text-base text-rose-300">Toca el jardín o los botones para regar nuestras 5 peonías</div>
+        </div>
+      </div>
+      <span class="text-[8px] bg-rose-600 px-2 py-1 rounded text-white">POSTAL #06</span>
+    </div>
+
+    <div class="relative w-full aspect-[16/9] bg-[#1a0908] border-4 border-[#120604] overflow-hidden cursor-pointer" onclick="waterGarden()">
+      <canvas id="peonyCanvas" width="360" height="200" class="w-full h-full block"></canvas>
+    </div>
+
+    <div class="bg-[#1b0d08] border-2 border-[#5c3221] p-3 flex items-center gap-3">
+      <div class="text-2xl shrink-0">👩🏼‍🌾💖</div>
+      <p id="pQuote" class="font-vt text-xl sm:text-2xl text-amber-100 leading-snug">
+        "Estando juntos soy muy feliz y los momentos a tu lado son maravillosos. Eres lo que tanto esperé, mi niña linda."
+      </p>
+    </div>
+
+    <div class="grid grid-cols-5 gap-1.5">
+      <button onclick="pickPeony(0)" class="btn-cozy rounded">🌺 Peonía I</button>
+      <button onclick="pickPeony(1)" class="btn-cozy rounded">🌸 Peonía II</button>
+      <button onclick="pickPeony(2)" class="btn-cozy rounded">🌷 Peonía III</button>
+      <button onclick="pickPeony(3)" class="btn-cozy rounded">💮 Peonía IV</button>
+      <button onclick="pickPeony(4)" class="btn-cozy rounded">👑 Peonía V</button>
+    </div>
+  </div>
+  <script>
+    const quotes = [
+      "Estando juntos soy muy feliz y los momentos a tu lado son maravillosos. 🌸",
+      "Tengo tantos momentos lindos en tan poco tiempo contigo, que cada día es un regalo. ✨",
+      "Me hiciste amarte tanto en tan poco tiempo... Tu dulzura conquistó mi alma. 💖",
+      "Los momentos más lindos los paso todo el tiempo contigo a mi lado. Nunca me voy a ir. 🌅",
+      "Eres lo que tanto esperé, mi niña linda. Siempre estaré cuidándote y amándote. 👑"
+    ];
+    const c = document.getElementById('peonyCanvas'), ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    let tick = 0, waterTimer = 60, scales = [1,1,1,1,1];
+    let drops = [];
+    function playNote(f) {
+      try {
+        window.ac = window.ac || new (window.AudioContext||window.webkitAudioContext)();
+        const o = window.ac.createOscillator(), g = window.ac.createGain();
+        o.type = 'sine'; o.frequency.value = f;
+        g.gain.setValueAtTime(0.08, window.ac.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, window.ac.currentTime + 1.1);
+        o.connect(g); g.connect(window.ac.destination);
+        o.start(); o.stop(window.ac.currentTime + 1.1);
+      } catch(e){}
+    }
+    function pickPeony(i) {
+      document.getElementById('pQuote').textContent = '"' + quotes[i] + '"';
+      scales[i] = 1.45; waterTimer = 90;
+      playNote([349.23, 440, 523.25, 659.25, 698.46][i]);
+    }
+    function waterGarden() {
+      waterTimer = 100;
+      scales = scales.map(() => 1.35);
+      playNote(523.25);
+    }
+    function loop() {
+      tick++;
+      const g = ctx.createLinearGradient(0,0,0,150);
+      g.addColorStop(0,'#6b1d2f'); g.addColorStop(0.35,'#ba3818'); g.addColorStop(0.7,'#f26419'); g.addColorStop(1,'#fde047');
+      ctx.fillStyle = g; ctx.fillRect(0,0,360,200);
+      // Sol dorado
+      ctx.fillStyle = '#fffbeb'; ctx.beginPath(); ctx.arc(260,85,28,0,Math.PI*2); ctx.fill();
+      // Suelo y jardinera
+      ctx.fillStyle = '#2d1c10'; ctx.fillRect(0,145,360,55);
+      ctx.fillStyle = '#5c341e'; ctx.fillRect(145,152,195,34);
+      // Ella (Güerita, cabello castaño claro casi rubio, ojos café claros)
+      const gx = 80, gy = 108 + (Math.floor(tick/25)%2);
+      ctx.fillStyle = '#eab308'; ctx.fillRect(gx-4,gy-10,28,6); // sombrero
+      ctx.fillStyle = '#f3c97e'; ctx.fillRect(gx,gy-4,20,22); // cabello rubio miel
+      ctx.fillStyle = '#fff3e6'; ctx.fillRect(gx+3,gy,14,12); // rostro güerita
+      ctx.fillStyle = '#855225'; ctx.fillRect(gx+6,gy+4,3,3); ctx.fillRect(gx+12,gy+4,3,3); // ojos café claros
+      ctx.fillStyle = '#10b981'; ctx.fillRect(gx+3,gy+12,14,28); // overol
+      ctx.fillStyle = '#f59e0b'; ctx.fillRect(gx+20,gy+14,12,10); // regadera
+      // Gotas de agua
+      if (waterTimer > 0) {
+        waterTimer--;
+        drops.push({x:gx+34, y:gy+16, vx:2+Math.random()*2, vy:-0.5});
+      }
+      for (let i=drops.length-1; i>=0; i--) {
+        let d = drops[i]; d.x += d.vx; d.y += d.vy; d.vy += 0.12;
+        ctx.fillStyle = '#7dd3fc'; ctx.fillRect(d.x,d.y,2,2);
+        if (d.y > 160) drops.splice(i,1);
+      }
+      // 5 Peonías
+      [165, 200, 235, 270, 305].forEach((px, idx) => {
+        scales[idx] += (1 - scales[idx]) * 0.05;
+        let s = Math.round(14 * scales[idx]);
+        ctx.fillStyle = '#1f4722'; ctx.fillRect(px-10,142,20,12);
+        ctx.fillStyle = '#e11d48'; ctx.fillRect(px-s/2,138-s,s,s);
+        ctx.fillStyle = '#fda4af'; ctx.fillRect(px-s/3,136-s,s*0.66,s*0.6);
+      });
+      requestAnimationFrame(loop);
+    }
+    loop();
+  <\/script>
+</body>
+</html>`;
+      }
+
+      // RESPALDO INTERACTIVO PARA CUALQUIERA DE LAS OTRAS POSTALES
+      return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"><\/script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=VT323&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; min-height:100vh; background: radial-gradient(circle at 50% 20%, #2a144a, #090414 80%); color:#fffbeb; font-family:'Playfair Display',serif; display:flex; align-items:center; justify-content:center; padding:20px; text-align:center; overflow:hidden; }
+  .card-box { background:rgba(24,12,48,0.92); border:2px solid #fbbf24; border-radius:24px; padding:32px 24px; max-width:540px; width:100%; box-shadow:0 0 45px rgba(251,191,36,0.25); position:relative; z-index:10; }
+  .quote { font-family:'VT323',monospace; font-size:26px; color:#fef08a; line-height:1.35; margin:20px 0; }
+</style>
+</head>
+<body>
+  <div class="card-box">
+    <div class="text-5xl mb-3 animate-bounce">${card.emoji}</div>
+    <div class="text-xs uppercase tracking-widest text-amber-400 font-sans font-bold mb-1">${card.stampCode}</div>
+    <h1 class="text-2xl sm:text-3xl font-bold text-white mb-1">${card.title}</h1>
+    <p class="text-xs text-rose-300 font-sans mb-4">${card.subtitle}</p>
+    <div class="quote bg-black/40 p-4 rounded-2xl border-l-4 border-amber-400">${card.quote}</div>
+    <a href="${card.defaultUrl}" target="_blank" class="inline-block mt-3 px-5 py-2.5 rounded-xl bg-amber-400 text-black font-sans font-bold text-xs shadow-lg">↗ Abrir Pantalla Completa (${card.defaultUrl})</a>
+  </div>
+</body>
+</html>`;
+    }
+
+    async function openPostcardExperience(cardId) {
       const card = allPostcards.find(c => c.id === cardId);
-      if (!card || !card.defaultUrl) return;
+      if (!card) return;
 
       const theaterModal = document.getElementById('theaterModal');
       const iframe = document.getElementById('theaterIframe');
+      const extLink = document.getElementById('theaterExternalLink');
+
       document.getElementById('theaterTitle').textContent = card.title;
       document.getElementById('theaterSubtitle').textContent = card.subtitle;
       document.getElementById('theaterIcon').textContent = card.emoji;
+      if (extLink && card.defaultUrl) extLink.href = card.defaultUrl;
 
-      iframe.src = card.defaultUrl;
+      iframe.removeAttribute('srcdoc');
+      iframe.src = 'about:blank';
       theaterModal.classList.remove('hidden');
       showAlbumToast(`Abriendo: ${card.title}`, card.emoji);
+
+      // Si estamos en GitHub Pages (http/https), verificamos si el archivo externo está disponible; si no (o si es vista previa local), cargamos la versión interactiva incrustada garantizada
+      if (card.defaultUrl && window.location.protocol.startsWith('http')) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 1800);
+          const res = await fetch(card.defaultUrl, { method: 'GET', signal: controller.signal });
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            const htmlText = await res.text();
+            if (htmlText && htmlText.includes('<html')) {
+              iframe.src = card.defaultUrl;
+              return;
+            }
+          }
+        } catch (err) {}
+      }
+
+      // Cargar escena interactiva incrustada directamente (Garantiza que Postal #01 y Postal #06 jamás fallen)
+      iframe.srcdoc = buildSelfContainedExperienceHTML(card);
     }
 
     function closeTheaterModal() {
       const modal = document.getElementById('theaterModal');
-      document.getElementById('theaterIframe').src = 'about:blank';
+      const iframe = document.getElementById('theaterIframe');
+      iframe.removeAttribute('srcdoc');
+      iframe.src = 'about:blank';
       modal.classList.add('hidden');
     }
 
@@ -1292,14 +1763,6 @@
     }
 
     window.onload = () => {
-      try {
-        const savedLocal = localStorage.getItem('user_custom_postcards');
-        if (savedLocal) {
-          userPostcards = JSON.parse(savedLocal);
-          rebuildAllPostcards();
-        }
-      } catch (e) {}
-
       applyThemeUI();
       renderAlbumGrid();
       drawHeroMiniPortrait();
