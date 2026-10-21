@@ -3,19 +3,975 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Nuestra Colina del Viento // Para Mi Niña Linda 🍃✨</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <title>Nuestra Colina del Viento // Estilo Studio Ghibli 🍃✨</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    body { background: #0b1c15; color: #fefce8; font-family: 'Press Start 2P', monospace; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    body, html {
+      width: 100%;
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 10%, #143628 0%, #0b1f17 55%, #05100b 100%);
+      color: #fefce8;
+      font-family: 'Press Start 2P', monospace;
+      overflow-x: hidden;
+    }
+
+    .font-vt { font-family: 'VT323', monospace; }
+
+    .ghibli-frame {
+      background: #132a1f;
+      border: 4px solid #07120c;
+      box-shadow:
+        inset 3px 3px 0px #27543e,
+        inset -3px -3px 0px #0a1711,
+        0 0 0 2px #f59e0b,
+        0 18px 40px rgba(0, 0, 0, 0.85),
+        0 0 35px rgba(16, 185, 129, 0.2);
+    }
+
+    .ghibli-btn {
+      position: relative;
+      background: linear-gradient(180deg, #10b981 0%, #047857 100%);
+      border: 3px solid #05140e;
+      box-shadow:
+        inset -2px -2px 0px #064e3b,
+        inset 2px 2px 0px #6ee7b7,
+        0 4px 0px #030a07;
+      color: #ffffff;
+      text-shadow: 1px 2px 0px #064e3b;
+      font-family: 'Press Start 2P', monospace;
+      cursor: pointer;
+      transition: transform 0.08s, filter 0.12s;
+    }
+
+    .ghibli-btn:hover { filter: brightness(1.12); }
+    .ghibli-btn:active {
+      transform: translateY(3px);
+      box-shadow: inset 2px 2px 0px #064e3b, 0 1px 0px #030a07;
+    }
+
+    .ghibli-btn-gold {
+      background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%);
+      box-shadow:
+        inset -2px -2px 0px #78350f,
+        inset 2px 2px 0px #fde68a,
+        0 4px 0px #1c0a01;
+      color: #1c0a01;
+      text-shadow: none;
+    }
+
+    .ghibli-btn-sky {
+      background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+      box-shadow:
+        inset -2px -2px 0px #0c4a6e,
+        inset 2px 2px 0px #7dd3fc,
+        0 4px 0px #082f49;
+    }
+
+    .seed-card {
+      background: rgba(16, 40, 29, 0.92);
+      border: 2px solid #059669;
+      box-shadow: inset 2px 2px 0px rgba(167, 243, 208, 0.15), 0 6px 0px #06110c;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+
+    .seed-card.active {
+      background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+      border-color: #fbbf24;
+      box-shadow: inset 2px 2px 0px rgba(254, 240, 138, 0.35), 0 6px 0px #06110c, 0 0 16px rgba(251, 191, 36, 0.4);
+    }
+
+    .seed-card:hover { transform: translateY(-3px); }
+
+    .pixel-toast {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translate(-50%, -160%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #0f291e;
+      border: 3px solid #fbbf24;
+      box-shadow: 0 8px 0px #000000, 0 0 25px rgba(251, 191, 36, 0.45);
+      padding: 10px 16px;
+      width: 92%;
+      max-width: 420px;
+      transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      pointer-events: none;
+    }
+
+    .pixel-toast.show { transform: translate(-50%, 0); }
+
+    .floating-fx {
+      position: fixed;
+      pointer-events: none;
+      z-index: 95;
+      animation: floatUpFX 1.8s forwards steps(10);
+    }
+
+    @keyframes floatUpFX {
+      0% { opacity: 1; transform: translate(0, 0) scale(0.9); }
+      60% { opacity: 1; transform: translate(var(--dx), -50px) scale(1.25); }
+      100% { opacity: 0; transform: translate(var(--dx), -85px) scale(0.8); }
+    }
   </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-  <div class="max-w-md w-full bg-[#16291e] border-4 border-emerald-500 p-6 rounded-3xl shadow-2xl relative">
-    <div class="text-4xl mb-3 animate-bounce">🍃</div>
-    <h1 class="text-sm font-bold text-amber-300 mb-2">Nuestra Colina del Viento</h1>
-    <p class="font-vt text-2xl text-emerald-100 mb-4">"Dicen que el hogar no es un lugar en el mapa, sino esa persona con la que el ruido del mundo se apaga y todo se vuelve paz. Mi hogar eres tú, mi niña linda."</p>
-    <a href="album_nuestros_mundos.html" class="inline-block px-5 py-3 bg-amber-400 text-black font-bold text-[10px] rounded-xl hover:bg-amber-300">← Volver al Álbum</a>
+<body class="relative flex flex-col items-center justify-between py-3 px-2 sm:px-4">
+
+  <!-- PORTÓN DE ENTRADA A LA COLINA -->
+  <section id="welcomeGate" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-opacity duration-500">
+    <div class="ghibli-frame max-w-md w-full p-6 sm:p-7 text-center flex flex-col items-center relative">
+      <div class="w-16 h-16 rounded-full bg-emerald-900/70 border-2 border-amber-400 flex items-center justify-center text-3xl mb-3 shadow-lg animate-bounce">
+        🍃
+      </div>
+      <span class="text-[8px] text-amber-300 tracking-widest uppercase mb-1">Postal #08 · Estilo Studio Ghibli</span>
+      <h1 class="text-sm sm:text-base text-emerald-300 leading-relaxed mb-3">
+        NUESTRA COLINA DEL VIENTO<br>
+        <span class="text-amber-300 text-xs">PICNIC EN LA PRADERA</span>
+      </h1>
+      <p class="font-vt text-xl text-emerald-100 leading-snug mb-6">
+        "Dicen que el hogar no es un lugar en el mapa, sino esa persona con la que el ruido del mundo se apaga y todo se vuelve paz. Mi hogar eres tú, mi niña linda."
+      </p>
+      <button id="enterMeadowBtn" class="ghibli-btn ghibli-btn-gold w-full py-3.5 px-4 text-[10px] font-bold flex items-center justify-center gap-2">
+        <span>SUBIR A LA COLINA JUNTOS</span>
+        <span>🌼</span>
+      </button>
+      <span class="font-vt text-sm text-amber-300/80 mt-3">🔊 Sube el volumen para escuchar el vals de piano estilo Joe Hisaishi</span>
+    </div>
+  </section>
+
+  <!-- TOAST EMERGENTE -->
+  <div id="achievementToast" class="pixel-toast">
+    <div id="toastIcon" class="w-10 h-10 bg-emerald-950 border-2 border-amber-400 flex items-center justify-center text-xl shrink-0">
+      🍃
+    </div>
+    <div class="flex flex-col text-left">
+      <span class="text-[8px] text-amber-400 uppercase tracking-wider">¡Susurro en la Brisa!</span>
+      <span id="achievementTitle" class="font-vt text-lg text-white leading-tight mt-0.5">Mi hogar eres tú, mi niña linda</span>
+    </div>
   </div>
+
+  <!-- CONSOLA PRINCIPAL -->
+  <div class="w-full max-w-3xl flex flex-col gap-3 relative z-20 my-auto">
+
+    <!-- HEADER SUPERIOR -->
+    <header class="ghibli-frame px-3 py-2.5 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 bg-emerald-800 border-2 border-amber-400 flex items-center justify-center text-lg shrink-0">
+          🍃
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[9px] sm:text-[10px] text-amber-300">COLINA DEL VIENTO</span>
+            <span class="text-[7px] bg-emerald-500 text-black font-bold px-1.5 py-0.5">VALS 3/4</span>
+          </div>
+          <p class="font-vt text-sm text-emerald-200">Toca la canasta de picnic, al gatito, los espíritus del bosque o el cielo</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <button id="skyPhaseBtn" class="ghibli-btn ghibli-btn-sky px-2.5 py-2 text-[8px] flex items-center gap-1.5">
+          <span id="skyIcon">☀️</span>
+          <span id="skyLabel" class="hidden sm:inline">CIELO GHIBLI</span>
+        </button>
+
+        <button id="musicToggleBtn" class="ghibli-btn ghibli-btn-gold px-2.5 py-2 text-[8px] font-bold flex items-center gap-1.5">
+          <span id="musicIcon">🔊</span>
+          <span id="musicLabel" class="hidden sm:inline">PIANO</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- LIENZO PIXEL ART DE LA PRADERA (400x250) -->
+    <main class="ghibli-frame p-2 sm:p-3 flex flex-col gap-2.5">
+      <div id="stageWrapper" class="relative w-full aspect-[16/10] bg-[#1e6091] border-4 border-[#07140e] overflow-hidden cursor-pointer shadow-inner">
+        <div class="absolute top-2.5 left-1/2 -translate-x-1/2 z-20 bg-black/75 border border-amber-400/80 px-3 py-1 text-[7px] sm:text-[8px] text-amber-200 pointer-events-none flex items-center gap-1.5 whitespace-nowrap">
+          <span class="animate-pulse">🌬️</span>
+          <span>TOCA A USTEDES DOS, AL GATITO, LOS KODAMAS O LA CANASTA DE TÉ</span>
+          <span class="animate-pulse">🌼</span>
+        </div>
+
+        <canvas id="meadowCanvas" width="400" height="250" class="w-full h-full block"></canvas>
+      </div>
+
+      <!-- CUADRO DE DIÁLOGO CON RETRATO EN VIVO -->
+      <div class="bg-[#0c2117] border-2 border-[#27543e] p-2.5 sm:p-3.5 flex items-center gap-3 shadow-inner">
+        <div class="relative shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-b from-sky-400/30 to-emerald-900/60 border-2 border-amber-400 p-0.5 shadow-md">
+          <canvas id="portraitCanvas" width="32" height="32" class="w-full h-full block"></canvas>
+          <span class="absolute -bottom-1 -right-1 text-xs">🌼</span>
+        </div>
+
+        <div class="flex-1 text-left">
+          <div class="flex flex-wrap items-center justify-between gap-1 mb-0.5">
+            <span class="text-[8px] sm:text-[9px] text-amber-300 uppercase tracking-wider">
+              ★ Mi Niña Linda (Mi Hogar en la Colina)
+            </span>
+            <span id="activeMoodTag" class="text-[7px] text-emerald-200 bg-emerald-950 border border-emerald-400/40 px-2 py-0.5">
+              Paz Infinita
+            </span>
+          </div>
+          <p id="dialogueText" class="font-vt text-xl sm:text-2xl text-amber-50 leading-snug">
+            "Dicen que el hogar no es un lugar en el mapa, sino esa persona con la que el ruido del mundo se apaga y todo se vuelve paz. Mi hogar eres tú, mi niña linda."
+          </p>
+        </div>
+      </div>
+
+      <!-- BARRA DE BOTONES DE ACCIÓN -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+        <button id="blowBreezeBtn" class="ghibli-btn py-2.5 px-2 text-[8px] flex items-center justify-center gap-1.5">
+          <span class="text-sm">🌬️</span>
+          <span>SOPLAR BRISA</span>
+        </button>
+
+        <button id="serveTeaBtn" class="ghibli-btn ghibli-btn-gold py-2.5 px-2 text-[8px] font-bold flex items-center justify-center gap-1.5">
+          <span class="text-sm">🫖</span>
+          <span>SERVIR TÉ</span>
+        </button>
+
+        <button id="kodamaDanceBtn" class="ghibli-btn ghibli-btn-sky py-2.5 px-2 text-[8px] flex items-center justify-center gap-1.5">
+          <span class="text-sm">🌱</span>
+          <span>ESPÍRITUS</span>
+        </button>
+
+        <button id="openLetterBtn" class="ghibli-btn py-2.5 px-2 text-[8px] flex items-center justify-center gap-1.5 border-amber-400">
+          <span class="text-sm">✉️</span>
+          <span>CARTA BRISA</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- LAS 5 SEMILLAS DE DIENTE DE LEÓN -->
+    <section class="ghibli-frame p-3 sm:p-4">
+      <div class="flex items-center justify-between border-b-2 border-[#27543e] pb-2 mb-3">
+        <div class="text-left">
+          <h2 class="text-[9px] sm:text-[10px] text-amber-300 flex items-center gap-1.5">
+            <span>🌼</span> LAS 5 SEMILLAS DEL VIENTO
+          </h2>
+          <p class="font-vt text-base text-emerald-200">Toca cada semilla para hacer volar nuestros deseos por la colina</p>
+        </div>
+        <button onclick="closeOrReturnToAlbum()" class="ghibli-btn px-3 py-1.5 text-[8px] text-amber-200">
+          ← ÁLBUM
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-5 gap-2">
+        <div onclick="selectWindSeed(0, event)" id="seed-card-0" class="seed-card active p-2.5 flex sm:flex-col items-center sm:text-center gap-2.5 sm:gap-1.5">
+          <span class="text-2xl shrink-0">🍃</span>
+          <div>
+            <div class="text-[8px] text-amber-300 font-bold">SEMILLA I</div>
+            <div class="font-vt text-base text-emerald-100 leading-tight mt-0.5">"Mi hogar eres tú"</div>
+          </div>
+        </div>
+
+        <div onclick="selectWindSeed(1, event)" id="seed-card-1" class="seed-card p-2.5 flex sm:flex-col items-center sm:text-center gap-2.5 sm:gap-1.5">
+          <span class="text-2xl shrink-0">🎬</span>
+          <div>
+            <div class="text-[8px] text-amber-300 font-bold">SEMILLA II</div>
+            <div class="font-vt text-base text-emerald-100 leading-tight mt-0.5">"Nuestra película hermosa"</div>
+          </div>
+        </div>
+
+        <div onclick="selectWindSeed(2, event)" id="seed-card-2" class="seed-card p-2.5 flex sm:flex-col items-center sm:text-center gap-2.5 sm:gap-1.5">
+          <span class="text-2xl shrink-0">👁️</span>
+          <div>
+            <div class="text-[8px] text-amber-300 font-bold">SEMILLA III</div>
+            <div class="font-vt text-base text-emerald-100 leading-tight mt-0.5">"El brillo de tus ojitos"</div>
+          </div>
+        </div>
+
+        <div onclick="selectWindSeed(3, event)" id="seed-card-3" class="seed-card p-2.5 flex sm:flex-col items-center sm:text-center gap-2.5 sm:gap-1.5">
+          <span class="text-2xl shrink-0">🤝</span>
+          <div>
+            <div class="text-[8px] text-amber-300 font-bold">SEMILLA IV</div>
+            <div class="font-vt text-base text-emerald-100 leading-tight mt-0.5">"Tomando tu mano siempre"</div>
+          </div>
+        </div>
+
+        <div onclick="selectWindSeed(4, event)" id="seed-card-4" class="seed-card p-2.5 flex sm:flex-col items-center sm:text-center gap-2.5 sm:gap-1.5">
+          <span class="text-2xl shrink-0">👑</span>
+          <div>
+            <div class="text-[8px] text-amber-300 font-bold">SEMILLA V</div>
+            <div class="font-vt text-base text-emerald-100 leading-tight mt-0.5">"Mi casualidad más bonita"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- MODAL: CARTA EN LA BRISA -->
+  <div id="letterModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md">
+    <div class="ghibli-frame max-w-lg w-full p-5 sm:p-7 relative flex flex-col bg-[#0f241a] border-2 border-amber-400">
+      <div class="flex items-center justify-between border-b-2 border-amber-500/40 pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-full bg-amber-400 text-black flex items-center justify-center text-sm font-bold shadow">
+            🍃
+          </span>
+          <div class="text-left">
+            <span class="text-[9px] sm:text-[10px] text-amber-300 block">CARTA LLEVADA POR EL VIENTO</span>
+            <span class="font-vt text-base text-emerald-200">Para mi güerita hermosa</span>
+          </div>
+        </div>
+        <button id="closeLetterTopBtn" class="text-[10px] text-amber-300 hover:text-white px-2 py-1 border border-amber-500/50 bg-black/40">
+          [X]
+        </button>
+      </div>
+
+      <div class="font-vt text-xl sm:text-2xl text-amber-50 leading-snug space-y-3.5 max-h-[60vh] overflow-y-auto pr-2 text-left">
+        <p class="text-amber-300 font-bold">
+          Para la dueña de mi paz:
+        </p>
+        <p>
+          Imagina que estamos sentados en esta pradera verde viendo pasar las nubes gigantes. Contigo siento exactamente esa tranquilidad donde nada malo puede pasarnos.
+        </p>
+        <p>
+          Llevamos poquito tiempo caminando juntos, pero cada día contigo se siente como una película de Studio Ghibli llena de magia, ternura y momentos inolvidables. Me bastó ver tus ojitos café claros para saber que quería quedarme a tu lado.
+        </p>
+        <div class="bg-black/45 p-3.5 border-l-4 border-emerald-400 text-emerald-200 my-2">
+          "Pueden cambiar las estaciones y soplar vientos fuertes, pero mi promesa es firme: jamás te voy a dejar sola. Siempre estaré tomando tu mano en cada colina que subamos."
+        </div>
+        <p>
+          Eres esa casualidad tan bonita que tanto le pedí a la vida. ¡Te amo con todo mi corazón, mi niña linda!
+        </p>
+      </div>
+
+      <div class="mt-5 pt-3 border-t-2 border-amber-500/40 flex justify-between items-center">
+        <span class="font-vt text-lg text-amber-300">Siempre contigo en nuestra colina 🍃💛</span>
+        <button id="closeLetterBtn" class="ghibli-btn ghibli-btn-gold px-5 py-2 text-[9px] font-bold">
+          GUARDAR EN EL ALMA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function closeOrReturnToAlbum() {
+      if (window.parent && window.parent !== window && typeof window.parent.closeTheaterModal === 'function') {
+        window.parent.closeTheaterModal();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+
+    /* =====================================================================
+       1. SINTETIZADOR DE VALS DE PIANO Y CELESTA (ESTILO JOE HISAISHI 3/4)
+       ===================================================================== */
+    let audioCtx = null;
+    let isMusicActive = false;
+    let waltzStep = 0;
+    let waltzTimer = null;
+
+    const P = {
+      G3: 196.00, A3: 220.00, B3: 246.94, C4: 261.63, D4: 293.66, E4: 329.63,
+      Fs4: 369.99, G4: 392.00, A4: 440.00, B4: 493.88, C5: 523.25, D5: 587.33,
+      E5: 659.25, Fs5: 739.99, G5: 783.99, A5: 880.00
+    };
+
+    const ghibliWaltz = [
+      { bass: P.E4 * 0.5, chord: [P.G4, P.B4], lead: P.E5 },
+      { bass: null, chord: [P.G4, P.B4], lead: P.Fs5 },
+      { bass: null, chord: [P.G4, P.B4], lead: P.G5 },
+
+      { bass: P.D4 * 0.5, chord: [P.Fs4, P.A4], lead: P.Fs5 },
+      { bass: null, chord: [P.Fs4, P.A4], lead: P.D5 },
+      { bass: null, chord: [P.Fs4, P.A4], lead: P.B4 },
+
+      { bass: P.C4 * 0.5, chord: [P.E4, P.G4], lead: P.E5 },
+      { bass: null, chord: [P.E4, P.G4], lead: P.D5 },
+      { bass: null, chord: [P.E4, P.G4], lead: P.C5 },
+
+      { bass: P.B3 * 0.5, chord: [P.D4, P.Fs4], lead: P.B4 },
+      { bass: null, chord: [P.Eb4 || 311.13, P.Fs4], lead: P.A4 },
+      { bass: null, chord: [P.B3, P.D4], lead: P.B4 }
+    ];
+
+    function initAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playPianoNote(freq, dur = 1.6, vol = 0.07, type = 'sine') {
+      if (!audioCtx || !freq) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+      } catch (e) {}
+    }
+
+    function playBreezeChime() {
+      if (!audioCtx) return;
+      [P.E5, P.Fs5, P.G5, P.B4 * 2].forEach((f, idx) => {
+        setTimeout(() => playPianoNote(f, 1.4, 0.055, 'sine'), idx * 70);
+      });
+    }
+
+    function runWaltzBeat() {
+      if (!isMusicActive) return;
+      const beat = ghibliWaltz[waltzStep % ghibliWaltz.length];
+      waltzStep++;
+
+      if (beat.bass) playPianoNote(beat.bass, 1.8, 0.12, 'triangle');
+      if (beat.chord) {
+        beat.chord.forEach(n => playPianoNote(n, 0.9, 0.035, 'sine'));
+      }
+      if (beat.lead) playPianoNote(beat.lead, 1.4, 0.08, 'sine');
+    }
+
+    function toggleMusic(forceStart = false) {
+      initAudio();
+      if (forceStart && isMusicActive) return;
+      isMusicActive = forceStart ? true : !isMusicActive;
+
+      document.getElementById('musicLabel').textContent = isMusicActive ? "PIANO: ON" : "PIANO: OFF";
+      document.getElementById('musicIcon').textContent = isMusicActive ? "🔊" : "🔇";
+
+      if (isMusicActive) {
+        runWaltzBeat();
+        clearInterval(waltzTimer);
+        waltzTimer = setInterval(runWaltzBeat, 540);
+      } else {
+        clearInterval(waltzTimer);
+      }
+    }
+
+    document.getElementById('musicToggleBtn').addEventListener('click', () => toggleMusic());
+
+    /* =====================================================================
+       2. LAS 5 FRASES APROBADAS DE LA COLINA DEL VIENTO
+       ===================================================================== */
+    const windSeeds = [
+      {
+        tag: "Calma y Hogar",
+        quote: "Dicen que el hogar no es un lugar en el mapa, sino esa persona con la que el ruido del mundo se apaga y todo se vuelve paz. Mi hogar eres tú, mi niña linda.",
+        toast: "Mi hogar eres tú, mi niña linda 🍃"
+      },
+      {
+        tag: "Tiempo Mágico",
+        quote: "Llevamos poquito tiempo caminando juntos, pero contigo cada día se siente como una película hermosa de la que nunca quiero que lleguen los créditos.",
+        toast: "Contigo la vida es una película hermosa 🎬"
+      },
+      {
+        tag: "Tus Ojitos Café Claros",
+        quote: "Me bastó ver el brillo de tus ojitos café claros y la dulzura de tu sonrisa para que mi corazón supiera, sin ninguna duda, que quería quedarse contigo.",
+        toast: "Enamorado del brillo de tus ojitos ✨"
+      },
+      {
+        tag: "Promesa en el Viento",
+        quote: "Pueden cambiar las estaciones y soplar vientos fuertes, pero mi promesa es firme: jamás te voy a dejar sola, siempre estaré tomando tu mano en cada colina que subamos.",
+        toast: "Siempre tomando tu mano 🤝"
+      },
+      {
+        tag: "Mi Mayor Ilusión",
+        quote: "Eres esa casualidad tan bonita que tanto le pedí a la vida. Cada segundo a tu lado confirma que amarte es lo mejor que me ha pasado.",
+        toast: "Eres lo mejor que me ha pasado 👑"
+      }
+    ];
+
+    /* =====================================================================
+       3. LIENZO PIXEL ART GHIBLI (400x250)
+       ===================================================================== */
+    const canvas = document.getElementById('meadowCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+
+    const pCanvas = document.getElementById('portraitCanvas');
+    const pCtx = pCanvas.getContext('2d');
+    pCtx.imageSmoothingEnabled = false;
+
+    const CW = 400;
+    const CH = 250;
+
+    let skyMode = 0; // 0: Día Verano Ghibli, 1: Atardecer Durazno, 2: Noche de Estrellas Caídas
+    let frameTick = 0;
+    let windGustTimer = 0;
+    let teaSteamTimer = 120;
+    let kodamaJumpTimer = 0;
+
+    function px(target, x, y, w, h, col) {
+      target.fillStyle = col;
+      target.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
+    }
+
+    // Semillas de diente de león y pétalos en el viento
+    const seeds = [];
+    function spawnSeed(customX = null, customY = null) {
+      seeds.push({
+        x: customX !== null ? customX : Math.random() * CW,
+        y: customY !== null ? customY : 50 + Math.random() * 170,
+        vx: Math.random() * 0.7 + 0.35,
+        vy: -(Math.random() * 0.35 + 0.1),
+        phase: Math.random() * Math.PI * 2,
+        isPetal: Math.random() > 0.65
+      });
+    }
+    for (let i = 0; i < 36; i++) spawnSeed();
+
+    function drawGhibliSkyAndClouds() {
+      const grad = ctx.createLinearGradient(0, 0, 0, 165);
+      if (skyMode === 0) {
+        grad.addColorStop(0, '#0284c7');
+        grad.addColorStop(0.55, '#38bdf8');
+        grad.addColorStop(1, '#bae6fd');
+      } else if (skyMode === 1) {
+        grad.addColorStop(0, '#7c2d12');
+        grad.addColorStop(0.45, '#f97316');
+        grad.addColorStop(1, '#fde047');
+      } else {
+        grad.addColorStop(0, '#090d16');
+        grad.addColorStop(0.55, '#1e293b');
+        grad.addColorStop(1, '#334155');
+      }
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, CW, 175);
+
+      // Si es de noche, estrellas brillantes
+      if (skyMode === 2) {
+        for (let i = 0; i < 30; i++) {
+          px(ctx, (i * 47) % CW, (i * 23) % 110, 2, 2, '#fef08a');
+        }
+      }
+
+      // Grandes Nubes Cúmulo Esponjosas Estilo Studio Ghibli
+      const cloudMain = skyMode === 1 ? '#fed7aa' : (skyMode === 2 ? '#475569' : '#ffffff');
+      const cloudShade = skyMode === 1 ? '#fb923c' : (skyMode === 2 ? '#334155' : '#e0f2fe');
+
+      const drawCumulus = (cx, cy, scale) => {
+        const drift = (frameTick * 0.12) % (CW + 120);
+        const x = ((cx + drift) % (CW + 120)) - 60;
+        px(ctx, x + 12 * scale, cy - 14 * scale, 36 * scale, 16 * scale, cloudMain);
+        px(ctx, x, cy - 6 * scale, 62 * scale, 18 * scale, cloudMain);
+        px(ctx, x + 6 * scale, cy + 8 * scale, 50 * scale, 6 * scale, cloudShade);
+      };
+
+      drawCumulus(20, 52, 1.3);
+      drawCumulus(185, 38, 1.5);
+      drawCumulus(310, 66, 1.1);
+    }
+
+    function drawWindmillAndHills() {
+      // Colina lejana con molino de viento encantado
+      ctx.fillStyle = skyMode === 2 ? '#132a1e' : '#15803d';
+      ctx.beginPath();
+      ctx.moveTo(0, 165);
+      ctx.quadraticCurveTo(100, 122, 230, 154);
+      ctx.quadraticCurveTo(320, 130, CW, 148);
+      ctx.lineTo(CW, CH);
+      ctx.lineTo(0, CH);
+      ctx.fill();
+
+      // Molino de viento rústico en la colina derecha (x: 325, y: 108)
+      const mx = 328, my = 108;
+      px(ctx, mx, my, 16, 32, '#d6d3d1');
+      px(ctx, mx + 2, my, 12, 32, '#f5f5f4');
+      px(ctx, mx - 2, my - 6, 20, 7, '#b91c1c'); // techo rojo
+      px(ctx, mx + 6, my + 12, 4, 5, '#fbbf24'); // ventana
+      // Aspas del molino girando con el viento
+      ctx.save();
+      ctx.translate(mx + 8, my + 4);
+      ctx.rotate(frameTick * (windGustTimer > 0 ? 0.08 : 0.025));
+      ctx.fillStyle = '#fef3c7';
+      ctx.fillRect(-18, -2, 36, 4);
+      ctx.fillRect(-2, -18, 4, 36);
+      ctx.restore();
+
+      // Colina principal de pasto verde esmeralda vibrante
+      ctx.fillStyle = skyMode === 2 ? '#0f291e' : '#16a34a';
+      ctx.beginPath();
+      ctx.moveTo(0, 152);
+      ctx.quadraticCurveTo(145, 134, 275, 155);
+      ctx.quadraticCurveTo(350, 162, CW, 156);
+      ctx.lineTo(CW, CH);
+      ctx.lineTo(0, CH);
+      ctx.fill();
+
+      // Franja inferior de pradera más rica y flores silvestres
+      px(ctx, 0, 178, CW, CH - 178, skyMode === 2 ? '#091c14' : '#15803d');
+
+      // Gran árbol frondoso a la izquierda dando sombra al picnic
+      px(ctx, 28, 78, 22, 92, '#5c341e');
+      px(ctx, 34, 82, 8, 86, '#784427');
+      // Copa del árbol mecida por la brisa
+      const treeSway = Math.sin(frameTick * 0.04) * 2;
+      px(ctx, -10 + treeSway, 18, 115, 52, '#14532d');
+      px(ctx, -4 + treeSway, 26, 102, 42, '#166534');
+      px(ctx, 8 + treeSway, 34, 84, 30, '#22c55e');
+
+      // Briznas de pasto y flores silvestres mecidas en oleadas
+      const windWave = Math.sin(frameTick * 0.07) * (windGustTimer > 0 ? 4 : 1.5);
+      for (let gx = 16; gx < CW - 10; gx += 18) {
+        const gy = 172 + ((gx * 7) % 58);
+        px(ctx, gx + windWave, gy, 2, 5, '#4ade80');
+        px(ctx, gx + 3 + windWave, gy + 1, 2, 4, '#86efac');
+        // Florecitas blancas, amarillas y rosas
+        const fCol = gx % 36 === 0 ? '#ffffff' : (gx % 27 === 0 ? '#fde047' : '#f472b6');
+        px(ctx, gx + windWave, gy - 2, 3, 3, fCol);
+      }
+    }
+
+    /* DIBUJO DEL PICNIC, USTEDES DOS TOMADOS DE LA MANO, EL GATITO Y LOS KODAMAS */
+    function drawPicnicAndCouple() {
+      const pxBase = 135;
+      const pyBase = 168;
+
+      // Manta de picnic a cuadros blancos y rojos/rosas en perspectiva
+      px(ctx, pxBase - 18, pyBase + 14, 146, 26, '#fef2f2');
+      for (let cx = pxBase - 14; cx < pxBase + 122; cx += 14) {
+        px(ctx, cx, pyBase + 16, 7, 10, '#f43f5e');
+        px(ctx, cx + 7, pyBase + 26, 7, 10, '#fb7185');
+      }
+
+      const hairSway = windGustTimer > 0 ? 2 : (Math.sin(frameTick * 0.06) > 0 ? 1 : 0);
+
+      // 1. ELLA (Tu Niña Linda: güerita, cabello castaño muy clarito casi rubio, ojos café claros)
+      const gx = pxBase + 16;
+      const gy = pyBase - 18;
+
+      // Cabello castaño claro casi rubio ondeando al viento
+      px(ctx, gx - 4 - hairSway, gy + 2, 18, 22, '#c8924b');
+      px(ctx, gx - 3 - hairSway, gy + 3, 16, 19, '#f3c97e');
+      // Sombrero de paja con listón rojo estilo Ghibli
+      px(ctx, gx - 6, gy - 4, 24, 4, '#fde047');
+      px(ctx, gx - 2, gy - 9, 16, 5, '#facc15');
+      px(ctx, gx - 2, gy - 5, 16, 2, '#e11d48');
+      px(ctx, gx - 7 - hairSway, gy - 4, 5, 3, '#fb7185'); // listón al viento
+
+      // Rostro güerita mirando hacia ti
+      px(ctx, gx + 2, gy + 2, 12, 11, '#fff3e6');
+      // Ojos café claros
+      px(ctx, gx + 9, gy + 5, 3, 3, '#855225');
+      px(ctx, gx + 10, gy + 5, 1, 1, '#ffffff');
+      px(ctx, gx + 8, gy + 8, 3, 2, '#fda4af'); // rubor
+
+      // Vestido primaveral amarillo pastel / crema
+      px(ctx, gx, gy + 13, 15, 18, '#fef08a');
+      px(ctx, gx + 2, gy + 14, 11, 15, '#fffbeb');
+
+      // 2. TÚ (Su Niño sentado frente a ella tomándola de la mano)
+      const bx = pxBase + 54;
+      const by = pyBase - 20;
+
+      // Cabello oscuro
+      px(ctx, bx, by, 14, 9, '#1c1917');
+      // Rostro mirándola con ternura
+      px(ctx, bx + 1, by + 4, 12, 11, '#f5cbaf');
+      px(ctx, bx + 3, by + 7, 3, 3, '#1e293b');
+      px(ctx, bx + 3, by + 7, 1, 1, '#ffffff');
+      // Camisa blanca y chaleco verde bosque estilo Howl/Ghibli
+      px(ctx, bx + 1, by + 15, 14, 17, '#065f46');
+      px(ctx, bx + 3, by + 15, 9, 14, '#fffbeb');
+
+      // MANOS TOMADAS EN EL CENTRO
+      px(ctx, gx + 13, gy + 18, 12, 3, '#fff3e6');
+      px(ctx, bx - 10, by + 20, 12, 3, '#f5cbaf');
+
+      // Corazón flotando entre ambos
+      const hFloat = Math.sin(frameTick * 0.08) * 2;
+      const hx = gx + 25;
+      const hy = gy - 4 + hFloat;
+      px(ctx, hx, hy, 2, 2, '#f43f5e');
+      px(ctx, hx + 3, hy, 2, 2, '#f43f5e');
+      px(ctx, hx - 1, hy + 1, 7, 2, '#fb7185');
+      px(ctx, hx + 1, hy + 3, 3, 2, '#e11d48');
+
+      // 3. CANASTA DE PICNIC Y TACITAS DE TÉ HUMEANTES
+      const kx = pxBase - 8;
+      const ky = pyBase + 16;
+      px(ctx, kx, ky, 18, 12, '#92400e');
+      px(ctx, kx + 2, ky + 2, 14, 8, '#d97706');
+      // Dos tacitas blancas
+      px(ctx, kx + 22, ky + 5, 5, 5, '#ffffff');
+      px(ctx, kx + 30, ky + 5, 5, 5, '#ffffff');
+      if (teaSteamTimer > 0) {
+        teaSteamTimer--;
+        const sOffset = (frameTick % 16) * 0.4;
+        px(ctx, kx + 24, ky - sOffset, 2, 3, 'rgba(255,255,255,0.75)');
+        px(ctx, kx + 32, ky - sOffset, 2, 3, 'rgba(255,255,255,0.75)');
+      }
+
+      // 4. GATITO BLANCO/GRIS DURMIENDO EN LA ESQUINA DE LA MANTA
+      const catX = pxBase + 92;
+      const catY = pyBase + 18;
+      const catBreathe = (Math.floor(frameTick / 30) % 2 === 0) ? 0 : 1;
+      px(ctx, catX, catY + catBreathe, 14, 8, '#ffffff');
+      px(ctx, catX + 2, catY - 3 + catBreathe, 4, 4, '#ffffff'); // orejitas
+      px(ctx, catX + 8, catY + 2 + catBreathe, 5, 4, '#fde047'); // manchita miel
+      px(ctx, catX + 13, catY + 4, 5, 2, '#e2e8f0'); // colita
+
+      // 5. ESPÍRITUS BLANCOS DEL BOSQUE (KODAMAS) ASOMÁNDOSE EN EL PASTO
+      if (kodamaJumpTimer > 0) kodamaJumpTimer--;
+      const kJump = kodamaJumpTimer > 0 ? Math.abs(Math.sin(frameTick * 0.25)) * 8 : 0;
+
+      const drawKodama = (kxPos, kyPos) => {
+        const y = kyPos - kJump;
+        px(ctx, kxPos, y, 8, 8, '#f8fafc');
+        px(ctx, kxPos + 1, y + 8, 6, 7, '#e2e8f0');
+        // Ojitos curiosos
+        px(ctx, kxPos + 2, y + 3, 2, 2, '#0f172a');
+        px(ctx, kxPos + 5, y + 3, 1, 2, '#0f172a');
+      };
+
+      drawKodama(72, 168);
+      drawKodama(305, 174);
+    }
+
+    function drawFlyingDandelionSeeds() {
+      if (windGustTimer > 0) windGustTimer--;
+      const speedMult = windGustTimer > 0 ? 2.6 : 1.0;
+
+      seeds.forEach(s => {
+        s.x += s.vx * speedMult;
+        s.y += s.vy + Math.sin(frameTick * 0.05 + s.phase) * 0.2;
+
+        if (s.x > CW + 10 || s.y < -10) {
+          s.x = -5;
+          s.y = 70 + Math.random() * 150;
+        }
+
+        if (s.isPetal) {
+          px(ctx, s.x, s.y, 3, 3, '#fda4af');
+        } else {
+          // Semilla blanca de diente de león con pelusita
+          px(ctx, s.x, s.y, 3, 3, '#ffffff');
+          px(ctx, s.x + 1, s.y + 3, 1, 3, '#fef08a');
+        }
+      });
+    }
+
+    function drawLivePortrait() {
+      pCtx.clearRect(0, 0, 32, 32);
+      const grad = pCtx.createLinearGradient(0, 0, 0, 32);
+      grad.addColorStop(0, '#38bdf8');
+      grad.addColorStop(1, '#4ade80');
+      pCtx.fillStyle = grad;
+      pCtx.fillRect(0, 0, 32, 32);
+
+      const blink = (frameTick % 140 > 134);
+
+      // Sombrero Ghibli
+      px(pCtx, 3, 4, 26, 4, '#fde047');
+      px(pCtx, 7, 1, 18, 4, '#facc15');
+      px(pCtx, 7, 4, 18, 2, '#e11d48');
+
+      // Cabello castaño muy clarito casi rubio
+      px(pCtx, 5, 7, 22, 22, '#c8924b');
+      px(pCtx, 6, 8, 20, 20, '#eab66a');
+
+      // Rostro güerita
+      px(pCtx, 8, 10, 16, 14, '#fff3e6');
+      // Ojos café claros
+      if (blink) {
+        px(pCtx, 10, 16, 4, 1, '#7d4f24');
+        px(pCtx, 18, 16, 4, 1, '#7d4f24');
+      } else {
+        px(pCtx, 10, 14, 4, 4, '#7d4f24');
+        px(pCtx, 18, 14, 4, 4, '#7d4f24');
+        px(pCtx, 11, 15, 2, 3, '#a86b32');
+        px(pCtx, 19, 15, 2, 3, '#a86b32');
+        px(pCtx, 10, 14, 1, 1, '#ffffff');
+        px(pCtx, 18, 14, 1, 1, '#ffffff');
+      }
+
+      px(pCtx, 8, 18, 3, 2, '#fda4af');
+      px(pCtx, 21, 18, 3, 2, '#fda4af');
+      px(pCtx, 14, 20, 4, 1, '#e11d48');
+
+      px(pCtx, 8, 25, 16, 7, '#fef08a');
+    }
+
+    function renderLoop() {
+      frameTick++;
+      ctx.clearRect(0, 0, CW, CH);
+      drawGhibliSkyAndClouds();
+      drawWindmillAndHills();
+      drawPicnicAndCouple();
+      drawFlyingDandelionSeeds();
+      drawLivePortrait();
+      requestAnimationFrame(renderLoop);
+    }
+
+    renderLoop();
+
+    /* =====================================================================
+       4. CONTROLES INTERACTIVOS
+       ===================================================================== */
+    const dialogueText = document.getElementById('dialogueText');
+    const activeMoodTag = document.getElementById('activeMoodTag');
+    const achievementToast = document.getElementById('achievementToast');
+    const achievementTitle = document.getElementById('achievementTitle');
+    let toastTimer = null;
+
+    function showToast(text, icon = '🍃') {
+      document.getElementById('toastIcon').textContent = icon;
+      achievementTitle.textContent = text;
+      achievementToast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => achievementToast.classList.remove('show'), 3600);
+    }
+
+    function spawnFloatingDOM(clientX, clientY, symbol = '🌼') {
+      const el = document.createElement('div');
+      el.className = 'floating-fx text-lg sm:text-xl';
+      el.textContent = symbol;
+      el.style.left = `${clientX}px`;
+      el.style.top = `${clientY}px`;
+      el.style.setProperty('--dx', `${(Math.random() - 0.5) * 65}px`);
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1800);
+    }
+
+    function selectWindSeed(index, event) {
+      initAudio();
+      playBreezeChime();
+
+      const item = windSeeds[index];
+      dialogueText.textContent = `"${item.quote}"`;
+      activeMoodTag.textContent = item.tag;
+      windGustTimer = 95;
+
+      for (let i = 0; i < 6; i++) spawnSeed(120 + i * 20, 175);
+
+      for (let i = 0; i < 5; i++) {
+        const card = document.getElementById(`seed-card-${i}`);
+        if (i === index) card.classList.add('active');
+        else card.classList.remove('active');
+      }
+
+      if (event && event.clientX) {
+        spawnFloatingDOM(event.clientX, event.clientY, '🌼');
+      }
+      showToast(item.toast, '🍃');
+    }
+
+    document.getElementById('stageWrapper').addEventListener('click', (e) => {
+      initAudio();
+      const rect = canvas.getBoundingClientRect();
+      const cx = ((e.clientX - rect.left) / rect.width) * CW;
+      const cy = ((e.clientY - rect.top) / rect.height) * CH;
+
+      // Tocar al gatito
+      if (cx >= 215 && cx <= 255 && cy >= 175) {
+        playBreezeChime();
+        spawnFloatingDOM(e.clientX, e.clientY, '🐱');
+        dialogueText.textContent = `"Hasta nuestro gatito duerme tranquilo porque a tu lado todo es paz y ternura."`;
+        showToast("¡El gatito ronronea feliz en la manta!", "🐾");
+        return;
+      }
+
+      // Tocar la canasta de té
+      if (cx >= 115 && cx <= 165 && cy >= 172) {
+        teaSteamTimer = 200;
+        playBreezeChime();
+        spawnFloatingDOM(e.clientX, e.clientY, '🫖');
+        dialogueText.textContent = `"Compartir la vida y una tacita de té contigo en esta colina es mi mayor felicidad."`;
+        showToast("¡Té calientito servido para los dos!", "🫖");
+        return;
+      }
+
+      // Tocar los espíritus del bosque
+      if ((cx >= 60 && cx <= 95) || (cx >= 295 && cx <= 325)) {
+        kodamaJumpTimer = 90;
+        playBreezeChime();
+        spawnFloatingDOM(e.clientX, e.clientY, '🌱');
+        dialogueText.textContent = `"Los espíritus del bosque celebran lo bonito y sincero que es nuestro amor."`;
+        showToast("¡Los espíritus del bosque saltan de alegría!", "🌱");
+        return;
+      }
+
+      // Soplar dientes de león por defecto
+      windGustTimer = 110;
+      for (let i = 0; i < 5; i++) spawnSeed(cx, cy);
+      playPianoNote(P.E5, 1.4, 0.06, 'sine');
+      spawnFloatingDOM(e.clientX, e.clientY, '🍃');
+    });
+
+    document.getElementById('blowBreezeBtn').addEventListener('click', (e) => {
+      initAudio();
+      windGustTimer = 140;
+      playBreezeChime();
+      for (let i = 0; i < 8; i++) spawnSeed(60 + i * 35, 180);
+      spawnFloatingDOM(e.clientX, e.clientY, '🌬️');
+      showToast("¡Una brisa tibia llena el cielo de dientes de león!", "🍃");
+    });
+
+    document.getElementById('serveTeaBtn').addEventListener('click', (e) => {
+      initAudio();
+      teaSteamTimer = 240;
+      playBreezeChime();
+      spawnFloatingDOM(e.clientX, e.clientY, '☕');
+      dialogueText.textContent = `"Contigo hasta el detalle más sencillo se convierte en el recuerdo más hermoso."`;
+      showToast("¡Té recién servido en nuestro picnic!", "🫖");
+    });
+
+    document.getElementById('kodamaDanceBtn').addEventListener('click', (e) => {
+      initAudio();
+      kodamaJumpTimer = 120;
+      playBreezeChime();
+      spawnFloatingDOM(e.clientX, e.clientY, '✨');
+      showToast("¡Los guardianes de la colina bendicen nuestro amor!", "🌱");
+    });
+
+    document.getElementById('skyPhaseBtn').addEventListener('click', () => {
+      initAudio();
+      skyMode = (skyMode + 1) % 3;
+      const labels = ["CIELO GHIBLI", "ATARDECER ORO", "NOCHE ESTELAR"];
+      document.getElementById('skyLabel').textContent = labels[skyMode];
+      playPianoNote(P.G5, 1.3, 0.05, 'triangle');
+    });
+
+    const welcomeGate = document.getElementById('welcomeGate');
+    document.getElementById('enterMeadowBtn').addEventListener('click', () => {
+      toggleMusic(true);
+      playBreezeChime();
+      welcomeGate.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        welcomeGate.classList.add('hidden');
+        showToast("Bienvenida a Nuestra Colina del Viento, mi niña linda 🍃", "💖");
+      }, 450);
+    });
+
+    const letterModal = document.getElementById('letterModal');
+    document.getElementById('openLetterBtn').addEventListener('click', () => {
+      initAudio();
+      playBreezeChime();
+      letterModal.classList.remove('hidden');
+    });
+
+    const closeLetter = () => {
+      initAudio();
+      playPianoNote(P.E4, 1.0, 0.05, 'sine');
+      letterModal.classList.add('hidden');
+    };
+    document.getElementById('closeLetterBtn').addEventListener('click', closeLetter);
+    document.getElementById('closeLetterTopBtn').addEventListener('click', closeLetter);
+  </script>
 </body>
 </html>

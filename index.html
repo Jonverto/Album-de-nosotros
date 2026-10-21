@@ -169,21 +169,14 @@
           </p>
         </div>
 
-        <div class="shrink-0 flex items-center gap-3 bg-black/30 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl">
-          <div class="flex flex-col items-center">
-            <div class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-amber-500/30 to-purple-950">
-              <canvas id="heroPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
-            </div>
-            <span class="font-pixel text-[7px] text-amber-400 mt-2">★ MI NIÑA LINDA ★</span>
+        <div class="shrink-0 flex flex-col items-center bg-black/35 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl">
+          <div onclick="handleHeroCoupleClick(event)" class="relative w-44 h-28 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-purple-900/50 via-indigo-950/70 to-slate-950 shadow-inner">
+            <canvas id="heroCoupleFullCanvas" width="96" height="64" class="w-full h-full pixel-canvas block"></canvas>
           </div>
-
-          <div class="text-rose-400 text-lg font-bold animate-pulse">♥</div>
-
-          <div class="flex flex-col items-center">
-            <div onclick="triggerSecretBoyClick()" class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-indigo-500/30 to-slate-950 cursor-pointer" title="Área Privada">
-              <canvas id="heroBoyPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
-            </div>
-            <span class="font-pixel text-[7px] text-amber-400 mt-2">★ TU NIÑO ★</span>
+          <div class="flex items-center justify-between w-full px-2 mt-2">
+            <span class="font-pixel text-[7px] text-amber-400">★ MI NIÑA LINDA</span>
+            <span class="text-rose-400 text-xs font-bold animate-pulse">♥</span>
+            <span class="font-pixel text-[7px] text-amber-400">TU NIÑO ★</span>
           </div>
         </div>
       </div>
@@ -968,7 +961,14 @@
           ctx.fillStyle = '#fde047'; ctx.fillRect(125,112,14,14);
         } else if (card.id === 'linternas') {
           ctx.fillStyle = '#12072b'; ctx.fillRect(0,0,320,180);
-          ctx.fillStyle = '#f59e0b'; ctx.fillRect(80,60,12,16); ctx.fillRect(180,45,12,16); ctx.fillRect(240,75,12,16);
+          ctx.fillStyle = '#090214'; ctx.fillRect(0,130,320,50);
+          ctx.fillStyle = '#451a03'; ctx.fillRect(110,122,100,14);
+          ctx.fillStyle = '#f3c97e'; ctx.fillRect(132,104,12,16);
+          ctx.fillStyle = '#1c1917'; ctx.fillRect(172,102,12,16);
+          [45, 95, 160, 225, 275].forEach((lx, i) => {
+            ctx.fillStyle = '#f59e0b'; ctx.fillRect(lx, 25 + (i % 3) * 18, 12, 16);
+            ctx.fillStyle = '#fef08a'; ctx.fillRect(lx + 2, 27 + (i % 3) * 18, 8, 12);
+          });
         } else if (card.id === 'peonias') {
           ctx.fillStyle = '#ba3818'; ctx.fillRect(0,0,320,180);
           ctx.fillStyle = '#fffbeb'; ctx.beginPath(); ctx.arc(240,65,22,0,Math.PI*2); ctx.fill();
@@ -1187,29 +1187,163 @@
       renderAlbumGrid();
     }
 
-    function drawHeroMiniPortraits() {
-      const c = document.getElementById('heroPortraitCanvas');
-      if (c) {
-        const ctx = c.getContext('2d'); ctx.imageSmoothingEnabled = false;
-        ctx.fillStyle = '#2a144a'; ctx.fillRect(0,0,32,32);
-        ctx.fillStyle = '#eab66a'; ctx.fillRect(5,5,22,23);
-        ctx.fillStyle = '#fff3e6'; ctx.fillRect(8,9,16,14);
-        ctx.fillStyle = '#7d4f24'; ctx.fillRect(10,13,4,4); ctx.fillRect(18,13,4,4);
+    let coupleFrameTick = 0;
+    const coupleHearts = [
+      { x: 46, y: 20, vy: 0.18, phase: 0 },
+      { x: 34, y: 14, vy: 0.15, phase: 2.1 },
+      { x: 60, y: 16, vy: 0.20, phase: 4.2 },
+      { x: 48, y: 8,  vy: 0.16, phase: 1.3 }
+    ];
+
+    function pxHero(ctx, x, y, w, h, col) {
+      ctx.fillStyle = col;
+      ctx.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
+    }
+
+    function drawSmallPixelHeart(ctx, x, y, col) {
+      pxHero(ctx, x + 1, y, 1, 1, col);
+      pxHero(ctx, x + 3, y, 1, 1, col);
+      pxHero(ctx, x, y + 1, 5, 1, col);
+      pxHero(ctx, x + 1, y + 2, 3, 1, col);
+      pxHero(ctx, x + 2, y + 3, 1, 1, col);
+    }
+
+    function animateHeroCoupleFullBody() {
+      const c = document.getElementById('heroCoupleFullCanvas');
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      coupleFrameTick++;
+
+      // Fondo nocturno estrellado romántico con pradera suave
+      ctx.clearRect(0, 0, 96, 64);
+      pxHero(ctx, 0, 0, 96, 54, '#160b2e');
+      pxHero(ctx, 0, 38, 96, 16, '#261247');
+      pxHero(ctx, 0, 54, 96, 10, '#143323');
+      pxHero(ctx, 0, 54, 96, 2, '#22543d');
+
+      // Estrellitas titilantes
+      if (coupleFrameTick % 40 < 25) pxHero(ctx, 12, 10, 1, 1, '#fef08a');
+      if (coupleFrameTick % 50 > 15) pxHero(ctx, 82, 12, 1, 1, '#fef08a');
+      pxHero(ctx, 20, 26, 1, 1, '#fbcfe8');
+      pxHero(ctx, 76, 24, 1, 1, '#fbcfe8');
+
+      const breathe = (Math.floor(coupleFrameTick / 28) % 2 === 0) ? 0 : 1;
+      const blink = (coupleFrameTick % 140 > 134);
+
+      /* =========================================================
+         1. ELLA (Izquierda, cuerpo completo mirando a la derecha)
+         Güerita, cabello castaño muy clarito casi rubio, ojos café claros
+         ========================================================= */
+      const gx = 24;
+      const gy = 18 + breathe;
+
+      // Cabello largo castaño muy clarito casi rubio
+      pxHero(ctx, gx - 2, gy, 13, 17, '#c8924b');
+      pxHero(ctx, gx - 1, gy + 1, 11, 15, '#f3c97e');
+      pxHero(ctx, gx + 1, gy, 8, 3, '#fef08a'); // reflejo rubio
+      // Moñito rosa en el cabello
+      pxHero(ctx, gx, gy + 2, 3, 2, '#f43f5e');
+
+      // Rostro güerita mirando hacia ti (derecha)
+      pxHero(ctx, gx + 2, gy + 3, 10, 9, '#fff3e6');
+      // Ojito café claro mirándote
+      if (blink) {
+        pxHero(ctx, gx + 8, gy + 6, 3, 1, '#7d4f24');
+      } else {
+        pxHero(ctx, gx + 8, gy + 5, 3, 3, '#7d4f24');
+        pxHero(ctx, gx + 9, gy + 6, 2, 2, '#a86b32');
+        pxHero(ctx, gx + 8, gy + 5, 1, 1, '#ffffff');
       }
-      const b = document.getElementById('heroBoyPortraitCanvas');
-      if (b) {
-        const ctx = b.getContext('2d'); ctx.imageSmoothingEnabled = false;
-        ctx.fillStyle = '#141b38'; ctx.fillRect(0,0,32,32);
-        ctx.fillStyle = '#1c1917'; ctx.fillRect(6,4,20,9);
-        ctx.fillStyle = '#f5cbaf'; ctx.fillRect(8,10,16,13);
-        ctx.fillStyle = '#1e293b'; ctx.fillRect(10,13,4,4); ctx.fillRect(18,13,4,4);
+      // Mejilla sonrojada y sonrisa
+      pxHero(ctx, gx + 7, gy + 8, 2, 1, '#fda4af');
+      pxHero(ctx, gx + 10, gy + 9, 2, 1, '#e11d48');
+
+      // Vestido cuerpo completo rosa/coral romántico
+      pxHero(ctx, gx + 2, gy + 12, 9, 7, '#f43f5e');
+      pxHero(ctx, gx + 4, gy + 12, 5, 4, '#fff1f2'); // cuello blanco
+      // Falda acampanada
+      pxHero(ctx, gx, gy + 19, 13, 10, '#fb7185');
+      pxHero(ctx, gx + 1, gy + 27, 11, 2, '#ffe4e6'); // encaje inferior
+
+      // Piernas (tez güerita) y zapatitos
+      pxHero(ctx, gx + 3, 47, 3, 6, '#fff3e6');
+      pxHero(ctx, gx + 8, 47, 3, 6, '#fff3e6');
+      pxHero(ctx, gx + 3, 52, 4, 2, '#881337');
+      pxHero(ctx, gx + 8, 52, 4, 2, '#881337');
+
+      /* =========================================================
+         2. TÚ (Derecha, cuerpo completo mirando hacia ella a la izquierda)
+         ========================================================= */
+      const bx = 56;
+      const by = 16 + breathe;
+
+      // Cabello oscuro
+      pxHero(ctx, bx, by, 13, 8, '#1c1917');
+      // Rostro mirando hacia ella (izquierda)
+      pxHero(ctx, bx + 1, by + 4, 10, 9, '#f5cbaf');
+      // Ojo mirándola con amor
+      if (blink) {
+        pxHero(ctx, bx + 3, by + 7, 3, 1, '#1e293b');
+      } else {
+        pxHero(ctx, bx + 3, by + 6, 3, 3, '#1e293b');
+        pxHero(ctx, bx + 3, by + 6, 1, 1, '#ffffff');
+      }
+      // Sonrisa tierna
+      pxHero(ctx, bx + 2, by + 10, 2, 1, '#b45309');
+
+      // Chaqueta/Suéter elegante azul índigo y camisa clara
+      pxHero(ctx, bx + 2, by + 13, 10, 12, '#1e3a8a');
+      pxHero(ctx, bx + 3, by + 13, 4, 10, '#3b82f6');
+      pxHero(ctx, bx + 3, by + 13, 3, 4, '#ffffff');
+
+      // Pantalón y calzado cuerpo completo
+      pxHero(ctx, bx + 3, 41, 4, 11, '#1e293b');
+      pxHero(ctx, bx + 8, 41, 4, 11, '#0f172a');
+      pxHero(ctx, bx + 2, 52, 5, 2, '#090d16');
+      pxHero(ctx, bx + 7, 52, 5, 2, '#090d16');
+
+      /* =========================================================
+         3. BRAZOS EXTENDIDOS Y MANOS TOMADAS EN EL CENTRO
+         ========================================================= */
+      const handY = 33 + breathe;
+      // Brazo de ella hacia el centro
+      pxHero(ctx, gx + 10, handY - 1, 9, 3, '#fff3e6');
+      // Brazo tuyo hacia el centro
+      pxHero(ctx, bx - 7, handY - 1, 10, 3, '#f5cbaf');
+      // Manos entrelazadas en el centro (x: 47..50)
+      pxHero(ctx, 46, handY - 1, 5, 4, '#fcd5b5');
+
+      /* =========================================================
+         4. PEQUEÑOS CORAZONES FLOTANDO ALREDEDOR DE USTEDES DOS
+         ========================================================= */
+      coupleHearts.forEach((h, idx) => {
+        h.y -= h.vy;
+        if (h.y < 3) {
+          h.y = 26;
+          h.x = 30 + (idx * 11);
+        }
+        const swayX = h.x + Math.sin(coupleFrameTick * 0.06 + h.phase) * 2.5;
+        const col = idx % 2 === 0 ? '#f43f5e' : '#fb7185';
+        drawSmallPixelHeart(ctx, swayX, h.y, col);
+      });
+
+      requestAnimationFrame(animateHeroCoupleFullBody);
+    }
+
+    // Si tocan la mitad derecha del retrato (donde estás tú), se abre el acceso secreto ("04072026") sin ninguna pista visual de que es un botón
+    function handleHeroCoupleClick(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      if (clickX >= rect.width * 0.48) {
+        triggerSecretBoyClick();
       }
     }
 
     window.onload = () => {
       applyThemeUI();
       renderAlbumGrid();
-      drawHeroMiniPortraits();
+      animateHeroCoupleFullBody();
     };
   </script>
 </body>
