@@ -23,8 +23,6 @@
       --nav-bg: rgba(0, 0, 0, 0.45);
       --hero-bg: linear-gradient(to right, rgba(29, 16, 54, 0.95), rgba(40, 19, 64, 0.9), rgba(26, 13, 46, 0.95));
       --quote-bg: rgba(0, 0, 0, 0.35);
-      --gold-royal: #fbbf24;
-      --rose-soft: #f472b6;
       --input-bg: #0b0617;
       --modal-bg: #140b29;
     }
@@ -42,22 +40,8 @@
       --modal-bg: #fffdf9;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-
-    body, html {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      background: var(--bg-gradient);
-      color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      overflow-x: hidden;
-      transition: background 0.5s ease, color 0.4s ease;
-    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+    body, html { margin: 0; padding: 0; min-height: 100vh; background: var(--bg-gradient); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; transition: background 0.5s ease, color 0.4s ease; }
 
     .font-serif-title { font-family: 'Playfair Display', serif; }
     .font-royal { font-family: 'Cinzel Decorative', cursive; }
@@ -65,157 +49,57 @@
     .font-vt { font-family: 'VT323', monospace; }
     .font-handwriting { font-family: 'Caveat', cursive; }
 
-    .pixel-canvas {
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-    }
+    .pixel-canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
 
     .postcard-card {
       position: relative;
       background: var(--card-bg);
       backdrop-filter: blur(14px);
       border: 1px solid var(--card-border);
-      box-shadow:
-        0 18px 40px -12px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+      box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.35);
       transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
       overflow: hidden;
     }
+    .postcard-card:hover { transform: translateY(-6px); border-color: rgba(251, 191, 36, 0.75); }
 
-    .postcard-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(251, 191, 36, 0.75);
-      box-shadow:
-        0 25px 50px -12px rgba(0, 0, 0, 0.5),
-        0 0 28px rgba(251, 191, 36, 0.25);
-    }
-
-    .postal-stamp-frame {
-      position: relative;
-      background: #fbf8f0;
-      border: 4px dashed #b45309;
-      padding: 8px 8px 20px 8px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.45);
-      transform: rotate(-1.5deg);
-      transition: transform 0.3s ease;
-    }
-    .postal-stamp-frame:hover {
-      transform: rotate(0deg) scale(1.02);
-    }
-
-    .vintage-photo-frame {
-      background: #fdfbf7;
-      padding: 10px 10px 28px 10px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.45), inset 0 0 15px rgba(180, 140, 90, 0.2);
-      border: 1px solid #e7d8bc;
-      transform: rotate(1deg);
-      transition: transform 0.3s ease;
-    }
-    .vintage-photo-frame:hover {
-      transform: rotate(0deg) scale(1.02);
-    }
-
-    .vintage-sepia {
-      filter: sepia(0.35) contrast(1.06) brightness(0.94);
-    }
+    .postal-stamp-frame { background: #fbf8f0; border: 4px dashed #b45309; padding: 8px 8px 20px 8px; transform: rotate(-1.5deg); }
+    .vintage-photo-frame { background: #fdfbf7; padding: 10px 10px 28px 10px; border: 1px solid #e7d8bc; transform: rotate(1deg); }
+    .vintage-sepia { filter: sepia(0.35) contrast(1.06) brightness(0.94); }
 
     .postit-note {
       position: relative;
       padding: 22px 18px 18px 18px;
       border-radius: 4px 4px 18px 4px;
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), inset 0 -10px 20px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
       transform: rotate(-1.5deg);
-      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
       color: #1f1605;
     }
-    .postit-note:nth-child(even) {
-      transform: rotate(1.5deg);
-    }
-    .postit-note:hover {
-      transform: rotate(0deg) scale(1.03);
-      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.55);
-    }
     .postit-tape {
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%) rotate(-2deg);
-      width: 76px;
-      height: 22px;
-      background: rgba(255, 255, 255, 0.48);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-      backdrop-filter: blur(2px);
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+      width: 76px; height: 22px; background: rgba(255, 255, 255, 0.48); border: 1px solid rgba(255, 255, 255, 0.35);
     }
-
     .postit-yellow { background: linear-gradient(135deg, #fef08a 0%, #fde047 100%); border-bottom: 3px solid #eab308; }
     .postit-pink   { background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%); border-bottom: 3px solid #db2777; }
     .postit-mint   { background: linear-gradient(135deg, #a7f3d0 0%, #34d399 100%); border-bottom: 3px solid #059669; }
     .postit-lilac  { background: linear-gradient(135deg, #e9d5ff 0%, #c084fc 100%); border-bottom: 3px solid #9333ea; }
     .postit-sky    { background: linear-gradient(135deg, #bae6fd 0%, #38bdf8 100%); border-bottom: 3px solid #0284c7; }
 
-    .book-container {
-      perspective: 1800px;
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
+    .book-container { perspective: 1800px; width: 100%; max-width: 900px; margin: 0 auto; }
     .book-page {
-      background: linear-gradient(135deg, #fbf8f0 0%, #f4ebd0 100%);
-      color: #2b1704;
-      border: 3px solid #b45309;
-      box-shadow: 0 15px 45px rgba(0,0,0,0.6), inset 0 0 35px rgba(139, 69, 19, 0.15);
-      transform-origin: left center;
-      transition: transform 0.55s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.45s ease;
-      backface-visibility: hidden;
+      background: linear-gradient(135deg, #fbf8f0 0%, #f4ebd0 100%); color: #2b1704;
+      border: 3px solid #b45309; box-shadow: 0 15px 45px rgba(0,0,0,0.6);
+      transform-origin: left center; transition: transform 0.55s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
+    .book-page.flip-next { transform: rotateY(-75deg) scale(0.96); opacity: 0.2; }
+    .book-page.flip-prev { transform: rotateY(75deg) scale(0.96); opacity: 0.2; }
 
-    .book-page.flip-next {
-      transform: rotateY(-75deg) scale(0.96);
-      opacity: 0.2;
-    }
-
-    .book-page.flip-prev {
-      transform: rotateY(75deg) scale(0.96);
-      opacity: 0.2;
-    }
-
-    .album-btn {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: #1c0a00;
-      font-weight: 700;
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-      transition: all 0.2s ease;
-    }
-    .album-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
-
-    .album-btn-ghost {
-      background: rgba(245, 158, 11, 0.1);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      color: var(--text-main);
-      transition: all 0.2s ease;
-    }
-    .album-btn-ghost:hover { background: rgba(251, 191, 36, 0.22); border-color: rgba(251, 191, 36, 0.75); }
-
-    .filter-pill.active {
-      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-      color: #170902;
-      font-weight: 700;
-      border-color: transparent;
-      box-shadow: 0 0 18px rgba(251, 191, 36, 0.4);
-    }
+    .album-btn { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #1c0a00; font-weight: 700; }
+    .album-btn-ghost { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.4); color: var(--text-main); }
+    .filter-pill.active { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #170902; font-weight: 700; }
 
     .album-toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translate(-50%, 140%);
-      z-index: 150;
-      background: #1a0f2e;
-      color: #fef3c7;
-      border: 2px solid #fbbf24;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 25px rgba(251, 191, 36, 0.35);
+      position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 140%); z-index: 150;
+      background: #1a0f2e; color: #fef3c7; border: 2px solid #fbbf24;
       transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     }
     .album-toast.show { transform: translate(-50%, 0); }
@@ -240,8 +124,8 @@
 
     <nav class="themed-nav flex flex-wrap items-center justify-between gap-3 py-3 px-4 sm:px-6 rounded-2xl backdrop-blur-md border border-amber-500/30 mb-6 shadow-lg">
       <div class="flex items-center gap-3">
-        <!-- 3 clics rápidos aquí abren panel técnico oculto si fuera necesario -->
-        <div id="secretConfigTrigger" class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-xl shadow-lg cursor-pointer" title="El Álbum de Nuestros Mundos">
+        <!-- Gatillo secreto de 3 clics para la bóveda -->
+        <div id="secretConfigTrigger" onclick="handleSecretTrigger()" class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-xl shadow-lg cursor-pointer" title="El Álbum de Nuestros Mundos">
           📖
         </div>
         <div>
@@ -257,60 +141,49 @@
 
       <div class="flex flex-wrap items-center gap-2">
         <div class="bg-black/20 p-1 rounded-xl border border-amber-500/30 flex items-center gap-1">
-          <button onclick="setViewMode('mosaic')" id="viewMosaicBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow">
-            🍱 Mosaico
-          </button>
-          <button onclick="setViewMode('book')" id="viewBookBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold opacity-80 hover:opacity-100">
-            📖 Libro
-          </button>
+          <button onclick="setViewMode('mosaic')" id="viewMosaicBtn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-black shadow">🍱 Mosaico</button>
+          <button onclick="setViewMode('book')" id="viewBookBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold opacity-80 hover:opacity-100">📖 Libro</button>
         </div>
 
-        <button onclick="toggleColorTheme()" id="themeToggleBtn" class="album-btn-ghost px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow" title="Cambiar ambiente de luz">
+        <button onclick="toggleColorTheme()" id="themeToggleBtn" class="album-btn-ghost px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
           <span id="themeIcon">☀️</span>
         </button>
 
         <button onclick="openCreatorStudio('postit')" class="album-btn px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-lg">
-          <span>💌</span>
-          <span class="font-bold">Dejar Nota / Foto</span>
+          <span>💌</span><span class="font-bold">Dejar Nota / Foto</span>
         </button>
       </div>
     </nav>
 
     <header class="themed-hero relative rounded-3xl p-6 sm:p-8 mb-8 overflow-hidden border border-amber-400/40 shadow-2xl">
-      <div class="absolute -right-16 -top-16 w-64 h-64 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-pink-500/15 rounded-full blur-3xl pointer-events-none"></div>
-
       <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="max-w-2xl text-center md:text-left">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-500 text-xs font-bold mb-3">
-            <span>👑</span>
-            <span>Dedicado a mi güerita hermosa de ojitos café claros</span>
+            <span>👑</span><span>Dedicado a mi güerita hermosa de ojitos café claros</span>
           </div>
           <h2 class="text-2xl sm:text-4xl font-serif-title font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 leading-tight">
             Cada postal y fotografía guarda un universo construido para ti
           </h2>
-          <p class="text-xs sm:text-sm opacity-85 mt-3 leading-relaxed font-normal">
-            Aquí viven nuestros mundos, cartas secretas, fotografías y las notitas que nos vamos dejando en el camino. Cada rincón de este álbum late por ti, mi niña linda.
+          <p class="text-xs sm:text-sm opacity-85 mt-3 leading-relaxed">
+            Aquí viven nuestros mundos, cartas secretas, fotografías y las notitas que nos vamos dejando en el camino.
           </p>
         </div>
 
         <div class="shrink-0 flex items-center gap-3 bg-black/30 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl">
-          <!-- Retrato de Ella -->
           <div class="flex flex-col items-center">
-            <div class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-amber-500/30 to-purple-950 shadow-inner">
+            <div class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-amber-500/30 to-purple-950">
               <canvas id="heroPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
             </div>
-            <span class="font-pixel text-[7px] text-amber-400 mt-2 tracking-wider">★ MI NIÑA LINDA ★</span>
+            <span class="font-pixel text-[7px] text-amber-400 mt-2">★ MI NIÑA LINDA ★</span>
           </div>
 
           <div class="text-rose-400 text-lg font-bold animate-pulse">♥</div>
 
-          <!-- Retrato Tuyo (Al tocarlo abre la bóveda secreta, sin parecer botón) -->
           <div class="flex flex-col items-center">
-            <div onclick="triggerSecretBoyClick()" class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-indigo-500/30 to-slate-950 shadow-inner">
+            <div onclick="triggerSecretBoyClick()" class="relative w-20 h-20 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-indigo-500/30 to-slate-950 cursor-pointer" title="Área Privada">
               <canvas id="heroBoyPortraitCanvas" width="32" height="32" class="w-full h-full pixel-canvas block"></canvas>
             </div>
-            <span class="font-pixel text-[7px] text-amber-400 mt-2 tracking-wider">★ TU NIÑO ★</span>
+            <span class="font-pixel text-[7px] text-amber-400 mt-2">★ TU NIÑO ★</span>
           </div>
         </div>
       </div>
@@ -320,75 +193,50 @@
       <div class="flex flex-col gap-3 mb-6">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="filterAlbum('all')" id="filter-all" class="filter-pill active px-4 py-1.5 rounded-full text-xs border border-amber-400/30 transition">
-              ✨ Todos Nuestros Mundos
-            </button>
-            <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-              👑 Favoritas
-            </button>
-            <button onclick="filterAlbum('postit')" id="filter-postit" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-              📝 Nuestros Post-its
-            </button>
-            <button onclick="filterAlbum('photo')" id="filter-photo" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-              📸 Fotos & Estampillas
-            </button>
-            <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost transition">
-              👾 Pixel Art
-            </button>
-            <!-- Pestaña del apartado restringido (aparece al desbloquear o permite entrar si ya se desbloqueó) -->
-            <button onclick="filterAlbum('Vault')" id="filter-vault" class="filter-pill hidden px-4 py-1.5 rounded-full text-xs border border-rose-400/60 bg-rose-950/60 text-rose-200 transition">
-              🔒 Rincón Secreto ♥
-            </button>
+            <button onclick="filterAlbum('all')" id="filter-all" class="filter-pill active px-4 py-1.5 rounded-full text-xs border border-amber-400/30">✨ Todos</button>
+            <button onclick="filterAlbum('featured')" id="filter-featured" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost">👑 Favoritas</button>
+            <button onclick="filterAlbum('postit')" id="filter-postit" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost">📝 Post-its</button>
+            <button onclick="filterAlbum('photo')" id="filter-photo" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost">📸 Fotos</button>
+            <button onclick="filterAlbum('pixel')" id="filter-pixel" class="filter-pill px-4 py-1.5 rounded-full text-xs album-btn-ghost">👾 Pixel Art</button>
+            <button onclick="handleVaultTabClick()" id="filter-vault" class="filter-pill hidden px-4 py-1.5 rounded-full text-xs border border-rose-400/60 bg-rose-950/60 text-rose-200">🔒 Rincón Secreto ♥</button>
           </div>
-          <span id="totalMemoriesBadge" class="text-[11px] opacity-80 font-medium">8 Mundos + Tus Notas en Vivo</span>
+          <span id="totalMemoriesBadge" class="text-[11px] opacity-80 font-medium">8 Mundos + Notas en Vivo</span>
         </div>
 
-        <!-- Barra de Álbumes de Eventos -->
         <div class="flex flex-wrap items-center justify-between gap-2 bg-black/25 px-3.5 py-2.5 rounded-2xl border border-amber-500/20">
           <div class="flex flex-wrap items-center gap-1.5" id="eventAlbumsFilterBar">
-            <span class="text-[11px] text-amber-300 font-bold mr-1">📂 Álbumes de Eventos:</span>
+            <span class="text-[11px] text-amber-300 font-bold mr-1">📂 Álbumes:</span>
           </div>
           <button onclick="openNewEventAlbumModal()" class="album-btn-ghost px-3 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1">
-            <span>➕</span><span>Nuevo Álbum de Evento</span>
+            <span>➕</span><span>Nuevo Álbum</span>
           </button>
         </div>
       </div>
 
-      <!-- Cabecera especial cuando están dentro del Rincón Secreto -->
       <div id="secretVaultBanner" class="hidden mb-6 p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-rose-950/90 via-purple-950/90 to-indigo-950/90 border-2 border-rose-400/50 shadow-2xl flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
           <span class="text-3xl">🔐💖</span>
           <div>
-            <span class="text-[10px] uppercase tracking-widest text-rose-300 font-bold block">Espacio Exclusivo Desbloqueado (04·07·2026)</span>
-            <h3 class="text-base sm:text-lg font-serif-title font-bold text-amber-200">Nuestro Rincón Secreto — Solo Tú y Yo</h3>
-            <p class="text-xs text-rose-100/80">Las fotos, cartas y notas que guardemos con llave solo son visibles aquí adentro.</p>
+            <span class="text-[10px] uppercase tracking-widest text-rose-300 font-bold block">Rincón Secreto Desbloqueado (04·07·2026)</span>
+            <h3 class="text-base sm:text-lg font-serif-title font-bold text-amber-200">Solo Tú y Yo</h3>
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="openCreatorStudio('postit', true)" class="album-btn px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">
-            <span>💌</span><span>Subir Recuerdo Secreto</span>
-          </button>
-          <button onclick="lockSecretVault()" class="album-btn-ghost px-3 py-2 rounded-xl text-xs font-bold text-rose-300">
-            🔒 Cerrar Rincón
-          </button>
+          <button onclick="openCreatorStudio('postit', true)" class="album-btn px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">💌 Subir Secreto</button>
+          <button onclick="lockSecretVault()" class="album-btn-ghost px-3 py-2 rounded-xl text-xs font-bold text-rose-300">Cerrar Rincón</button>
         </div>
       </div>
 
       <div id="mosaicGrid" class="grid grid-cols-1 md:grid-cols-12 gap-5"></div>
     </div>
 
-    <!-- VISTA MODO LIBRO ANTIGUO CON PÁGINAS 3D -->
     <div id="bookViewContainer" class="hidden py-2">
       <div class="book-container">
         <div id="bookPageContent" class="book-page rounded-3xl p-6 sm:p-10 min-h-[420px] flex flex-col justify-between"></div>
         <div class="flex items-center justify-between mt-5 px-2">
-          <button onclick="prevBookPage()" class="album-btn-ghost px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2">
-            <span>←</span> <span>Página Anterior</span>
-          </button>
-          <span id="bookPageIndicator" class="font-serif-title italic text-sm text-amber-400">Página 1 de 7</span>
-          <button onclick="nextBookPage()" class="album-btn px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2">
-            <span>Siguiente Página</span> <span>→</span>
-          </button>
+          <button onclick="prevBookPage()" class="album-btn-ghost px-4 py-2.5 rounded-xl text-xs font-bold">← Anterior</button>
+          <span id="bookPageIndicator" class="font-serif-title italic text-sm text-amber-400">Página 1</span>
+          <button onclick="nextBookPage()" class="album-btn px-4 py-2.5 rounded-xl text-xs font-bold">Siguiente →</button>
         </div>
       </div>
     </div>
@@ -398,75 +246,59 @@
   <div id="creatorModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
     <div class="themed-modal max-w-md w-full rounded-3xl p-6 border-2 border-amber-400/60 shadow-2xl relative max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-amber-500/30 pb-3 mb-4">
-        <div class="flex items-center gap-2">
-          <span class="text-2xl">💌</span>
-          <div>
-            <h3 class="text-sm sm:text-base font-bold text-amber-400">Dejar Nota o Fotografía</h3>
-            <p class="text-[11px] opacity-75">Se sincroniza en vivo en todos nuestros dispositivos</p>
-          </div>
-        </div>
-        <button onclick="closeCreatorStudio()" class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-300 hover:bg-rose-500/40 font-bold text-xs">✕</button>
+        <h3 class="text-sm sm:text-base font-bold text-amber-400">💌 Dejar Nota o Fotografía</h3>
+        <button onclick="closeCreatorStudio()" class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-300 font-bold text-xs">✕</button>
       </div>
 
       <form id="creatorForm" onsubmit="handleCreatePostcard(event)" class="space-y-3.5 text-xs">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold mb-1 text-amber-300">✍️ De mí (Nombre o apodo):</label>
-            <input id="inputAuthor" type="text" required placeholder="Ej: Tu Niño / Mi Güerita" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none focus:border-amber-400">
+            <label class="block font-bold mb-1 text-amber-300">✍️ De mí:</label>
+            <input id="inputAuthor" type="text" required placeholder="Tu nombre o apodo" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40">
           </div>
           <div>
-            <label class="block font-bold mb-1 text-rose-300">💖 Para (Destinatario):</label>
-            <input id="inputRecipient" type="text" required placeholder="Ej: Para mi niña linda" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none focus:border-rose-400">
+            <label class="block font-bold mb-1 text-rose-300">💖 Para:</label>
+            <input id="inputRecipient" type="text" required placeholder="Mi niña linda" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40">
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold mb-1 text-amber-300">Estilo de Recuerdo</label>
-            <select id="inputFrameStyle" onchange="togglePostitFields()" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none">
-              <option value="postit">📌 Nota Post-it</option>
-              <option value="stamp">🎴 Estampilla Postal</option>
-              <option value="vintage">📸 Foto Polaroid</option>
+            <label class="block font-bold mb-1 text-amber-300">Estilo</label>
+            <select id="inputFrameStyle" onchange="togglePostitFields()" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40">
+              <option value="postit">📌 Post-it</option>
+              <option value="stamp">🎴 Estampilla</option>
+              <option value="vintage">📸 Polaroid</option>
             </select>
           </div>
           <div>
-            <label class="block font-bold mb-1 text-amber-300">📂 Álbum / Evento</label>
-            <select id="inputEventAlbum" onchange="checkNewAlbumOption(this)" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none">
-              <option value="General">✨ Álbum General</option>
+            <label class="block font-bold mb-1 text-amber-300">Álbum</label>
+            <select id="inputEventAlbum" onchange="checkNewAlbumOption(this)" class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40">
+              <option value="General">✨ General</option>
             </select>
           </div>
         </div>
 
         <div id="customNewAlbumInputWrap" class="hidden">
-          <label class="block font-bold mb-1 text-emerald-300">Nombre del Nuevo Álbum de Evento:</label>
-          <input id="inputCustomNewAlbum" type="text" placeholder="Ej: Nuestra Cita, Aniversario, Viaje..." class="themed-input w-full px-3 py-2 rounded-xl border border-emerald-500/50 focus:outline-none">
+          <label class="block font-bold mb-1 text-emerald-300">Nuevo Álbum:</label>
+          <input id="inputCustomNewAlbum" type="text" placeholder="Ej: Citas, Viajes..." class="themed-input w-full px-3 py-2 rounded-xl border border-emerald-500/50">
         </div>
 
         <div id="postitColorSection">
-          <label class="block font-bold mb-1.5 text-amber-300">Color del Post-it</label>
+          <label class="block font-bold mb-1.5 text-amber-300">Color Post-it</label>
           <div class="flex flex-wrap items-center gap-2">
-            <label class="cursor-pointer flex items-center gap-1 bg-yellow-300 text-black px-2.5 py-1 rounded-lg font-bold">
-              <input type="radio" name="postitColor" value="postit-yellow" checked> Amarillo
-            </label>
-            <label class="cursor-pointer flex items-center gap-1 bg-pink-300 text-black px-2.5 py-1 rounded-lg font-bold">
-              <input type="radio" name="postitColor" value="postit-pink"> Rosa
-            </label>
-            <label class="cursor-pointer flex items-center gap-1 bg-emerald-300 text-black px-2.5 py-1 rounded-lg font-bold">
-              <input type="radio" name="postitColor" value="postit-mint"> Menta
-            </label>
-            <label class="cursor-pointer flex items-center gap-1 bg-purple-300 text-black px-2.5 py-1 rounded-lg font-bold">
-              <input type="radio" name="postitColor" value="postit-lilac"> Lila
-            </label>
-            <label class="cursor-pointer flex items-center gap-1 bg-sky-300 text-black px-2.5 py-1 rounded-lg font-bold">
-              <input type="radio" name="postitColor" value="postit-sky"> Cielo
-            </label>
+            <label class="cursor-pointer bg-yellow-300 text-black px-2 py-1 rounded font-bold"><input type="radio" name="postitColor" value="postit-yellow" checked> Amarillo</label>
+            <label class="cursor-pointer bg-pink-300 text-black px-2 py-1 rounded font-bold"><input type="radio" name="postitColor" value="postit-pink"> Rosa</label>
+            <label class="cursor-pointer bg-emerald-300 text-black px-2 py-1 rounded font-bold"><input type="radio" name="postitColor" value="postit-mint"> Menta</label>
+            <label class="cursor-pointer bg-purple-300 text-black px-2 py-1 rounded font-bold"><input type="radio" name="postitColor" value="postit-lilac"> Lila</label>
+            <label class="cursor-pointer bg-sky-300 text-black px-2 py-1 rounded font-bold"><input type="radio" name="postitColor" value="postit-sky"> Cielo</label>
           </div>
         </div>
 
         <div class="grid grid-cols-3 gap-2">
           <div class="col-span-2">
-            <label class="block font-bold mb-1 text-amber-300">Título corto</label>
-            <input id="inputTitle" type="text" required placeholder="Ej: Te pienso siempre..." class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none">
+            <label class="block font-bold mb-1 text-amber-300">Título</label>
+            <input id="inputTitle" type="text" required placeholder="Te pienso siempre..." class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40">
           </div>
           <div>
             <label class="block font-bold mb-1 text-amber-300">Emoji</label>
@@ -475,131 +307,88 @@
         </div>
 
         <div>
-          <label class="block font-bold mb-1 text-amber-300">Mensaje o Dedicatoria</label>
-          <textarea id="inputQuote" rows="3" required placeholder="Escribe aquí tu nota o recuerdo..." class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40 focus:outline-none"></textarea>
+          <label class="block font-bold mb-1 text-amber-300">Mensaje</label>
+          <textarea id="inputQuote" rows="3" required placeholder="Escribe tu nota..." class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40"></textarea>
         </div>
 
         <div>
-          <label class="block font-bold mb-1 text-amber-300">Subir Foto(s) (Puedes elegir una o varias para el álbum)</label>
-          <input id="inputImageFile" type="file" accept="image/*" multiple class="w-full text-[11px] file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-amber-500 file:text-black file:font-bold cursor-pointer">
+          <label class="block font-bold mb-1 text-amber-300">Subir Foto(s)</label>
+          <input id="inputImageFile" type="file" accept="image/*" multiple class="w-full text-[11px] file:py-1 file:px-3 file:rounded-xl file:border-0 file:bg-amber-500 file:text-black file:font-bold">
         </div>
 
-        <!-- Opción para guardar en el Rincón Secreto (visible si ya desbloquearon la pestaña secreta) -->
         <div id="secretCheckSection" class="hidden pt-1">
           <label class="flex items-center gap-2 cursor-pointer bg-rose-950/50 border border-rose-400/40 p-2.5 rounded-xl text-rose-200 font-semibold">
             <input id="inputIsSecret" type="checkbox" class="rounded accent-rose-500">
-            <span>🔒 Guardar en nuestro Rincón Secreto (Solo con contraseña)</span>
+            <span>🔒 Guardar en Rincón Secreto</span>
           </label>
         </div>
 
         <div class="pt-2 flex gap-2">
           <button type="button" onclick="closeCreatorStudio()" class="album-btn-ghost flex-1 py-2.5 rounded-xl font-bold">Cancelar</button>
-          <button id="submitMemoryBtn" type="submit" class="album-btn flex-1 py-2.5 rounded-xl font-bold">📌 Pegar en el Álbum</button>
+          <button id="submitMemoryBtn" type="submit" class="album-btn flex-1 py-2.5 rounded-xl font-bold">📌 Pegar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL DE CONTRASEÑA SECRETA (AL TOCAR TU PERSONAJE PIXEL ART) -->
   <div id="secretPasswordModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
     <div class="themed-modal max-w-sm w-full rounded-3xl p-6 border-2 border-rose-400/60 shadow-2xl text-center">
-      <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-rose-500/20 border border-rose-400/50 flex items-center justify-center text-2xl">
-        🔐
-      </div>
-      <h3 class="text-base font-serif-title font-bold text-amber-300">Nuestro Rincón Secreto</h3>
-      <p class="text-xs opacity-80 mt-1 mb-4">Ingresa nuestra fecha especial para abrir el apartado privado de nosotros dos</p>
+      <h3 class="text-base font-serif-title font-bold text-amber-300 mb-2">Rincón Secreto</h3>
+      <p class="text-xs opacity-80 mb-4">Ingresa la contraseña especial (04072026)</p>
       <form onsubmit="verifySecretPassword(event)" class="space-y-3">
-        <input id="secretPassInput" type="password" inputmode="numeric" placeholder="••••••••" class="themed-input w-full px-4 py-2.5 rounded-xl border border-rose-400/50 text-center tracking-widest text-base font-bold focus:outline-none focus:border-amber-400">
-        <p id="secretPassError" class="hidden text-[11px] text-rose-400 font-bold">Contraseña incorrecta, intenta de nuevo ♥</p>
+        <input id="secretPassInput" type="password" inputmode="numeric" placeholder="••••••••" class="themed-input w-full px-4 py-2.5 rounded-xl border border-rose-400/50 text-center tracking-widest text-base font-bold">
+        <p id="secretPassError" class="hidden text-[11px] text-rose-400 font-bold">Contraseña incorrecta ♥</p>
         <div class="flex gap-2 pt-1">
           <button type="button" onclick="closeSecretPasswordModal()" class="album-btn-ghost flex-1 py-2 rounded-xl text-xs font-bold">Cancelar</button>
-          <button type="submit" class="album-btn flex-1 py-2 rounded-xl text-xs font-bold">✨ Entrar</button>
+          <button type="submit" class="album-btn flex-1 py-2 rounded-xl text-xs font-bold">Entrar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL PARA CREAR UN NUEVO ÁLBUM DE EVENTO -->
   <div id="newEventAlbumModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
     <div class="themed-modal max-w-sm w-full rounded-3xl p-6 border-2 border-amber-400/60 shadow-2xl">
-      <h3 class="text-sm sm:text-base font-bold text-amber-400 mb-1">📂 Crear Álbum de Evento</h3>
-      <p class="text-xs opacity-75 mb-4">Agrupa varias fotos o notas de una salida, fecha especial o viaje juntos.</p>
+      <h3 class="text-sm font-bold text-amber-400 mb-3">📂 Crear Álbum de Evento</h3>
       <form onsubmit="handleCreateEventAlbum(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold mb-1 text-amber-300">Nombre del Álbum / Evento:</label>
-          <input id="newEventAlbumName" type="text" required placeholder="Ej: Nuestro Primer Viaje, Cita Especial..." class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40 focus:outline-none">
-        </div>
+        <input id="newEventAlbumName" type="text" required placeholder="Nombre del álbum..." class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40">
         <div class="flex gap-2 pt-2">
           <button type="button" onclick="closeNewEventAlbumModal()" class="album-btn-ghost flex-1 py-2 rounded-xl font-bold">Cancelar</button>
-          <button type="submit" class="album-btn flex-1 py-2 rounded-xl font-bold">✨ Crear Álbum</button>
+          <button type="submit" class="album-btn flex-1 py-2 rounded-xl font-bold">Crear</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL PARA MOVER UNA FOTO O NOTA A OTRO ÁLBUM POSTERIORMENTE -->
   <div id="moveAlbumModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
     <div class="themed-modal max-w-sm w-full rounded-3xl p-6 border-2 border-amber-400/60 shadow-2xl">
-      <h3 class="text-sm sm:text-base font-bold text-amber-400 mb-1">📂 Mover Recuerdo de Álbum</h3>
-      <p id="moveModalCardTitle" class="text-xs text-rose-300 font-semibold mb-4">Selecciona a qué álbum deseas mover esta foto/nota:</p>
+      <h3 class="text-sm font-bold text-amber-400 mb-2">📂 Mover de Álbum</h3>
       <form onsubmit="confirmMoveToAlbum(event)" class="space-y-3 text-xs">
-        <div>
-          <label class="block font-bold mb-1 text-amber-300">Álbum destino:</label>
-          <select id="moveTargetAlbumSelect" onchange="toggleMoveCustomAlbumInput(this)" class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40 focus:outline-none"></select>
-        </div>
-        <div id="moveCustomAlbumWrap" class="hidden">
-          <label class="block font-bold mb-1 text-emerald-300">Nombre del nuevo álbum:</label>
-          <input id="moveCustomAlbumInput" type="text" placeholder="Ej: Cumpleaños, Salida al Cine..." class="themed-input w-full px-3 py-2 rounded-xl border border-emerald-500/50 focus:outline-none">
-        </div>
-        <div class="pt-1">
-          <label class="flex items-center gap-2 cursor-pointer text-rose-200 font-semibold">
-            <input id="moveCardSecretToggle" type="checkbox" class="rounded accent-rose-500">
-            <span>🔒 Guardar dentro del Rincón Secreto</span>
-          </label>
-        </div>
+        <select id="moveTargetAlbumSelect" class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40"></select>
         <div class="flex gap-2 pt-2">
           <button type="button" onclick="closeMoveAlbumModal()" class="album-btn-ghost flex-1 py-2 rounded-xl font-bold">Cancelar</button>
-          <button type="submit" class="album-btn flex-1 py-2 rounded-xl font-bold">💾 Guardar Cambio</button>
+          <button type="submit" class="album-btn flex-1 py-2 rounded-xl font-bold">Guardar</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL TEATRO INTERACTIVO -->
   <div id="theaterModal" class="hidden fixed inset-0 z-50 flex flex-col bg-black/92 backdrop-blur-xl p-2 sm:p-5">
-    <div class="max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between gap-2 bg-[#170d2b] border border-amber-400/40 rounded-t-2xl px-4 py-2.5">
-      <div class="flex items-center gap-2.5">
-        <span id="theaterIcon" class="text-xl">🏮</span>
-        <div>
-          <h3 id="theaterTitle" class="text-xs sm:text-sm font-bold text-amber-300">Teatro Interactivo</h3>
-          <p id="theaterSubtitle" class="text-[11px] text-purple-200/80">Experiencia en vivo</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <a id="theaterExternalLink" href="#" target="_blank" class="px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-400/50 text-amber-300 hover:bg-amber-500/30 text-xs font-bold transition">
-          ↗ Abrir en Pestaña Nueva
-        </a>
-        <button onclick="closeTheaterModal()" class="px-3.5 py-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-bold transition">
-          ✕ Cerrar
-        </button>
-      </div>
+    <div class="max-w-5xl w-full mx-auto flex items-center justify-between bg-[#170d2b] border border-amber-400/40 rounded-t-2xl px-4 py-2.5">
+      <h3 id="theaterTitle" class="text-xs sm:text-sm font-bold text-amber-300">Teatro Interactivo</h3>
+      <button onclick="closeTheaterModal()" class="px-3.5 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold">✕ Cerrar</button>
     </div>
     <div class="max-w-5xl w-full mx-auto flex-1 bg-[#090414] border-x border-b border-amber-400/40 rounded-b-2xl overflow-hidden relative flex flex-col">
       <iframe id="theaterIframe" class="w-full h-full flex-1 border-0" sandbox="allow-scripts allow-same-origin allow-modals"></iframe>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
-
+  <!-- FIREBASE & REALTIME CLOUD SYNC ENGINE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    import { getDatabase, ref, set as rtdbSet, remove as rtdbRemove, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getDatabase, ref, set, remove, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'album-compt-us-realtime';
-
-    const userFirebaseConfig = {
+    const firebaseConfig = {
       apiKey: "AIzaSyBLgylENlDXij8732zpKhUSHBHbJTZtTlA",
       authDomain: "album-compt-us.firebaseapp.com",
       databaseURL: "https://album-compt-us-default-rtdb.firebaseio.com",
@@ -611,38 +400,19 @@
     };
 
     let rtdb = null;
-    let userFs = null;
-    let envFs = null;
-    let envUser = null;
-    let gunNode = null;
-
-    let itemsFromGun = {};
     let itemsFromRTDB = {};
-    let itemsFromUserFs = {};
-    let itemsFromEnvFs = {};
 
-    function setSyncStatus(isOnline, labelText) {
-      const dot = document.getElementById('syncDot');
-      const txt = document.getElementById('syncBadgeText');
-      if (dot) {
-        dot.className = isOnline
-          ? 'w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping'
-          : 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse';
-      }
-      if (txt) txt.textContent = labelText;
-    }
-
-    function mergeAndBroadcastCloudMemories() {
+    function mergeCloudMemories() {
       const mergedMap = new Map();
       const deletedIds = window.deletedMemoryIds || new Set();
 
-      [itemsFromEnvFs, itemsFromUserFs, itemsFromRTDB, itemsFromGun].forEach(sourceObj => {
-        Object.values(sourceObj).forEach(item => {
+      if (itemsFromRTDB && typeof itemsFromRTDB === 'object') {
+        Object.values(itemsFromRTDB).forEach(item => {
           if (item && item.id && !item._deleted && !deletedIds.has(item.id)) {
             mergedMap.set(item.id, item);
           }
         });
-      });
+      }
 
       const list = Array.from(mergedMap.values());
       if (window.applyRealtimeCloudMemories) {
@@ -651,196 +421,46 @@
     }
 
     async function startCloudSync() {
-      // CANAL 1: GunDB P2P Global Relay (Funciona 100% en tiempo real entre cualquier celular/PC sin permisos ni tokens)
       try {
-        if (typeof Gun !== 'undefined') {
-          const gun = Gun([
-            'https://gun-manhattan.herokuapp.com/gun',
-            'https://peer.wallie.io/gun',
-            'https://gundb-relay-mlccl.ondigitalocean.app/gun'
-          ]);
-          gunNode = gun.get('jonverto_album_nuestros_mundos_v2026_sync');
-          gunNode.map().on((data, key) => {
-            if (!data) {
-              delete itemsFromGun[key];
-            } else if (data._deleted) {
-              if (!window.deletedMemoryIds) window.deletedMemoryIds = new Set();
-              window.deletedMemoryIds.add(key);
-              delete itemsFromGun[key];
-            } else {
-              try {
-                const parsed = typeof data.jsonPayload === 'string' ? JSON.parse(data.jsonPayload) : data;
-                if (parsed && parsed.id) {
-                  itemsFromGun[key] = parsed;
-                }
-              } catch (e) {}
-            }
-            setSyncStatus(true, 'Conectados en Vivo ♥');
-            mergeAndBroadcastCloudMemories();
-          });
-        }
-      } catch (gunErr) {
-        console.warn("Aviso Gun relay:", gunErr);
-      }
-
-      // CANAL 2: Firebase Realtime Database REST Polling (Respaldo directo HTTP cada 4s)
-      async function pollFirebaseRest() {
-        try {
-          const resp = await fetch(`${userFirebaseConfig.databaseURL}/shared_album_memories.json`);
-          if (resp.ok) {
-            const data = await resp.json();
-            if (data && typeof data === 'object') {
-              itemsFromRTDB = data;
-              setSyncStatus(true, 'Conectados en Vivo ♥');
-              mergeAndBroadcastCloudMemories();
-            }
-          }
-        } catch (e) {}
-      }
-      pollFirebaseRest();
-      setInterval(pollFirebaseRest, 4500);
-
-      // CANAL 3: SDK Oficial de tu proyecto Firebase (RTDB + Firestore)
-      try {
-        const userApp = initializeApp(userFirebaseConfig, 'userAlbumCloud');
-        const userAuth = getAuth(userApp);
-        rtdb = getDatabase(userApp);
-        userFs = getFirestore(userApp);
-
-        try {
-          await signInAnonymously(userAuth);
-        } catch (authErr) {}
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        rtdb = getDatabase(app);
+        await signInAnonymously(auth).catch(() => {});
 
         const rtdbRef = ref(rtdb, 'shared_album_memories');
         onValue(rtdbRef, (snapshot) => {
           itemsFromRTDB = snapshot.val() || {};
-          setSyncStatus(true, 'Conectados en Vivo ♥');
-          mergeAndBroadcastCloudMemories();
+          mergeCloudMemories();
         }, () => {});
-
-        const userColRef = collection(userFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories');
-        onSnapshot(userColRef, (snapshot) => {
-          const temp = {};
-          snapshot.forEach(d => { temp[d.id] = d.data(); });
-          itemsFromUserFs = temp;
-          setSyncStatus(true, 'Conectados en Vivo ♥');
-          mergeAndBroadcastCloudMemories();
-        }, () => {});
-      } catch (err) {}
-
-      // CANAL 4: Firestore del entorno interactivo
-      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-        try {
-          const envConfig = JSON.parse(__firebase_config);
-          const envApp = initializeApp(envConfig, 'envAlbumCloud');
-          const envAuth = getAuth(envApp);
-          envFs = getFirestore(envApp);
-
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(envAuth, __initial_auth_token);
-          } else {
-            await signInAnonymously(envAuth);
-          }
-
-          onAuthStateChanged(envAuth, (u) => {
-            envUser = u;
-            if (u) {
-              const envColRef = collection(envFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories');
-              onSnapshot(envColRef, (snapshot) => {
-                const temp = {};
-                snapshot.forEach(d => { temp[d.id] = d.data(); });
-                itemsFromEnvFs = temp;
-                setSyncStatus(true, 'Conectados en Vivo ♥');
-                mergeAndBroadcastCloudMemories();
-              }, () => {});
-            }
-          });
-        } catch (e) {}
-      }
+      } catch(e){}
     }
 
     window.saveCardToRealtimeCloud = async function(card) {
-      let savedSomewhere = false;
-
-      // 1. Guardar instantáneamente vía GunDB P2P (Cero configuración requerida)
-      if (gunNode) {
-        try {
-          gunNode.get(card.id).put({
-            id: card.id,
-            createdAt: card.createdAt,
-            jsonPayload: JSON.stringify(card),
-            _deleted: false
-          });
-          savedSomewhere = true;
-        } catch (e) {}
-      }
-
-      // 2. Guardar vía REST en tu Realtime Database
-      try {
-        const res = await fetch(`${userFirebaseConfig.databaseURL}/shared_album_memories/${card.id}.json`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(card)
-        });
-        if (res.ok) savedSomewhere = true;
-      } catch (e) {}
-
-      // 3. Guardar vía SDK RTDB
       if (rtdb) {
         try {
-          await rtdbSet(ref(rtdb, 'shared_album_memories/' + card.id), card);
-          savedSomewhere = true;
-        } catch (e) {}
+          await set(ref(rtdb, 'shared_album_memories/' + card.id), card);
+        } catch(e){}
       }
-
-      // 4. Guardar en tu Firestore
-      if (userFs) {
-        try {
-          const docRef = doc(userFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', card.id);
-          await setDoc(docRef, card);
-          savedSomewhere = true;
-        } catch (e) {}
-      }
-
-      // 5. Guardar en Env Firestore
-      if (envFs && envUser) {
-        try {
-          const docRef = doc(envFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', card.id);
-          await setDoc(docRef, card);
-          savedSomewhere = true;
-        } catch (e) {}
-      }
-
-      return savedSomewhere;
+      try {
+        await fetch(`${firebaseConfig.databaseURL}/shared_album_memories/${card.id}.json`, {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(card)
+        });
+      } catch(e){}
     };
 
     window.deleteCardFromRealtimeCloud = async function(cardId) {
       if (!window.deletedMemoryIds) window.deletedMemoryIds = new Set();
       window.deletedMemoryIds.add(cardId);
-
-      delete itemsFromGun[cardId];
       delete itemsFromRTDB[cardId];
-      delete itemsFromUserFs[cardId];
-      delete itemsFromEnvFs[cardId];
 
-      if (gunNode) {
-        try {
-          gunNode.get(cardId).put({ id: cardId, _deleted: true });
-        } catch (e) {}
+      if (rtdb) {
+        try { await remove(ref(rtdb, 'shared_album_memories/' + cardId)); } catch(e){}
       }
       try {
-        await fetch(`${userFirebaseConfig.databaseURL}/shared_album_memories/${cardId}.json`, { method: 'DELETE' });
-      } catch (e) {}
-      if (rtdb) {
-        try { await rtdbRemove(ref(rtdb, 'shared_album_memories/' + cardId)); } catch (e) {}
-      }
-      if (userFs) {
-        try { await deleteDoc(doc(userFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', cardId)); } catch (e) {}
-      }
-      if (envFs && envUser) {
-        try { await deleteDoc(doc(envFs, 'artifacts', appId, 'public', 'data', 'shared_album_memories', cardId)); } catch (e) {}
-      }
-      return true;
+        await fetch(`${firebaseConfig.databaseURL}/shared_album_memories/${cardId}.json`, { method: 'DELETE' });
+      } catch(e){}
     };
 
     startCloudSync();
@@ -984,11 +604,11 @@
     let currentViewMode = 'mosaic';
     let currentBookPageIndex = 0;
     let isLightMode = false;
-
     let isSecretVaultUnlocked = false;
     let currentEventAlbum = 'ALL';
-    let customEventAlbums = new Set(['General', 'Nuestras Citas', 'Momentos Especiales']);
+    let customEventAlbums = new Set(['General', 'Nuestras Citas']);
     let cardIdBeingMoved = null;
+    let secretClickCount = 0;
 
     function applyThemeUI() {
       const icon = document.getElementById('themeIcon');
@@ -1000,21 +620,14 @@
         if (icon) icon.textContent = '☀️';
       }
     }
-
     function toggleColorTheme() {
       isLightMode = !isLightMode;
       applyThemeUI();
-      showAlbumToast(
-        isLightMode ? 'Modo Claro Pergamino activado ☀️' : 'Modo Oscuro Nocturno activado 🌙',
-        isLightMode ? '☀️' : '🌙'
-      );
     }
 
     function syncEventAlbumsFromCards() {
       cloudRealtimePostcards.forEach(c => {
-        if (c.albumName && c.albumName.trim() !== '') {
-          customEventAlbums.add(c.albumName.trim());
-        }
+        if (c.albumName && c.albumName.trim() !== '') customEventAlbums.add(c.albumName.trim());
       });
       renderEventAlbumPills();
       populateAlbumSelectDropdowns();
@@ -1036,11 +649,7 @@
         }).length;
         const isSelected = currentEventAlbum === albumName;
         const btnCls = isSelected ? 'bg-amber-500 text-black font-bold shadow' : 'album-btn-ghost opacity-85';
-        const safeAlbum = albumName.replace(/'/g, "\\'");
-        html += `<button onclick="setEventAlbumFilter('${safeAlbum}')" class="px-2.5 py-1 rounded-xl text-[11px] transition flex items-center gap-1 ${btnCls}">
-          <span>📁 ${albumName}</span>
-          ${count > 0 ? `<span class="px-1.5 py-0.2 rounded-full text-[9px] bg-black/25">${count}</span>` : ''}
-        </button>`;
+        html += `<button onclick="setEventAlbumFilter('${albumName.replace(/'/g, "\\'")}')" class="px-2.5 py-1 rounded-xl text-[11px] transition flex items-center gap-1 ${btnCls}"><span>📁 ${albumName}</span>${count > 0 ? `<span class="px-1.5 py-0.2 rounded-full text-[9px] bg-black/25">${count}</span>` : ''}</button>`;
       });
       bar.innerHTML = html;
     }
@@ -1052,14 +661,11 @@
 
       if (creatorSelect) {
         const prev = creatorSelect.value;
-        creatorSelect.innerHTML = albums.map(a => `<option value="${a}">📁 ${a}</option>`).join('') +
-          `<option value="__NEW__">➕ Crear nuevo álbum...</option>`;
+        creatorSelect.innerHTML = albums.map(a => `<option value="${a}">📁 ${a}</option>`).join('') + `<option value="__NEW__">➕ Crear nuevo álbum...</option>`;
         if (albums.includes(prev)) creatorSelect.value = prev;
       }
-
       if (moveSelect) {
-        moveSelect.innerHTML = albums.map(a => `<option value="${a}">📁 ${a}</option>`).join('') +
-          `<option value="__NEW__">➕ Crear nuevo álbum...</option>`;
+        moveSelect.innerHTML = albums.map(a => `<option value="${a}">📁 ${a}</option>`).join('');
       }
     }
 
@@ -1071,21 +677,15 @@
 
     function checkNewAlbumOption(selectEl) {
       const wrap = document.getElementById('customNewAlbumInputWrap');
-      if (selectEl.value === '__NEW__') {
-        wrap.classList.remove('hidden');
-      } else {
-        wrap.classList.add('hidden');
-      }
+      if (selectEl.value === '__NEW__') wrap.classList.remove('hidden');
+      else wrap.classList.add('hidden');
     }
 
     function openNewEventAlbumModal() {
       document.getElementById('newEventAlbumName').value = '';
       document.getElementById('newEventAlbumModal').classList.remove('hidden');
     }
-
-    function closeNewEventAlbumModal() {
-      document.getElementById('newEventAlbumModal').classList.add('hidden');
-    }
+    function closeNewEventAlbumModal() { document.getElementById('newEventAlbumModal').classList.add('hidden'); }
 
     function handleCreateEventAlbum(e) {
       e.preventDefault();
@@ -1096,14 +696,19 @@
       syncEventAlbumsFromCards();
       closeNewEventAlbumModal();
       renderAlbumGrid();
-      showAlbumToast(`Álbum "${name}" creado. ¡Sube tus fotos ahí! 📂`, '✨');
     }
 
-    /* ACCESO SECRETO DESDE TU PERSONAJE PIXEL ART (CONTRASEÑA: 04072026) */
+    function handleSecretTrigger() {
+      secretClickCount++;
+      if (secretClickCount >= 3) {
+        secretClickCount = 0;
+        triggerSecretBoyClick();
+      }
+    }
+
     function triggerSecretBoyClick() {
       if (isSecretVaultUnlocked) {
         filterAlbum('vault');
-        showAlbumToast('Abriendo Nuestro Rincón Secreto ♥', '🔒');
       } else {
         document.getElementById('secretPassInput').value = '';
         document.getElementById('secretPassError').classList.add('hidden');
@@ -1112,9 +717,7 @@
       }
     }
 
-    function closeSecretPasswordModal() {
-      document.getElementById('secretPasswordModal').classList.add('hidden');
-    }
+    function closeSecretPasswordModal() { document.getElementById('secretPasswordModal').classList.add('hidden'); }
 
     function verifySecretPassword(e) {
       e.preventDefault();
@@ -1122,87 +725,45 @@
       if (input === '04072026') {
         isSecretVaultUnlocked = true;
         closeSecretPasswordModal();
-        const vaultBtn = document.getElementById('filter-vault');
-        if (vaultBtn) vaultBtn.classList.remove('hidden');
+        document.getElementById('filter-vault').classList.remove('hidden');
         filterAlbum('vault');
-        showAlbumToast('¡Rincón Secreto desbloqueado! Bienvenida mi amor 💖', '🔓');
       } else {
         document.getElementById('secretPassError').classList.remove('hidden');
       }
     }
 
     function handleVaultTabClick() {
-      if (!isSecretVaultUnlocked) {
-        triggerSecretBoyClick();
-      } else {
-        filterAlbum('vault');
-      }
+      if (!isSecretVaultUnlocked) triggerSecretBoyClick();
+      else filterAlbum('vault');
     }
 
     function lockSecretVault() {
       isSecretVaultUnlocked = false;
-      const vaultBtn = document.getElementById('filter-vault');
-      if (vaultBtn) vaultBtn.classList.add('hidden');
+      document.getElementById('filter-vault').classList.add('hidden');
       filterAlbum('all');
-      showAlbumToast('Rincón Secreto protegido con llave 🔒', '🔒');
     }
 
-    /* MOVER FOTOS O NOTAS A OTRO ÁLBUM POSTERIORMENTE */
     function openMoveCardModal(cardId) {
       const card = cloudRealtimePostcards.find(c => c.id === cardId);
       if (!card) return;
       cardIdBeingMoved = cardId;
       populateAlbumSelectDropdowns();
-      document.getElementById('moveModalCardTitle').textContent = `Mover "${card.title}" a otro álbum:`;
-      const select = document.getElementById('moveTargetAlbumSelect');
-      select.value = card.albumName || 'General';
-      document.getElementById('moveCustomAlbumWrap').classList.add('hidden');
-      document.getElementById('moveCardSecretToggle').checked = Boolean(card.isSecret);
+      document.getElementById('moveTargetAlbumSelect').value = card.albumName || 'General';
       document.getElementById('moveAlbumModal').classList.remove('hidden');
     }
-
-    function toggleMoveCustomAlbumInput(selectEl) {
-      const wrap = document.getElementById('moveCustomAlbumWrap');
-      if (selectEl.value === '__NEW__') {
-        wrap.classList.remove('hidden');
-      } else {
-        wrap.classList.add('hidden');
-      }
-    }
-
-    function closeMoveAlbumModal() {
-      cardIdBeingMoved = null;
-      document.getElementById('moveAlbumModal').classList.add('hidden');
-    }
+    function closeMoveAlbumModal() { cardIdBeingMoved = null; document.getElementById('moveAlbumModal').classList.add('hidden'); }
 
     async function confirmMoveToAlbum(e) {
       e.preventDefault();
       if (!cardIdBeingMoved) return;
       const card = cloudRealtimePostcards.find(c => c.id === cardIdBeingMoved);
       if (!card) return;
-
-      const selectVal = document.getElementById('moveTargetAlbumSelect').value;
-      let targetAlbum = selectVal;
-      if (selectVal === '__NEW__') {
-        targetAlbum = document.getElementById('moveCustomAlbumInput').value.trim() || 'General';
-      }
-      customEventAlbums.add(targetAlbum);
-      card.albumName = targetAlbum;
-      card.isSecret = document.getElementById('moveCardSecretToggle').checked;
-
+      card.albumName = document.getElementById('moveTargetAlbumSelect').value;
       syncEventAlbumsFromCards();
       rebuildAllPostcards();
-      if (currentViewMode === 'mosaic') {
-        renderAlbumGrid();
-      } else {
-        renderBookPage();
-      }
+      renderAlbumGrid();
       closeMoveAlbumModal();
-
-      if (window.saveCardToRealtimeCloud) {
-        await window.saveCardToRealtimeCloud(card);
-      }
-      showAlbumToast(`Movido al álbum "${targetAlbum}" exitosamente 📂`, '✨');
+      if (window.saveCardToRealtimeCloud) await window.saveCardToRealtimeCloud(card);
     }
 
     function rebuildAllPostcards() {
@@ -1217,11 +778,8 @@
     window.applyRealtimeCloudMemories = function(cloudItems) {
       cloudRealtimePostcards = cloudItems.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
       rebuildAllPostcards();
-      if (currentViewMode === 'mosaic') {
-        renderAlbumGrid();
-      } else {
-        renderBookPage();
-      }
+      if (currentViewMode === 'mosaic') renderAlbumGrid();
+      else renderBookPage();
     };
 
     function setViewMode(mode) {
@@ -1250,27 +808,20 @@
       const grid = document.getElementById('mosaicGrid');
       const vaultBanner = document.getElementById('secretVaultBanner');
       if (vaultBanner) {
-        if (currentFilter === 'vault' && isSecretVaultUnlocked) {
-          vaultBanner.classList.remove('hidden');
-        } else {
-          vaultBanner.classList.add('hidden');
-        }
+        if (currentFilter === 'vault' && isSecretVaultUnlocked) vaultBanner.classList.remove('hidden');
+        else vaultBanner.classList.add('hidden');
       }
 
       grid.innerHTML = '';
 
       const filtered = allPostcards.filter(card => {
         const cardIsSecret = Boolean(card.isSecret);
-
-        // Si estamos en el Rincón Secreto, mostrar solo los recuerdos secretos
         if (currentFilter === 'vault') {
           if (!isSecretVaultUnlocked || !cardIsSecret) return false;
         } else {
-          // Fuera del Rincón Secreto, jamás mostrar tarjetas secretas
           if (cardIsSecret) return false;
         }
 
-        // Filtro por Álbum de Evento
         if (currentEventAlbum !== 'ALL') {
           if (!card.isCustom) return false;
           if ((card.albumName || 'General') !== currentEventAlbum) return false;
@@ -1286,13 +837,9 @@
         grid.innerHTML = `
           <div class="col-span-12 text-center py-12 px-4 rounded-3xl bg-black/20 border border-amber-500/20">
             <div class="text-4xl mb-2">${currentFilter === 'vault' ? '🔐💖' : '📂✨'}</div>
-            <h4 class="font-serif-title text-base sm:text-lg text-amber-300 font-bold">
-              ${currentFilter === 'vault' ? 'Nuestro Rincón Secreto está listo para estrenarse' : 'Aún no hay recuerdos en este álbum'}
-            </h4>
-            <p class="text-xs opacity-75 mt-1 mb-4">Sube la primera foto o nota dedicada para guardarla aquí.</p>
-            <button onclick="openCreatorStudio('postit', ${currentFilter === 'vault'})" class="album-btn px-4 py-2 rounded-xl text-xs font-bold">
-              💌 Agregar Recuerdo Aquí
-            </button>
+            <h4 class="font-serif-title text-base sm:text-lg text-amber-300 font-bold">Aún no hay recuerdos en este apartado</h4>
+            <p class="text-xs opacity-75 mt-1 mb-4">Sube la primera foto o nota dedicada.</p>
+            <button onclick="openCreatorStudio('postit', ${currentFilter === 'vault'})" class="album-btn px-4 py-2 rounded-xl text-xs font-bold">Agregar Recuerdo</button>
           </div>
         `;
         return;
@@ -1301,7 +848,6 @@
       filtered.forEach((card) => {
         const cardEl = document.createElement('article');
         cardEl.className = `postcard-card rounded-3xl flex flex-col justify-between ${card.mosaicSpan || 'md:col-span-4'}`;
-
         const authorName = card.author || 'Con Amor';
         const recipientName = card.recipient || 'Para Ti';
         const albumTag = card.albumName || 'General';
@@ -1313,36 +859,25 @@
               <div class="postit-note ${colorClass} flex-1 flex flex-col justify-between">
                 <div class="postit-tape"></div>
                 <div>
-                  <div class="flex flex-wrap items-center justify-between gap-1 border-b border-black/15 pb-2 mb-3">
-                    <div class="flex flex-col text-left">
-                      <span class="text-[11px] font-extrabold uppercase tracking-wider text-stone-900">
-                        ✍️ De mí: <span class="underline">${authorName}</span>
-                      </span>
-                      <span class="text-[11px] font-bold text-rose-900">
-                        💖 Para: <span>${recipientName}</span>
-                      </span>
+                  <div class="flex items-center justify-between border-b border-black/15 pb-2 mb-3">
+                    <div class="flex flex-col text-left text-[11px]">
+                      <span class="font-extrabold text-stone-900">✍️ De: ${authorName}</span>
+                      <span class="font-bold text-rose-900">💖 Para: ${recipientName}</span>
                     </div>
                     <span class="text-2xl">${card.emoji || '💌'}</span>
                   </div>
-                  <h3 class="font-serif-title font-bold text-base sm:text-lg text-stone-900 mb-2">${card.title}</h3>
-                  ${card.customImage ? `<img src="${card.customImage}" class="w-full h-36 object-cover rounded-lg mb-3 border border-black/20 shadow-sm" alt="Foto Post-it">` : ''}
-                  <p class="font-handwriting text-2xl sm:text-3xl leading-snug text-stone-900 my-2">
-                    ${card.quote}
-                  </p>
+                  <h3 class="font-serif-title font-bold text-base text-stone-900 mb-2">${card.title}</h3>
+                  ${card.customImage ? `<img src="${card.customImage}" class="w-full h-36 object-cover rounded-lg mb-3 border border-black/20" alt="Foto">` : ''}
+                  <p class="font-handwriting text-2xl leading-snug text-stone-900 my-2">${card.quote}</p>
                 </div>
                 <div class="mt-4 pt-2 border-t border-black/10 flex items-center justify-between text-[10px] text-stone-800 font-semibold">
-                  <span>📅 ${card.dateBadge || 'Nota'}</span>
-                  <span>📁 ${albumTag}</span>
+                  <span>📅 ${card.dateBadge || 'Nota'}</span><span>📁 ${albumTag}</span>
                 </div>
               </div>
             </div>
             <div class="px-5 pb-4 pt-1 flex items-center justify-between gap-2">
-              <button onclick="openMoveCardModal('${card.id}')" class="album-btn-ghost py-1 px-2.5 rounded-lg text-[10px] text-amber-300 flex items-center gap-1" title="Cambiar de álbum">
-                <span>📂</span><span>Mover a Álbum</span>
-              </button>
-              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1 px-2.5 rounded-lg text-[10px] text-rose-400 hover:text-rose-300 flex items-center gap-1">
-                <span>🗑️</span><span>Quitar</span>
-              </button>
+              <button onclick="openMoveCardModal('${card.id}')" class="album-btn-ghost py-1 px-2.5 rounded-lg text-[10px] text-amber-300">📂 Mover</button>
+              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1 px-2.5 rounded-lg text-[10px] text-rose-400">🗑️ Quitar</button>
             </div>
           `;
           grid.appendChild(cardEl);
@@ -1354,7 +889,7 @@
           visualContent = `
             <div class="p-4 bg-black/25 flex items-center justify-center">
               <div class="vintage-photo-frame max-w-[260px] w-full cursor-pointer" onclick="openPostcardExperience('${card.id}')">
-                <img src="${card.customImage}" class="w-full h-44 object-cover vintage-sepia block" alt="Recuerdo">
+                <img src="${card.customImage}" class="w-full h-44 object-cover vintage-sepia block" alt="Foto">
                 <p class="font-handwriting text-stone-800 text-lg text-center mt-2">${card.title}</p>
               </div>
             </div>
@@ -1363,13 +898,7 @@
           visualContent = `
             <div class="p-4 bg-black/25 flex items-center justify-center">
               <div class="postal-stamp-frame max-w-[250px] w-full cursor-pointer" onclick="openPostcardExperience('${card.id}')">
-                ${card.customImage ?
-                  `<img src="${card.customImage}" class="w-full h-44 object-cover block" alt="Estampilla">` :
-                  `<div class="w-full h-40 bg-amber-100 flex flex-col items-center justify-center p-4 text-center border border-amber-700/30">
-                     <span class="text-4xl mb-2">${card.emoji}</span>
-                     <span class="font-serif-title font-bold text-amber-950 text-sm">${card.title}</span>
-                   </div>`
-                }
+                ${card.customImage ? `<img src="${card.customImage}" class="w-full h-44 object-cover block" alt="Estampilla">` : `<div class="w-full h-40 bg-amber-100 flex flex-col items-center justify-center p-4 text-center"><span class="text-4xl mb-2">${card.emoji}</span><span class="font-serif-title font-bold text-amber-950 text-sm">${card.title}</span></div>`}
                 <div class="text-[9px] font-pixel text-amber-950 text-center mt-2">DE: ${authorName.toUpperCase()} ➔ PARA: ${recipientName.toUpperCase()}</div>
               </div>
             </div>
@@ -1377,17 +906,14 @@
         } else {
           visualContent = `
             <div class="relative w-full ${card.canvasHeight || 'h-48'} bg-[#090414] overflow-hidden cursor-pointer group" onclick="openPostcardExperience('${card.id}')">
-              ${card.customImage ? 
-                `<img src="${card.customImage}" class="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-700" alt="Postal">` :
-                `<canvas id="preview-canvas-${card.id}" width="320" height="180" class="w-full h-full object-cover pixel-canvas block group-hover:scale-105 transition-transform duration-700"></canvas>`
-              }
+              ${card.customImage ? `<img src="${card.customImage}" class="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-700" alt="Postal">` : `<canvas id="preview-canvas-${card.id}" width="320" height="180" class="w-full h-full object-cover pixel-canvas block group-hover:scale-105 transition-transform duration-700"></canvas>`}
               <div class="absolute inset-0 bg-gradient-to-t from-[#120924] via-transparent to-black/25 opacity-90 group-hover:opacity-60 transition-opacity"></div>
               <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
                 <div>
-                  <h3 class="text-base sm:text-lg font-serif-title font-bold text-white drop-shadow-md leading-snug">${card.title}</h3>
+                  <h3 class="text-base font-serif-title font-bold text-white drop-shadow-md leading-snug">${card.title}</h3>
                   <p class="text-xs text-amber-200/90 font-light drop-shadow">${card.subtitle}</p>
                 </div>
-                ${!card.isCustom ? `<span class="shrink-0 w-9 h-9 rounded-full bg-amber-400 text-black flex items-center justify-center text-sm font-bold shadow-lg group-hover:scale-110 transition-transform">▶</span>` : ''}
+                ${!card.isCustom ? `<span class="shrink-0 w-9 h-9 rounded-full bg-amber-400 text-black flex items-center justify-center text-sm font-bold shadow-lg">▶</span>` : ''}
               </div>
             </div>
           `;
@@ -1404,44 +930,22 @@
                 ${card.isCustom ? `📁 ${albumTag}` : card.dateBadge}
               </div>
             </div>
-
             ${visualContent}
-
             <div class="p-4 sm:p-5">
-              ${card.isCustom ? `
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5 text-xs bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/25">
-                  <span>✍️ <strong>De mí:</strong> ${authorName}</span>
-                  <span>💖 <strong>Para:</strong> ${recipientName}</span>
-                </div>
-              ` : ''}
-              <p class="themed-quote font-vt text-lg sm:text-xl leading-snug italic p-3 rounded-xl border-l-2 border-amber-400">
-                ${card.quote}
-              </p>
-              <div class="flex flex-wrap gap-1.5 mt-3">
-                ${(card.tags || ['Recuerdo', 'Especial']).map(t => `<span class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30">${t}</span>`).join('')}
-              </div>
+              ${card.isCustom ? `<div class="flex items-center justify-between gap-2 mb-2.5 text-xs bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/25"><span>✍️ <strong>De:</strong> ${authorName}</span><span>💖 <strong>Para:</strong> ${recipientName}</span></div>` : ''}
+              <p class="themed-quote font-vt text-lg sm:text-xl leading-snug italic p-3 rounded-xl border-l-2 border-amber-400">${card.quote}</p>
             </div>
           </div>
-
           <div class="px-4 sm:px-5 pb-4 pt-2 border-t border-amber-500/20 flex items-center justify-between gap-2">
             ${!card.isCustom ? `
-              <button onclick="openPostcardExperience('${card.id}')" class="album-btn flex-1 py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5">
-                <span>✨</span><span>Abrir Experiencia</span>
-              </button>
-              <a href="${card.defaultUrl}" target="_blank" class="album-btn-ghost py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1">
-                <span>🔗</span><span>Link</span>
-              </a>
+              <button onclick="openPostcardExperience('${card.id}')" class="album-btn flex-1 py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5"><span>✨</span><span>Abrir Experiencia</span></button>
+              <a href="${card.defaultUrl}" target="_blank" class="album-btn-ghost py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1"><span>🔗</span><span>Link</span></a>
             ` : `
-              <button onclick="openMoveCardModal('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-[11px] text-amber-300 flex items-center gap-1">
-                <span>📂</span><span>Mover de Álbum</span>
-              </button>
-              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-[11px] text-rose-400 hover:text-rose-300 flex items-center justify-center gap-1 ml-auto">
-                <span>🗑️</span><span>Borrar</span>
-              </button>
+              <button onclick="openMoveCardModal('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-[11px] text-amber-300">📂 Mover</button>
+              <button onclick="requestDeleteCustomCard('${card.id}')" class="album-btn-ghost py-1.5 px-3 rounded-xl text-[11px] text-rose-400 ml-auto">🗑️ Borrar</button>
             `}
           </div>
         `;
-
         grid.appendChild(cardEl);
       });
 
@@ -1455,187 +959,43 @@
         if (!c) return;
         const ctx = c.getContext('2d');
         ctx.imageSmoothingEnabled = false;
-        const w = c.width;
-        const h = c.height;
 
         if (card.id === 'ghibli') {
-          // Cielo azul celeste Ghibli y nubes cúmulo blancas
-          const g = ctx.createLinearGradient(0, 0, 0, 125);
-          g.addColorStop(0, '#0284c7');
-          g.addColorStop(0.6, '#38bdf8');
-          g.addColorStop(1, '#bae6fd');
-          ctx.fillStyle = g;
-          ctx.fillRect(0, 0, w, h);
-          // Nubes cúmulo esponjosas
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(35, 28, 85, 22);
-          ctx.fillRect(50, 16, 55, 16);
-          ctx.fillRect(195, 22, 95, 24);
-          ctx.fillRect(215, 10, 60, 16);
-          // Pradera verde esmeralda y árbol frondoso
-          ctx.fillStyle = '#16a34a';
-          ctx.fillRect(0, 118, w, 62);
-          ctx.fillStyle = '#22c55e';
-          ctx.fillRect(0, 126, w, 24);
-          ctx.fillStyle = '#451a03';
-          ctx.fillRect(22, 65, 16, 62);
-          ctx.fillStyle = '#15803d';
-          ctx.fillRect(0, 20, 72, 48);
-          // Manta de picnic roja/blanca y ustedes dos sentados juntos
-          ctx.fillStyle = '#fef2f2';
-          ctx.fillRect(105, 136, 96, 18);
-          ctx.fillStyle = '#ef4444';
-          ctx.fillRect(112, 138, 16, 14);
-          ctx.fillRect(144, 138, 16, 14);
-          ctx.fillRect(176, 138, 16, 14);
-          // Ella (sombrero de paja y cabello rubio miel) y Tú
-          ctx.fillStyle = '#fde047';
-          ctx.fillRect(124, 106, 18, 4);
-          ctx.fillStyle = '#f3c97e';
-          ctx.fillRect(126, 110, 14, 14);
-          ctx.fillStyle = '#38bdf8';
-          ctx.fillRect(126, 124, 14, 14);
-          ctx.fillStyle = '#1c1917';
-          ctx.fillRect(156, 108, 14, 6);
-          ctx.fillStyle = '#f5cbaf';
-          ctx.fillRect(157, 114, 12, 10);
-          ctx.fillStyle = '#1e3a8a';
-          ctx.fillRect(156, 124, 14, 14);
+          ctx.fillStyle = '#38bdf8'; ctx.fillRect(0,0,320,180);
+          ctx.fillStyle = '#16a34a'; ctx.fillRect(0,130,320,50);
+          ctx.fillStyle = '#ffffff'; ctx.fillRect(40,30,70,18); ctx.fillRect(200,20,90,22);
+          ctx.fillStyle = '#fef2f2'; ctx.fillRect(110,135,90,16);
+          ctx.fillStyle = '#fde047'; ctx.fillRect(125,112,14,14);
         } else if (card.id === 'linternas') {
-          const g = ctx.createLinearGradient(0, 0, 0, h);
-          g.addColorStop(0, '#090418');
-          g.addColorStop(0.65, '#2d1657');
-          g.addColorStop(1, '#12072b');
-          ctx.fillStyle = g;
-          ctx.fillRect(0, 0, w, h);
-          ctx.fillStyle = 'rgba(251, 191, 36, 0.18)';
-          ctx.fillRect(0, 125, w, 55);
-          [[55, 35], [120, 22], [200, 42], [260, 28], [85, 70], [230, 68], [160, 52]].forEach(([lx, ly]) => {
-            ctx.fillStyle = 'rgba(254, 240, 138, 0.3)';
-            ctx.fillRect(lx - 4, ly - 4, 16, 18);
-            ctx.fillStyle = '#f59e0b';
-            ctx.fillRect(lx, ly, 8, 10);
-            ctx.fillStyle = '#fef08a';
-            ctx.fillRect(lx + 2, ly + 2, 4, 6);
-          });
-          ctx.fillStyle = '#5c280e';
-          ctx.fillRect(110, 118, 95, 14);
-          ctx.fillStyle = '#eab66a';
-          ctx.fillRect(132, 102, 10, 16);
-          ctx.fillStyle = '#1c1917';
-          ctx.fillRect(168, 102, 10, 16);
+          ctx.fillStyle = '#12072b'; ctx.fillRect(0,0,320,180);
+          ctx.fillStyle = '#f59e0b'; ctx.fillRect(80,60,12,16); ctx.fillRect(180,45,12,16); ctx.fillRect(240,75,12,16);
         } else if (card.id === 'peonias') {
-          const g = ctx.createLinearGradient(0, 0, 0, h);
-          g.addColorStop(0, '#7c1d2f');
-          g.addColorStop(0.5, '#f26419');
-          g.addColorStop(1, '#fde047');
-          ctx.fillStyle = g;
-          ctx.fillRect(0, 0, w, h);
-          ctx.fillStyle = '#fffbeb';
-          ctx.beginPath();
-          ctx.arc(240, 75, 26, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = '#2d4c1e';
-          ctx.fillRect(0, 132, w, 48);
-          [150, 185, 220, 255, 285].forEach(px => {
-            ctx.fillStyle = '#1f4722';
-            ctx.fillRect(px - 8, 124, 16, 12);
-            ctx.fillStyle = '#f43f5e';
-            ctx.fillRect(px - 6, 114, 12, 10);
-            ctx.fillStyle = '#fda4af';
-            ctx.fillRect(px - 3, 116, 6, 5);
-          });
-          ctx.fillStyle = '#eab308';
-          ctx.fillRect(72, 92, 22, 5);
-          ctx.fillStyle = '#f3c97e';
-          ctx.fillRect(75, 97, 16, 18);
-          ctx.fillStyle = '#10b981';
-          ctx.fillRect(76, 115, 14, 22);
+          ctx.fillStyle = '#ba3818'; ctx.fillRect(0,0,320,180);
+          ctx.fillStyle = '#fffbeb'; ctx.beginPath(); ctx.arc(240,65,22,0,Math.PI*2); ctx.fill();
+          ctx.fillStyle = '#1f4722'; ctx.fillRect(0,125,320,55);
         } else if (card.id === 'minecraft') {
-          ctx.fillStyle = '#070a14';
-          ctx.fillRect(0, 0, w, h);
-          ctx.fillStyle = '#f8fafc';
-          ctx.fillRect(250, 22, 20, 20);
-          ctx.fillStyle = '#1e3a1e';
-          ctx.fillRect(0, 128, w, 52);
-          ctx.fillStyle = '#7c532f';
-          ctx.fillRect(28, 72, 74, 56);
-          ctx.fillStyle = '#4a3019';
-          ctx.fillRect(22, 62, 86, 14);
-          ctx.fillStyle = '#fde047';
-          ctx.fillRect(42, 88, 18, 18);
-          ctx.fillStyle = '#ff5500';
-          ctx.fillRect(154, 114, 16, 14);
-          ctx.fillStyle = '#fde047';
-          ctx.fillRect(158, 118, 8, 10);
+          ctx.fillStyle = '#070a14'; ctx.fillRect(0,0,320,180);
+          ctx.fillStyle = '#1e3a1e'; ctx.fillRect(0,120,320,60);
+          ctx.fillStyle = '#7c532f'; ctx.fillRect(35,55,70,65);
         } else if (card.id === 'batman') {
-          ctx.fillStyle = '#060814';
-          ctx.fillRect(0, 0, w, h);
-          ctx.fillStyle = 'rgba(255, 204, 0, 0.88)';
-          ctx.fillRect(130, 28, 56, 30);
-          ctx.fillStyle = '#ff1a40';
-          ctx.fillRect(153, 39, 10, 8);
-          [15, 65, 115, 185, 240].forEach((bx, idx) => {
-            const bh = 65 + (idx % 3) * 22;
-            ctx.fillStyle = '#0f172a';
-            ctx.fillRect(bx, h - bh, 42, bh);
-          });
+          ctx.fillStyle = '#060814'; ctx.fillRect(0,0,320,180);
+          ctx.fillStyle = '#ffcc00'; ctx.fillRect(132,30,56,28);
         } else if (card.id === 'tulipanes') {
-          const g = ctx.createLinearGradient(0, 0, 0, h);
-          g.addColorStop(0, '#fff1f2');
-          g.addColorStop(1, '#fbcfe8');
-          ctx.fillStyle = g;
-          ctx.fillRect(0, 0, w, h);
-          const colors = ['#e11d48', '#facc15', '#ec4899', '#a855f7', '#f43f5e'];
-          [90, 125, 160, 195, 230].forEach((tx, idx) => {
-            ctx.fillStyle = '#22c55e';
-            ctx.fillRect(tx, 85, 4, 65);
-            ctx.fillStyle = colors[idx];
-            ctx.beginPath();
-            ctx.arc(tx + 2, 78, 13, 0, Math.PI * 2);
-            ctx.fill();
+          ctx.fillStyle = '#fbcfe8'; ctx.fillRect(0,0,320,180);
+          ['#e11d48','#facc15','#ec4899','#a855f7','#f43f5e'].forEach((col, i) => {
+            ctx.fillStyle = '#22c55e'; ctx.fillRect(85 + i*35, 75, 4, 65);
+            ctx.fillStyle = col; ctx.beginPath(); ctx.arc(87 + i*35, 68, 12, 0, Math.PI*2); ctx.fill();
           });
         } else if (card.id === 'universo') {
-          ctx.fillStyle = '#040309';
-          ctx.fillRect(0, 0, w, h);
-          const halo = ctx.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, 75);
-          halo.addColorStop(0, '#000000');
-          halo.addColorStop(0.35, '#f59e0b');
-          halo.addColorStop(0.65, '#ec4899');
-          halo.addColorStop(1, 'transparent');
-          ctx.fillStyle = halo;
-          ctx.beginPath();
-          ctx.arc(w / 2, h / 2, 75, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = '#000000';
-          ctx.beginPath();
-          ctx.arc(w / 2, h / 2, 22, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.fillStyle = '#040309'; ctx.fillRect(0,0,320,180);
+          ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(160,90,32,0,Math.PI*2); ctx.fill();
+          ctx.fillStyle = '#000000'; ctx.beginPath(); ctx.arc(160,90,14,0,Math.PI*2); ctx.fill();
         } else if (card.id === 'altar_eterno') {
-          const g = ctx.createLinearGradient(0, 0, 0, h);
-          g.addColorStop(0, '#200833');
-          g.addColorStop(1, '#090212');
-          ctx.fillStyle = g;
-          ctx.fillRect(0, 0, w, h);
-          // Papel picado superior
-          ['#f59e0b', '#9333ea', '#e11d48', '#d97706', '#4f46e5'].forEach((col, i) => {
-            ctx.fillStyle = col;
-            ctx.fillRect(15 + i * 60, 0, 48, 22);
-          });
-          // Repisa de madera y 4 veladoras encendidas
-          ctx.fillStyle = '#3d1b06';
-          ctx.fillRect(30, 138, 260, 16);
-          [68, 125, 182, 238].forEach((vx) => {
-            ctx.fillStyle = 'rgba(255, 170, 0, 0.28)';
-            ctx.beginPath();
-            ctx.arc(vx + 10, 88, 22, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#fde68a';
-            ctx.fillRect(vx, 98, 20, 40);
-            ctx.fillStyle = '#ea580c';
-            ctx.fillRect(vx + 2, 108, 16, 28);
-            ctx.fillStyle = '#fef08a';
-            ctx.fillRect(vx + 7, 84, 6, 12);
+          ctx.fillStyle = '#200833'; ctx.fillRect(0,0,320,180);
+          ctx.fillStyle = '#3d1b06'; ctx.fillRect(30,130,260,16);
+          [65, 120, 175, 230].forEach(vx => {
+            ctx.fillStyle = '#fde68a'; ctx.fillRect(vx, 92, 18, 38);
+            ctx.fillStyle = '#ea580c'; ctx.fillRect(vx + 6, 78, 6, 14);
           });
         }
       });
@@ -1659,90 +1019,43 @@
 
     function updateBookDOM(container, indicator, card) {
       indicator.textContent = `Página ${currentBookPageIndex + 1} de ${allPostcards.length}`;
-
-      let imgHtml = '';
-      if (card.customImage) {
-        imgHtml = `
-          <div class="my-4 flex justify-center">
-            <div class="postal-stamp-frame max-w-xs">
-              <img src="${card.customImage}" class="max-h-60 object-cover rounded shadow-md block mx-auto" alt="Foto">
-              <div class="text-[9px] font-pixel text-amber-950 text-center mt-2">ARCHIVO DE AMOR · ${card.subtitle}</div>
-            </div>
-          </div>`;
-      }
+      let imgHtml = card.customImage ? `<div class="my-3 flex justify-center"><img src="${card.customImage}" class="max-h-52 object-cover rounded shadow block mx-auto" alt="Foto"></div>` : '';
 
       container.innerHTML = `
         <div>
-          <div class="flex items-center justify-between border-b-2 border-amber-800/40 pb-3 mb-4">
-            <div class="flex items-center gap-2">
-              <span class="text-2xl">${card.emoji}</span>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-amber-900 block">${card.stampCode}</span>
-                <h3 class="text-lg sm:text-xl font-serif-title font-bold text-amber-950">${card.title}</h3>
-              </div>
-            </div>
-            <span class="px-3 py-1 rounded-full bg-amber-900 text-amber-100 text-xs font-semibold">${card.dateBadge}</span>
+          <div class="flex items-center justify-between border-b-2 border-amber-800/40 pb-2 mb-3">
+            <div class="flex items-center gap-2"><span class="text-2xl">${card.emoji}</span><h3 class="text-base font-serif-title font-bold text-amber-950">${card.title}</h3></div>
+            <span class="px-2.5 py-0.5 rounded-full bg-amber-900 text-amber-100 text-[10px] font-semibold">${card.dateBadge}</span>
           </div>
-
           ${imgHtml}
-
-          <p class="font-serif-title text-base sm:text-lg text-amber-950 leading-relaxed italic my-4 bg-amber-100/70 p-4 rounded-2xl border-l-4 border-amber-600">
-            ${card.quote}
-          </p>
-
-          <p class="text-xs sm:text-sm text-stone-700 mt-3 font-semibold leading-relaxed">
-            ${card.author ? `✍️ De mí: ${card.author} · 💖 Para: ${card.recipient || 'Ti'} · 📁 Álbum: ${card.albumName || 'General'}` : card.subtitle}
-          </p>
+          <p class="font-serif-title text-sm sm:text-base text-amber-950 italic my-3 bg-amber-100/70 p-3 rounded-2xl border-l-4 border-amber-600">${card.quote}</p>
         </div>
-
-        <div class="mt-6 pt-4 border-t-2 border-amber-800/40 flex items-center justify-between">
-          <span class="font-handwriting text-xl text-amber-900">Para mi niña linda 📖💛</span>
-          ${!card.isCustom ? `
-            <button onclick="openPostcardExperience('${card.id}')" class="album-btn px-4 py-2 rounded-xl text-xs font-bold">
-              ✨ Abrir Teatro Interactivo
-            </button>
-          ` : `
-            <button onclick="requestDeleteCustomCard('${card.id}')" class="text-xs text-rose-700 font-bold underline">
-              🗑️ Eliminar esta página
-            </button>
-          `}
+        <div class="mt-4 pt-3 border-t-2 border-amber-800/40 flex items-center justify-between text-xs">
+          <span class="font-handwriting text-lg text-amber-900">Para mi niña linda 📖💛</span>
+          <button onclick="openPostcardExperience('${card.id}')" class="album-btn px-3 py-1.5 rounded-xl font-bold">✨ Ver Interactivo</button>
         </div>
       `;
     }
 
     function nextBookPage() {
-      if (currentBookPageIndex < allPostcards.length - 1) {
-        currentBookPageIndex++;
-        renderBookPage('next');
-      } else {
-        showAlbumToast('Has llegado al final del diario', '📖');
-      }
+      if (currentBookPageIndex < allPostcards.length - 1) { currentBookPageIndex++; renderBookPage('next'); }
     }
-
     function prevBookPage() {
-      if (currentBookPageIndex > 0) {
-        currentBookPageIndex--;
-        renderBookPage('prev');
-      } else {
-        showAlbumToast('Estás en la primera página', '📖');
-      }
+      if (currentBookPageIndex > 0) { currentBookPageIndex--; renderBookPage('prev'); }
     }
 
     const creatorModal = document.getElementById('creatorModal');
     function openCreatorStudio(defaultMode = 'postit', defaultSecret = false) {
       populateAlbumSelectDropdowns();
       document.getElementById('inputFrameStyle').value = defaultMode;
-      if (currentEventAlbum !== 'ALL') {
-        document.getElementById('inputEventAlbum').value = currentEventAlbum;
-      }
+      if (currentEventAlbum !== 'ALL') document.getElementById('inputEventAlbum').value = currentEventAlbum;
       const secretSection = document.getElementById('secretCheckSection');
-      const secretCheckbox = document.getElementById('inputIsSecret');
       if (isSecretVaultUnlocked || defaultSecret) {
         secretSection.classList.remove('hidden');
-        secretCheckbox.checked = Boolean(defaultSecret || currentFilter === 'vault');
+        document.getElementById('inputIsSecret').checked = Boolean(defaultSecret || currentFilter === 'vault');
       } else {
         secretSection.classList.add('hidden');
-        secretCheckbox.checked = false;
+        document.getElementById('inputIsSecret').checked = false;
       }
       togglePostitFields();
       creatorModal.classList.remove('hidden');
@@ -1752,11 +1065,8 @@
     function togglePostitFields() {
       const style = document.getElementById('inputFrameStyle').value;
       const colorSec = document.getElementById('postitColorSection');
-      if (style === 'postit') {
-        colorSec.classList.remove('hidden');
-      } else {
-        colorSec.classList.add('hidden');
-      }
+      if (style === 'postit') colorSec.classList.remove('hidden');
+      else colorSec.classList.add('hidden');
     }
 
     function compressUploadedImage(file, callback) {
@@ -1765,20 +1075,12 @@
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          const maxDim = 520;
-          let w = img.width;
-          let h = img.height;
-          if (w > h && w > maxDim) {
-            h = Math.round((h * maxDim) / w);
-            w = maxDim;
-          } else if (h > maxDim) {
-            w = Math.round((w * maxDim) / h);
-            h = maxDim;
-          }
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, w, h);
+          let w = img.width, h = img.height;
+          const maxDim = 480;
+          if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
+          else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
           callback(canvas.toDataURL('image/jpeg', 0.65));
         };
         img.src = evt.target.result;
@@ -1788,12 +1090,6 @@
 
     function handleCreatePostcard(e) {
       e.preventDefault();
-      const submitBtn = document.getElementById('submitMemoryBtn');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = '⏳ Guardando en nube...';
-      }
-
       const title = document.getElementById('inputTitle').value.trim();
       const author = document.getElementById('inputAuthor').value.trim() || 'Con Amor';
       const recipient = document.getElementById('inputRecipient').value.trim() || 'Para Ti';
@@ -1806,20 +1102,17 @@
       const isSecret = document.getElementById('inputIsSecret') ? document.getElementById('inputIsSecret').checked : false;
 
       let albumName = document.getElementById('inputEventAlbum').value;
-      if (albumName === '__NEW__') {
-        albumName = document.getElementById('inputCustomNewAlbum').value.trim() || 'General';
-      }
+      if (albumName === '__NEW__') albumName = document.getElementById('inputCustomNewAlbum').value.trim() || 'General';
       customEventAlbums.add(albumName);
 
       const nowStr = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
 
-      const buildAndSaveSingleCard = async (imgUrl = null, indexSuffix = '') => {
-        const cardTitle = indexSuffix ? `${title} (${indexSuffix})` : title;
+      const saveCard = async (imgUrl = null) => {
         const newCard = {
           id: 'custom_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
           createdAt: Date.now(),
-          stampCode: frameStyle === 'postit' ? `DE: ${author.toUpperCase()}` : (frameStyle === 'stamp' ? 'ESTAMPILLA · AMOR' : 'FOTO · VINTAGE'),
-          title: cardTitle,
+          stampCode: frameStyle === 'postit' ? `DE: ${author.toUpperCase()}` : 'FOTO · RECUERDO',
+          title: title,
           subtitle: `De: ${author} ➔ Para: ${recipient}`,
           author: author,
           recipient: recipient,
@@ -1837,343 +1130,52 @@
           customImage: imgUrl || '',
           isCustom: true
         };
-
         cloudRealtimePostcards.push(newCard);
-        if (window.saveCardToRealtimeCloud) {
-          await window.saveCardToRealtimeCloud(newCard);
-        }
+        if (window.saveCardToRealtimeCloud) await window.saveCardToRealtimeCloud(newCard);
       };
 
-      const finishCreationFlow = () => {
+      const finishFlow = () => {
         rebuildAllPostcards();
-        if (currentViewMode === 'mosaic') {
-          renderAlbumGrid();
-        } else {
-          renderBookPage();
-        }
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = '📌 Pegar en el Álbum';
-        }
+        if (currentViewMode === 'mosaic') renderAlbumGrid();
+        else renderBookPage();
         closeCreatorStudio();
         document.getElementById('creatorForm').reset();
-        document.getElementById('customNewAlbumInputWrap').classList.add('hidden');
-        togglePostitFields();
-        showAlbumToast(`¡Recuerdo de "${author}" para "${recipient}" guardado en "${albumName}"! 📌✨`, emoji);
       };
 
-      if (fileInput.files && fileInput.files.length > 0) {
-        const filesArr = Array.from(fileInput.files);
-        let processed = 0;
-        filesArr.forEach((file, idx) => {
-          compressUploadedImage(file, async (compressedDataUrl) => {
-            const suffix = filesArr.length > 1 ? `${idx + 1}/${filesArr.length}` : '';
-            await buildAndSaveSingleCard(compressedDataUrl, suffix);
-            processed++;
-            if (processed === filesArr.length) {
-              finishCreationFlow();
-            }
-          });
+      if (fileInput.files && fileInput.files[0]) {
+        compressUploadedImage(fileInput.files[0], async (compressedUrl) => {
+          await saveCard(compressedUrl);
+          finishFlow();
         });
       } else {
-        buildAndSaveSingleCard(null, '').then(() => finishCreationFlow());
+        saveCard(null).then(() => finishFlow());
       }
     }
 
     async function requestDeleteCustomCard(id) {
       cloudRealtimePostcards = cloudRealtimePostcards.filter(c => c.id !== id);
       rebuildAllPostcards();
-
-      if (currentViewMode === 'mosaic') {
-        renderAlbumGrid();
-      } else {
-        currentBookPageIndex = Math.max(0, currentBookPageIndex - 1);
-        renderBookPage();
-      }
-
-      if (window.deleteCardFromRealtimeCloud) {
-        await window.deleteCardFromRealtimeCloud(id);
-      }
-      showAlbumToast('Nota o foto eliminada en todos los dispositivos', '🗑️');
+      if (currentViewMode === 'mosaic') renderAlbumGrid();
+      else renderBookPage();
+      if (window.deleteCardFromRealtimeCloud) await window.deleteCardFromRealtimeCloud(id);
     }
 
-    function buildSelfContainedExperienceHTML(card) {
-      // POSTAL #01: CARTA DE TULIPANES ETERNOS INTERACTIVA COMPLETA
-      if (card.id === 'tulipanes') {
-        return `<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<script src="https://cdn.tailwindcss.com"><\/script>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
-<style>
-  body { margin:0; min-height:100vh; background:radial-gradient(circle at top,#fff1f3 0%,#fed7e2 50%,#fbb6ce 100%); font-family:'Montserrat',sans-serif; display:flex; align-items:center; justify-content:center; padding:16px; overflow-x:hidden; }
-  .font-calligraphy { font-family:'Great Vibes',cursive; }
-  .tulip-btn { cursor:pointer; transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); transform-origin:bottom center; }
-  .tulip-btn:hover { transform:scale(1.14) translateY(-8px); }
-</style>
-</head>
-<body>
-  <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 max-w-lg w-full text-center shadow-2xl border border-pink-200 relative">
-    <div class="flex justify-between items-center border-b border-pink-100 pb-2 mb-3 text-xs text-rose-500 font-semibold">
-      <span>🌷 POSTAL #01 · NUESTRO ORIGEN</span>
-      <span id="cnt">Toca cada tulipán ✨</span>
-    </div>
-    <h1 class="text-5xl sm:text-6xl font-calligraphy text-rose-600 my-1">¡Te amo!</h1>
-    <p class="text-xs sm:text-sm text-stone-600 italic mb-4">"En un jardín lleno de estrellas y mil maravillas, mis ojos siempre te elegirían a ti."</p>
-
-    <div class="h-56 flex items-end justify-center gap-1 sm:gap-3 my-2 pb-2 relative">
-      <div onclick="showMsg(0)" class="tulip-btn" style="transform:rotate(-14deg)">
-        <svg class="w-16 sm:w-20 h-44" viewBox="0 0 100 220"><path d="M50 70 L50 215" stroke="#4ade80" stroke-width="6"/><ellipse cx="50" cy="50" rx="22" ry="30" fill="#e11d48"/><path d="M32 50 C30 22,50 18,50 48 Z" fill="#fb7185"/></svg>
-      </div>
-      <div onclick="showMsg(1)" class="tulip-btn" style="transform:rotate(-6deg)">
-        <svg class="w-16 sm:w-20 h-48" viewBox="0 0 100 220"><path d="M50 70 L50 215" stroke="#22c55e" stroke-width="6"/><ellipse cx="50" cy="48" rx="22" ry="30" fill="#facc15"/><path d="M32 48 C30 20,50 16,50 46 Z" fill="#fef08a"/></svg>
-      </div>
-      <div onclick="showMsg(2)" class="tulip-btn">
-        <svg class="w-20 sm:w-24 h-52" viewBox="0 0 100 220"><path d="M50 65 L50 215" stroke="#16a34a" stroke-width="7"/><ellipse cx="50" cy="44" rx="25" ry="34" fill="#ec4899"/><path d="M30 44 C28 15,50 12,50 42 Z" fill="#fbcfe8"/></svg>
-      </div>
-      <div onclick="showMsg(3)" class="tulip-btn" style="transform:rotate(7deg)">
-        <svg class="w-16 sm:w-20 h-48" viewBox="0 0 100 220"><path d="M50 70 L50 215" stroke="#22c55e" stroke-width="6"/><ellipse cx="50" cy="48" rx="22" ry="30" fill="#a855f7"/><path d="M32 48 C30 20,50 16,50 46 Z" fill="#e9d5ff"/></svg>
-      </div>
-      <div onclick="showMsg(4)" class="tulip-btn" style="transform:rotate(15deg)">
-        <svg class="w-16 sm:w-20 h-44" viewBox="0 0 100 220"><path d="M50 70 L50 215" stroke="#4ade80" stroke-width="6"/><ellipse cx="50" cy="50" rx="22" ry="30" fill="#f43f5e"/><path d="M32 50 C30 22,50 18,50 48 Z" fill="#fecdd3"/></svg>
-      </div>
-    </div>
-
-    <div id="msgBox" class="bg-rose-50 border border-rose-200 rounded-2xl p-3.5 text-xs sm:text-sm text-rose-800 font-medium mb-3">
-      🌷 Toca cualquiera de los 5 tulipanes para escuchar su nota y descubrir su mensaje secreto...
-    </div>
-
-    <p class="text-xs text-stone-600 leading-relaxed bg-pink-50/70 p-3 rounded-xl border border-pink-100">
-      "Quise darte tulipanes que nunca se marchiten, tal como mis sentimientos por ti. Gracias por llenar mis días de paz y ser lo más lindo que me ha pasado."
-    </p>
-  </div>
-  <script>
-    const notes = [
-      "❤️ Tulipán Rojo: Tu sonrisa es mi motivo favorito para sonreír cada día.",
-      "☀️ Tulipán Dorado: Gracias por iluminar mi mundo incluso en días grises.",
-      "🌸 Tulipán Rosa: En tus abrazos encontré el lugar más cálido y seguro.",
-      "✨ Tulipán Violeta: Contigo hasta los momentos más simples se vuelven mágicos.",
-      "🕊️ Tulipán Coral: Te amo de la forma más honesta, bonita e incondicional."
-    ];
-    const freqs = [523.25, 587.33, 659.25, 783.99, 880];
-    let ctx;
-    function showMsg(i) {
-      document.getElementById('msgBox').textContent = notes[i];
-      try {
-        ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
-        const o = ctx.createOscillator(), g = ctx.createGain();
-        o.type = 'triangle'; o.frequency.value = freqs[i];
-        g.gain.setValueAtTime(0.12, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
-        o.connect(g); g.connect(ctx.destination);
-        o.start(); o.stop(ctx.currentTime + 1.2);
-      } catch(e){}
-    }
-  <\/script>
-</body>
-</html>`;
-      }
-
-      // POSTAL #06: SANTUARIO DE PEONÍAS AL ATARDECER INTERACTIVO COMPLETO
-      if (card.id === 'peonias') {
-        return `<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<script src="https://cdn.tailwindcss.com"><\/script>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-<style>
-  * { image-rendering:pixelated; user-select:none; }
-  body { margin:0; min-height:100vh; background:radial-gradient(circle at 50% 15%,#3d1410 0%,#120504 100%); color:#fff8f0; font-family:'Press Start 2P',monospace; display:flex; align-items:center; justify-content:center; padding:12px; }
-  .font-vt { font-family:'VT323',monospace; }
-  .frame { background:#2b160e; border:4px solid #120804; box-shadow:0 0 0 2px #d97706,0 15px 35px rgba(0,0,0,0.85); }
-  .btn-cozy { background:linear-gradient(180deg,#e11d48 0%,#9f1239 100%); border:2px solid #140804; color:#fff; font-size:9px; padding:10px 12px; cursor:pointer; }
-</style>
-</head>
-<body>
-  <div class="frame max-w-2xl w-full p-3 sm:p-4 rounded-xl flex flex-col gap-3">
-    <div class="flex items-center justify-between border-b border-amber-500/30 pb-2">
-      <div class="flex items-center gap-2">
-        <span class="text-xl">🌸</span>
-        <div>
-          <div class="text-[9px] sm:text-[10px] text-amber-300">SANTUARIO DE PEONÍAS AL ATARDECER</div>
-          <div class="font-vt text-base text-rose-300">Toca el jardín o los botones para regar nuestras 5 peonías</div>
-        </div>
-      </div>
-      <span class="text-[8px] bg-rose-600 px-2 py-1 rounded text-white">POSTAL #06</span>
-    </div>
-
-    <div class="relative w-full aspect-[16/9] bg-[#1a0908] border-4 border-[#120604] overflow-hidden cursor-pointer" onclick="waterGarden()">
-      <canvas id="peonyCanvas" width="360" height="200" class="w-full h-full block"></canvas>
-    </div>
-
-    <div class="bg-[#1b0d08] border-2 border-[#5c3221] p-3 flex items-center gap-3">
-      <div class="text-2xl shrink-0">👩🏼‍🌾💖</div>
-      <p id="pQuote" class="font-vt text-xl sm:text-2xl text-amber-100 leading-snug">
-        "Estando juntos soy muy feliz y los momentos a tu lado son maravillosos. Eres lo que tanto esperé, mi niña linda."
-      </p>
-    </div>
-
-    <div class="grid grid-cols-5 gap-1.5">
-      <button onclick="pickPeony(0)" class="btn-cozy rounded">🌺 Peonía I</button>
-      <button onclick="pickPeony(1)" class="btn-cozy rounded">🌸 Peonía II</button>
-      <button onclick="pickPeony(2)" class="btn-cozy rounded">🌷 Peonía III</button>
-      <button onclick="pickPeony(3)" class="btn-cozy rounded">💮 Peonía IV</button>
-      <button onclick="pickPeony(4)" class="btn-cozy rounded">👑 Peonía V</button>
-    </div>
-  </div>
-  <script>
-    const quotes = [
-      "Estando juntos soy muy feliz y los momentos a tu lado son maravillosos. 🌸",
-      "Tengo tantos momentos lindos en tan poco tiempo contigo, que cada día es un regalo. ✨",
-      "Me hiciste amarte tanto en tan poco tiempo... Tu dulzura conquistó mi alma. 💖",
-      "Los momentos más lindos los paso todo el tiempo contigo a mi lado. Nunca me voy a ir. 🌅",
-      "Eres lo que tanto esperé, mi niña linda. Siempre estaré cuidándote y amándote. 👑"
-    ];
-    const c = document.getElementById('peonyCanvas'), ctx = c.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
-    let tick = 0, waterTimer = 60, scales = [1,1,1,1,1];
-    let drops = [];
-    function playNote(f) {
-      try {
-        window.ac = window.ac || new (window.AudioContext||window.webkitAudioContext)();
-        const o = window.ac.createOscillator(), g = window.ac.createGain();
-        o.type = 'sine'; o.frequency.value = f;
-        g.gain.setValueAtTime(0.08, window.ac.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.0001, window.ac.currentTime + 1.1);
-        o.connect(g); g.connect(window.ac.destination);
-        o.start(); o.stop(window.ac.currentTime + 1.1);
-      } catch(e){}
-    }
-    function pickPeony(i) {
-      document.getElementById('pQuote').textContent = '"' + quotes[i] + '"';
-      scales[i] = 1.45; waterTimer = 90;
-      playNote([349.23, 440, 523.25, 659.25, 698.46][i]);
-    }
-    function waterGarden() {
-      waterTimer = 100;
-      scales = scales.map(() => 1.35);
-      playNote(523.25);
-    }
-    function loop() {
-      tick++;
-      const g = ctx.createLinearGradient(0,0,0,150);
-      g.addColorStop(0,'#6b1d2f'); g.addColorStop(0.35,'#ba3818'); g.addColorStop(0.7,'#f26419'); g.addColorStop(1,'#fde047');
-      ctx.fillStyle = g; ctx.fillRect(0,0,360,200);
-      // Sol dorado
-      ctx.fillStyle = '#fffbeb'; ctx.beginPath(); ctx.arc(260,85,28,0,Math.PI*2); ctx.fill();
-      // Suelo y jardinera
-      ctx.fillStyle = '#2d1c10'; ctx.fillRect(0,145,360,55);
-      ctx.fillStyle = '#5c341e'; ctx.fillRect(145,152,195,34);
-      // Ella (Güerita, cabello castaño claro casi rubio, ojos café claros)
-      const gx = 80, gy = 108 + (Math.floor(tick/25)%2);
-      ctx.fillStyle = '#eab308'; ctx.fillRect(gx-4,gy-10,28,6); // sombrero
-      ctx.fillStyle = '#f3c97e'; ctx.fillRect(gx,gy-4,20,22); // cabello rubio miel
-      ctx.fillStyle = '#fff3e6'; ctx.fillRect(gx+3,gy,14,12); // rostro güerita
-      ctx.fillStyle = '#855225'; ctx.fillRect(gx+6,gy+4,3,3); ctx.fillRect(gx+12,gy+4,3,3); // ojos café claros
-      ctx.fillStyle = '#10b981'; ctx.fillRect(gx+3,gy+12,14,28); // overol
-      ctx.fillStyle = '#f59e0b'; ctx.fillRect(gx+20,gy+14,12,10); // regadera
-      // Gotas de agua
-      if (waterTimer > 0) {
-        waterTimer--;
-        drops.push({x:gx+34, y:gy+16, vx:2+Math.random()*2, vy:-0.5});
-      }
-      for (let i=drops.length-1; i>=0; i--) {
-        let d = drops[i]; d.x += d.vx; d.y += d.vy; d.vy += 0.12;
-        ctx.fillStyle = '#7dd3fc'; ctx.fillRect(d.x,d.y,2,2);
-        if (d.y > 160) drops.splice(i,1);
-      }
-      // 5 Peonías
-      [165, 200, 235, 270, 305].forEach((px, idx) => {
-        scales[idx] += (1 - scales[idx]) * 0.05;
-        let s = Math.round(14 * scales[idx]);
-        ctx.fillStyle = '#1f4722'; ctx.fillRect(px-10,142,20,12);
-        ctx.fillStyle = '#e11d48'; ctx.fillRect(px-s/2,138-s,s,s);
-        ctx.fillStyle = '#fda4af'; ctx.fillRect(px-s/3,136-s,s*0.66,s*0.6);
-      });
-      requestAnimationFrame(loop);
-    }
-    loop();
-  <\/script>
-</body>
-</html>`;
-      }
-
-      // RESPALDO INTERACTIVO PARA CUALQUIERA DE LAS OTRAS POSTALES
-      return `<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<script src="https://cdn.tailwindcss.com"><\/script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=VT323&display=swap" rel="stylesheet">
-<style>
-  body { margin:0; min-height:100vh; background: radial-gradient(circle at 50% 20%, #2a144a, #090414 80%); color:#fffbeb; font-family:'Playfair Display',serif; display:flex; align-items:center; justify-content:center; padding:20px; text-align:center; overflow:hidden; }
-  .card-box { background:rgba(24,12,48,0.92); border:2px solid #fbbf24; border-radius:24px; padding:32px 24px; max-width:540px; width:100%; box-shadow:0 0 45px rgba(251,191,36,0.25); position:relative; z-index:10; }
-  .quote { font-family:'VT323',monospace; font-size:26px; color:#fef08a; line-height:1.35; margin:20px 0; }
-</style>
-</head>
-<body>
-  <div class="card-box">
-    <div class="text-5xl mb-3 animate-bounce">${card.emoji}</div>
-    <div class="text-xs uppercase tracking-widest text-amber-400 font-sans font-bold mb-1">${card.stampCode}</div>
-    <h1 class="text-2xl sm:text-3xl font-bold text-white mb-1">${card.title}</h1>
-    <p class="text-xs text-rose-300 font-sans mb-4">${card.subtitle}</p>
-    <div class="quote bg-black/40 p-4 rounded-2xl border-l-4 border-amber-400">${card.quote}</div>
-    <a href="${card.defaultUrl}" target="_blank" class="inline-block mt-3 px-5 py-2.5 rounded-xl bg-amber-400 text-black font-sans font-bold text-xs shadow-lg">↗ Abrir Pantalla Completa (${card.defaultUrl})</a>
-  </div>
-</body>
-</html>`;
-    }
-
-    async function openPostcardExperience(cardId) {
+    function openPostcardExperience(cardId) {
       const card = allPostcards.find(c => c.id === cardId);
       if (!card) return;
 
       const theaterModal = document.getElementById('theaterModal');
       const iframe = document.getElementById('theaterIframe');
-      const extLink = document.getElementById('theaterExternalLink');
-
       document.getElementById('theaterTitle').textContent = card.title;
-      document.getElementById('theaterSubtitle').textContent = card.subtitle;
-      document.getElementById('theaterIcon').textContent = card.emoji;
-      if (extLink && card.defaultUrl) extLink.href = card.defaultUrl;
 
-      iframe.removeAttribute('srcdoc');
-      iframe.src = 'about:blank';
+      iframe.src = card.defaultUrl || 'about:blank';
       theaterModal.classList.remove('hidden');
-      showAlbumToast(`Abriendo: ${card.title}`, card.emoji);
-
-      // Si estamos en GitHub Pages (http/https), verificamos si el archivo externo está disponible; si no (o si es vista previa local), cargamos la versión interactiva incrustada garantizada
-      if (card.defaultUrl && window.location.protocol.startsWith('http')) {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 1800);
-          const res = await fetch(card.defaultUrl, { method: 'GET', signal: controller.signal });
-          clearTimeout(timeoutId);
-          if (res.ok) {
-            const htmlText = await res.text();
-            if (htmlText && htmlText.includes('<html')) {
-              iframe.src = card.defaultUrl;
-              return;
-            }
-          }
-        } catch (err) {}
-      }
-
-      // Cargar escena interactiva incrustada directamente (Garantiza que Postal #01 y Postal #06 jamás fallen)
-      iframe.srcdoc = buildSelfContainedExperienceHTML(card);
     }
 
     function closeTheaterModal() {
-      const modal = document.getElementById('theaterModal');
       const iframe = document.getElementById('theaterIframe');
-      iframe.removeAttribute('srcdoc');
       iframe.src = 'about:blank';
-      modal.classList.add('hidden');
+      document.getElementById('theaterModal').classList.add('hidden');
     }
 
     function filterAlbum(cat) {
@@ -2185,143 +1187,29 @@
       renderAlbumGrid();
     }
 
-    function drawHeroMiniPortrait() {
+    function drawHeroMiniPortraits() {
       const c = document.getElementById('heroPortraitCanvas');
-      if (!c) return;
-      const ctx = c.getContext('2d');
-      ctx.imageSmoothingEnabled = false;
-
-      ctx.fillStyle = '#2a144a';
-      ctx.fillRect(0, 0, 32, 32);
-
-      ctx.fillStyle = '#eab66a';
-      ctx.fillRect(5, 5, 22, 23);
-      ctx.fillStyle = '#f7d694';
-      ctx.fillRect(7, 5, 18, 4);
-
-      ctx.fillStyle = '#fff3e6';
-      ctx.fillRect(8, 9, 16, 14);
-
-      ctx.fillStyle = '#7d4f24';
-      ctx.fillRect(10, 13, 4, 4);
-      ctx.fillRect(18, 13, 4, 4);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(10, 13, 1, 1);
-      ctx.fillRect(18, 13, 1, 1);
-
-      ctx.fillStyle = '#c084fc';
-      ctx.fillRect(8, 25, 16, 7);
-
-      // Dibujar también tu retrato en Pixel Art al lado del de ella
+      if (c) {
+        const ctx = c.getContext('2d'); ctx.imageSmoothingEnabled = false;
+        ctx.fillStyle = '#2a144a'; ctx.fillRect(0,0,32,32);
+        ctx.fillStyle = '#eab66a'; ctx.fillRect(5,5,22,23);
+        ctx.fillStyle = '#fff3e6'; ctx.fillRect(8,9,16,14);
+        ctx.fillStyle = '#7d4f24'; ctx.fillRect(10,13,4,4); ctx.fillRect(18,13,4,4);
+      }
       const b = document.getElementById('heroBoyPortraitCanvas');
-      if (!b) return;
-      const bCtx = b.getContext('2d');
-      bCtx.imageSmoothingEnabled = false;
-
-      bCtx.fillStyle = '#141b38';
-      bCtx.fillRect(0, 0, 32, 32);
-
-      // Cabello oscuro masculino
-      bCtx.fillStyle = '#1c1917';
-      bCtx.fillRect(6, 4, 20, 9);
-      bCtx.fillRect(5, 7, 3, 8);
-      bCtx.fillRect(24, 7, 3, 8);
-
-      // Rostro cálido
-      bCtx.fillStyle = '#f5cbaf';
-      bCtx.fillRect(8, 10, 16, 13);
-
-      // Ojos expresivos con brillo
-      bCtx.fillStyle = '#1e293b';
-      bCtx.fillRect(10, 13, 4, 4);
-      bCtx.fillRect(18, 13, 4, 4);
-      bCtx.fillStyle = '#ffffff';
-      bCtx.fillRect(10, 13, 1, 1);
-      bCtx.fillRect(18, 13, 1, 1);
-
-      // Sonrisa tierna
-      bCtx.fillStyle = '#b45309';
-      bCtx.fillRect(13, 19, 6, 1);
-
-      // Atuendo elegante azul noche y camisa crema
-      bCtx.fillStyle = '#1e3a8a';
-      bCtx.fillRect(7, 24, 18, 8);
-      bCtx.fillStyle = '#fef3c7';
-      bCtx.fillRect(12, 24, 8, 6);
-    }
-
-    function drawHeroMiniPortrait() {
-      const c = document.getElementById('heroPortraitCanvas');
-      if (!c) return;
-      const ctx = c.getContext('2d');
-      ctx.imageSmoothingEnabled = false;
-
-      ctx.fillStyle = '#2a144a';
-      ctx.fillRect(0, 0, 32, 32);
-
-      ctx.fillStyle = '#eab66a';
-      ctx.fillRect(5, 5, 22, 23);
-      ctx.fillStyle = '#f7d694';
-      ctx.fillRect(7, 5, 18, 4);
-
-      ctx.fillStyle = '#fff3e6';
-      ctx.fillRect(8, 9, 16, 14);
-
-      ctx.fillStyle = '#7d4f24';
-      ctx.fillRect(10, 13, 4, 4);
-      ctx.fillRect(18, 13, 4, 4);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(10, 13, 1, 1);
-      ctx.fillRect(18, 13, 1, 1);
-
-      ctx.fillStyle = '#c084fc';
-      ctx.fillRect(8, 25, 16, 7);
-    }
-
-    function showAlbumToast(msg, emoji = '✨') {
-      const toast = document.getElementById('albumToast');
-      document.getElementById('toastEmoji').textContent = emoji;
-      document.getElementById('toastMessage').textContent = msg;
-      toast.classList.add('show');
-      clearTimeout(window.albumToastTimer);
-      window.albumToastTimer = setTimeout(() => toast.classList.remove('show'), 3400);
-    }
-
-    const dustCanvas = document.getElementById('bgDustCanvas');
-    const dCtx = dustCanvas.getContext('2d');
-    function resizeDust() {
-      dustCanvas.width = window.innerWidth;
-      dustCanvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeDust);
-    resizeDust();
-
-    const dustParticles = Array.from({ length: 30 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      r: Math.random() * 1.8 + 0.5,
-      vy: -Math.random() * 0.3 - 0.1,
-      alpha: Math.random() * 0.5 + 0.2
-    }));
-
-    function renderDust() {
-      dCtx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
-      dustParticles.forEach(p => {
-        p.y += p.vy;
-        if (p.y < 0) p.y = dustCanvas.height;
-        dCtx.fillStyle = `rgba(251, 191, 36, ${p.alpha})`;
-        dCtx.beginPath();
-        dCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        dCtx.fill();
-      });
-      requestAnimationFrame(renderDust);
+      if (b) {
+        const ctx = b.getContext('2d'); ctx.imageSmoothingEnabled = false;
+        ctx.fillStyle = '#141b38'; ctx.fillRect(0,0,32,32);
+        ctx.fillStyle = '#1c1917'; ctx.fillRect(6,4,20,9);
+        ctx.fillStyle = '#f5cbaf'; ctx.fillRect(8,10,16,13);
+        ctx.fillStyle = '#1e293b'; ctx.fillRect(10,13,4,4); ctx.fillRect(18,13,4,4);
+      }
     }
 
     window.onload = () => {
       applyThemeUI();
       renderAlbumGrid();
-      drawHeroMiniPortrait();
-      renderDust();
+      drawHeroMiniPortraits();
     };
   </script>
 </body>
