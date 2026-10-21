@@ -336,11 +336,11 @@
               👾 Pixel Art
             </button>
             <!-- Pestaña del apartado restringido (aparece al desbloquear o permite entrar si ya se desbloqueó) -->
-            <button onclick="handleVaultTabClick()" id="filter-vault" class="filter-pill hidden px-4 py-1.5 rounded-full text-xs border border-rose-400/60 bg-rose-950/60 text-rose-200 transition">
+            <button onclick="filterAlbum('Vault')" id="filter-vault" class="filter-pill hidden px-4 py-1.5 rounded-full text-xs border border-rose-400/60 bg-rose-950/60 text-rose-200 transition">
               🔒 Rincón Secreto ♥
             </button>
           </div>
-          <span id="totalMemoriesBadge" class="text-[11px] opacity-80 font-medium">7 Mundos + Tus Notas en Vivo</span>
+          <span id="totalMemoriesBadge" class="text-[11px] opacity-80 font-medium">8 Mundos + Tus Notas en Vivo</span>
         </div>
 
         <!-- Barra de Álbumes de Eventos -->
@@ -849,12 +849,28 @@
   <script>
     const defaultPostcards = [
       {
+        id: 'ghibli',
+        stampCode: 'POSTAL #08 · NUEVA',
+        title: 'Nuestra Colina del Viento',
+        subtitle: 'Picnic en la Pradera Estilo Studio Ghibli',
+        category: ['featured', 'pixel'],
+        mosaicSpan: 'md:col-span-8',
+        canvasHeight: 'h-60 sm:h-72',
+        dateBadge: 'Brisa Ghibli',
+        emoji: '🍃',
+        defaultUrl: 'pradera_ghibli.html',
+        quote: '“Dicen que el hogar no es un lugar en el mapa, sino esa persona con la que el ruido del mundo se apaga y todo se vuelve paz. Mi hogar eres tú, mi niña linda.”',
+        tags: ['Picnic Ghibli', 'Dientes de León', 'Vals de Piano'],
+        frameStyle: 'mosaic',
+        isCustom: false
+      },
+      {
         id: 'linternas',
         stampCode: 'POSTAL #07 · DESTACADA',
         title: 'Nuestro Cielo de Luces',
         subtitle: 'El Lago de las Linternas Flotantes',
         category: ['featured', 'pixel'],
-        mosaicSpan: 'md:col-span-8',
+        mosaicSpan: 'md:col-span-4',
         canvasHeight: 'h-60 sm:h-72',
         dateBadge: 'Estilo Enredados',
         emoji: '🏮',
@@ -1442,7 +1458,50 @@
         const w = c.width;
         const h = c.height;
 
-        if (card.id === 'linternas') {
+        if (card.id === 'ghibli') {
+          // Cielo azul celeste Ghibli y nubes cúmulo blancas
+          const g = ctx.createLinearGradient(0, 0, 0, 125);
+          g.addColorStop(0, '#0284c7');
+          g.addColorStop(0.6, '#38bdf8');
+          g.addColorStop(1, '#bae6fd');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, w, h);
+          // Nubes cúmulo esponjosas
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(35, 28, 85, 22);
+          ctx.fillRect(50, 16, 55, 16);
+          ctx.fillRect(195, 22, 95, 24);
+          ctx.fillRect(215, 10, 60, 16);
+          // Pradera verde esmeralda y árbol frondoso
+          ctx.fillStyle = '#16a34a';
+          ctx.fillRect(0, 118, w, 62);
+          ctx.fillStyle = '#22c55e';
+          ctx.fillRect(0, 126, w, 24);
+          ctx.fillStyle = '#451a03';
+          ctx.fillRect(22, 65, 16, 62);
+          ctx.fillStyle = '#15803d';
+          ctx.fillRect(0, 20, 72, 48);
+          // Manta de picnic roja/blanca y ustedes dos sentados juntos
+          ctx.fillStyle = '#fef2f2';
+          ctx.fillRect(105, 136, 96, 18);
+          ctx.fillStyle = '#ef4444';
+          ctx.fillRect(112, 138, 16, 14);
+          ctx.fillRect(144, 138, 16, 14);
+          ctx.fillRect(176, 138, 16, 14);
+          // Ella (sombrero de paja y cabello rubio miel) y Tú
+          ctx.fillStyle = '#fde047';
+          ctx.fillRect(124, 106, 18, 4);
+          ctx.fillStyle = '#f3c97e';
+          ctx.fillRect(126, 110, 14, 14);
+          ctx.fillStyle = '#38bdf8';
+          ctx.fillRect(126, 124, 14, 14);
+          ctx.fillStyle = '#1c1917';
+          ctx.fillRect(156, 108, 14, 6);
+          ctx.fillStyle = '#f5cbaf';
+          ctx.fillRect(157, 114, 12, 10);
+          ctx.fillStyle = '#1e3a8a';
+          ctx.fillRect(156, 124, 14, 14);
+        } else if (card.id === 'linternas') {
           const g = ctx.createLinearGradient(0, 0, 0, h);
           g.addColorStop(0, '#090418');
           g.addColorStop(0.65, '#2d1657');
