@@ -109,6 +109,70 @@
     .themed-quote { background: var(--quote-bg); }
     .themed-input { background: var(--input-bg); color: var(--text-main); }
     .themed-modal { background: var(--modal-bg); color: var(--text-main); }
+
+    /* =====================================================================
+       MARCO DE TEMPORADA AUTOMÁTICO: DÍA DE MUERTOS / HALLOWEEN vs NAVIDAD
+       ===================================================================== */
+    .seasonal-counter-frame {
+      position: relative;
+      border-radius: 16px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      width: 100%;
+      transition: all 0.5s ease;
+      overflow: hidden;
+    }
+
+    /* TEMA 1: Día de Muertos / Halloween (Activo hasta el 3 de Noviembre) */
+    body.season-muertos .seasonal-counter-frame {
+      background: linear-gradient(135deg, #2b0938 0%, #4a1259 50%, #1f0826 100%);
+      border: 2px solid #ff7800;
+      box-shadow: 0 0 18px rgba(255, 120, 0, 0.45), inset 0 0 12px rgba(247, 37, 133, 0.35);
+    }
+
+    body.season-muertos .seasonal-counter-frame::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: repeating-linear-gradient(90deg, #ff7800 0px, #ff7800 8px, #f72585 8px, #f72585 16px, #ffb703 16px, #ffb703 24px, #7209b7 24px, #7209b7 32px);
+    }
+
+    body.season-muertos .counter-unit-box {
+      background: rgba(20, 4, 28, 0.85);
+      border: 1px solid rgba(255, 158, 0, 0.55);
+      color: #ffbe0b;
+      text-shadow: 0 0 8px rgba(255, 120, 0, 0.6);
+    }
+
+    /* TEMA 2: Navidad Mágica (Se activa automáticamente pasando el 3 de Noviembre) */
+    body.season-navidad {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #0f291e 0%, #1f0b12 52%, #070d0a 100%);
+      --card-border: rgba(220, 38, 38, 0.4);
+    }
+
+    body.season-navidad:not(.light-mode) {
+      --hero-bg: linear-gradient(to right, rgba(20, 45, 32, 0.95), rgba(65, 15, 24, 0.9), rgba(15, 38, 26, 0.95));
+    }
+
+    body.season-navidad .seasonal-counter-frame {
+      background: linear-gradient(135deg, #0b3b24 0%, #7f1d1d 55%, #062918 100%);
+      border: 2px solid #fbbf24;
+      box-shadow: 0 0 20px rgba(220, 38, 38, 0.45), inset 0 0 12px rgba(251, 191, 36, 0.3);
+    }
+
+    body.season-navidad .seasonal-counter-frame::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: repeating-linear-gradient(45deg, #dc2626 0px, #dc2626 8px, #ffffff 8px, #ffffff 16px, #16a34a 16px, #16a34a 24px, #fbbf24 24px, #fbbf24 32px);
+    }
+
+    body.season-navidad .counter-unit-box {
+      background: rgba(10, 28, 18, 0.88);
+      border: 1px solid rgba(251, 191, 36, 0.65);
+      color: #fef08a;
+      text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+    }
   </style>
 </head>
 <body class="relative pb-24">
@@ -159,7 +223,7 @@
       <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="max-w-2xl text-center md:text-left">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-500 text-xs font-bold mb-3">
-            <span>👑</span><span>Dedicado a mi güerita hermosa de ojitos café claros</span>
+            <span id="seasonalHeroBadgeIcon">👑</span><span id="seasonalHeroBadgeText">Dedicado a mi güerita hermosa de ojitos café claros</span>
           </div>
           <h2 class="text-2xl sm:text-4xl font-serif-title font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 leading-tight">
             Cada postal y fotografía guarda un universo construido para ti
@@ -169,14 +233,42 @@
           </p>
         </div>
 
-        <div class="shrink-0 flex flex-col items-center bg-black/35 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl">
-          <div onclick="handleHeroCoupleClick(event)" class="relative w-44 h-28 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-purple-900/50 via-indigo-950/70 to-slate-950 shadow-inner">
+        <div class="shrink-0 flex flex-col items-center bg-black/35 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl w-full sm:w-64">
+          <div onclick="handleHeroCoupleClick(event)" class="relative w-48 h-28 rounded-xl overflow-hidden border-2 border-amber-300 bg-gradient-to-b from-purple-900/50 via-indigo-950/70 to-slate-950 shadow-inner">
             <canvas id="heroCoupleFullCanvas" width="96" height="64" class="w-full h-full pixel-canvas block"></canvas>
           </div>
           <div class="flex items-center justify-between w-full px-2 mt-2">
             <span class="font-pixel text-[7px] text-amber-400">★ MI NIÑA LINDA</span>
             <span class="text-rose-400 text-xs font-bold animate-pulse">♥</span>
             <span class="font-pixel text-[7px] text-amber-400">TU NIÑO ★</span>
+          </div>
+
+          <!-- CONTADOR EN TIEMPO REAL DE TIEMPO JUNTOS CON MARCO DE TEMPORADA -->
+          <div id="seasonalCounterFrame" class="seasonal-counter-frame">
+            <div class="flex items-center justify-between text-[9px] font-bold tracking-wider uppercase mb-1.5 px-0.5 text-amber-200">
+              <span id="seasonIconLeft">🌼🎃</span>
+              <span id="seasonTitleText" class="text-center font-serif-title italic text-[11px] text-amber-100">Nuestro Tiempo Juntos</span>
+              <span id="seasonIconRight">💀🕯️</span>
+            </div>
+
+            <div class="grid grid-cols-4 gap-1.5 text-center">
+              <div class="counter-unit-box rounded-lg py-1.5 px-1 flex flex-col items-center justify-center">
+                <span id="cntMonths" class="font-pixel text-xs sm:text-sm leading-none">0</span>
+                <span class="text-[8px] text-amber-100/90 font-semibold mt-1 uppercase tracking-tighter">Meses</span>
+              </div>
+              <div class="counter-unit-box rounded-lg py-1.5 px-1 flex flex-col items-center justify-center">
+                <span id="cntDays" class="font-pixel text-xs sm:text-sm leading-none">0</span>
+                <span class="text-[8px] text-amber-100/90 font-semibold mt-1 uppercase tracking-tighter">Días</span>
+              </div>
+              <div class="counter-unit-box rounded-lg py-1.5 px-1 flex flex-col items-center justify-center">
+                <span id="cntHours" class="font-pixel text-xs sm:text-sm leading-none">00</span>
+                <span class="text-[8px] text-amber-100/90 font-semibold mt-1 uppercase tracking-tighter">Horas</span>
+              </div>
+              <div class="counter-unit-box rounded-lg py-1.5 px-1 flex flex-col items-center justify-center">
+                <span id="cntSeconds" class="font-pixel text-xs sm:text-sm leading-none">00</span>
+                <span class="text-[8px] text-amber-100/90 font-semibold mt-1 uppercase tracking-tighter">Seg</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1340,10 +1432,141 @@
       }
     }
 
+    /* =====================================================================
+       CONTADOR EN TIEMPO REAL (DESDE 4 DE JULIO DE 2026) Y TEMPORADA AUTOMÁTICA
+       - Hasta el 3 de Noviembre: Día de Muertos / Halloween
+       - A partir del 4 de Noviembre: Temática Navideña en general
+       ===================================================================== */
+    const RELATIONSHIP_START = new Date(2026, 6, 4, 0, 0, 0); // 4 de Julio 2026 (Mes 6 en JS)
+    let currentSeasonMode = 'muertos'; // 'muertos' | 'navidad'
+
+    function checkAndApplySeasonTheme() {
+      const now = new Date();
+      const month = now.getMonth(); // 0 = Ene ... 9 = Oct, 10 = Nov, 11 = Dic
+      const day = now.getDate();
+
+      // Si estamos en Noviembre después del día 3 (día >= 4) o en Diciembre (mes 11), activar Navidad
+      const isChristmasSeason = (month === 10 && day > 3) || (month === 11);
+
+      document.body.classList.remove('season-muertos', 'season-navidad');
+      const iconL = document.getElementById('seasonIconLeft');
+      const iconR = document.getElementById('seasonIconRight');
+      const badgeIcon = document.getElementById('seasonalHeroBadgeIcon');
+
+      if (isChristmasSeason) {
+        currentSeasonMode = 'navidad';
+        document.body.classList.add('season-navidad');
+        if (iconL) iconL.textContent = '🎄❄️';
+        if (iconR) iconR.textContent = '🎅✨';
+        if (badgeIcon) badgeIcon.textContent = '🎄';
+      } else {
+        currentSeasonMode = 'muertos';
+        document.body.classList.add('season-muertos');
+        if (iconL) iconL.textContent = '🌼🎃';
+        if (iconR) iconR.textContent = '💀🕯️';
+        if (badgeIcon) badgeIcon.textContent = '🌼';
+      }
+    }
+
+    function updateRelationshipCounter() {
+      const now = new Date();
+      if (now < RELATIONSHIP_START) return;
+
+      // Cálculo exacto de meses calendario cumplidos + días restantes + horas + segundos
+      let months = (now.getFullYear() - RELATIONSHIP_START.getFullYear()) * 12 + (now.getMonth() - RELATIONSHIP_START.getMonth());
+      let pivotDate = new Date(
+        RELATIONSHIP_START.getFullYear(),
+        RELATIONSHIP_START.getMonth() + months,
+        RELATIONSHIP_START.getDate(),
+        RELATIONSHIP_START.getHours(),
+        RELATIONSHIP_START.getMinutes(),
+        RELATIONSHIP_START.getSeconds()
+      );
+
+      if (now < pivotDate) {
+        months--;
+        pivotDate = new Date(
+          RELATIONSHIP_START.getFullYear(),
+          RELATIONSHIP_START.getMonth() + months,
+          RELATIONSHIP_START.getDate(),
+          RELATIONSHIP_START.getHours(),
+          RELATIONSHIP_START.getMinutes(),
+          RELATIONSHIP_START.getSeconds()
+        );
+      }
+
+      const diffMs = now - pivotDate;
+      const totalSeconds = Math.floor(diffMs / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const seconds = totalSeconds % 60;
+
+      const elMonths = document.getElementById('cntMonths');
+      const elDays = document.getElementById('cntDays');
+      const elHours = document.getElementById('cntHours');
+      const elSeconds = document.getElementById('cntSeconds');
+
+      if (elMonths) elMonths.textContent = months;
+      if (elDays) elDays.textContent = days;
+      if (elHours) elHours.textContent = String(hours).padStart(2, '0');
+      if (elSeconds) elSeconds.textContent = String(seconds).padStart(2, '0');
+    }
+
+    /* Partículas ambientales en el fondo según la temporada (Pétalos Cempasúchil vs Nieve Navideña) */
+    function initSeasonalBackgroundParticles() {
+      const bgCanvas = document.getElementById('bgDustCanvas');
+      if (!bgCanvas) return;
+      const bCtx = bgCanvas.getContext('2d');
+
+      let w = (bgCanvas.width = window.innerWidth);
+      let h = (bgCanvas.height = window.innerHeight);
+      window.addEventListener('resize', () => {
+        w = bgCanvas.width = window.innerWidth;
+        h = bgCanvas.height = window.innerHeight;
+      });
+
+      const particles = Array.from({ length: 32 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 2.8 + 1.2,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: Math.random() * 0.65 + 0.3,
+        phase: Math.random() * Math.PI * 2
+      }));
+
+      function drawBgParticles() {
+        bCtx.clearRect(0, 0, w, h);
+        particles.forEach((p, idx) => {
+          p.y += p.vy;
+          p.x += p.vx + Math.sin(Date.now() * 0.001 + p.phase) * 0.25;
+          if (p.y > h + 10) { p.y = -10; p.x = Math.random() * w; }
+          if (p.x > w + 10) p.x = -10;
+          if (p.x < -10) p.x = w + 10;
+
+          bCtx.beginPath();
+          bCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          if (currentSeasonMode === 'navidad') {
+            // Copos de nieve blancos y destellos dorados navideños
+            bCtx.fillStyle = idx % 4 === 0 ? 'rgba(251, 191, 36, 0.55)' : 'rgba(255, 255, 255, 0.55)';
+          } else {
+            // Pétalos de cempasúchil naranjas, morados y dorados
+            bCtx.fillStyle = idx % 3 === 0 ? 'rgba(255, 120, 0, 0.5)' : (idx % 2 === 0 ? 'rgba(247, 37, 133, 0.4)' : 'rgba(255, 190, 11, 0.45)');
+          }
+          bCtx.fill();
+        });
+        requestAnimationFrame(drawBgParticles);
+      }
+      drawBgParticles();
+    }
+
     window.onload = () => {
+      checkAndApplySeasonTheme();
       applyThemeUI();
       renderAlbumGrid();
       animateHeroCoupleFullBody();
+      updateRelationshipCounter();
+      setInterval(updateRelationshipCounter, 1000);
+      initSeasonalBackgroundParticles();
     };
   </script>
 </body>
