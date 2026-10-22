@@ -111,8 +111,44 @@
     .themed-modal { background: var(--modal-bg); color: var(--text-main); }
 
     /* =====================================================================
-       MARCO DE TEMPORADA AUTOMÁTICO: DÍA DE MUERTOS / HALLOWEEN vs NAVIDAD
+       MOTOR VISUAL DE 4 TEMPORADAS EN TODA LA PÁGINA (SIN SATURAR)
+       1. Día de Muertos / Halloween (Hasta 3 de Noviembre)
+       2. Navidad Mágica (4 de Noviembre - Enero)
+       3. San Valentín / Día del Amor (Febrero - 20 de Marzo)
+       4. Primavera Florida (Desde el 21 de Marzo)
        ===================================================================== */
+    .seasonal-top-garland {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    .seasonal-corner-ornament {
+      position: fixed;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0.72;
+      transition: all 0.5s ease;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.45));
+    }
+
+    @keyframes floatSlowSeason {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    @keyframes twinkleBulb {
+      0%, 100% { opacity: 0.45; transform: scale(0.92); }
+      50% { opacity: 1; transform: scale(1.12); }
+    }
+
+    .season-float {
+      animation: floatSlowSeason 4.5s ease-in-out infinite;
+    }
+
     .seasonal-counter-frame {
       position: relative;
       border-radius: 16px;
@@ -123,7 +159,25 @@
       overflow: hidden;
     }
 
-    /* TEMA 1: Día de Muertos / Halloween (Activo hasta el 3 de Noviembre) */
+    /* ---------------------------------------------------------------------
+       TEMA 1: DÍA DE MUERTOS / HALLOWEEN (Activo hasta el 3 de Noviembre)
+       --------------------------------------------------------------------- */
+    body.season-muertos:not(.light-mode) {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #38104a 0%, #1b0829 48%, #090212 100%);
+      --card-bg: rgba(29, 11, 46, 0.86);
+      --card-border: rgba(255, 136, 0, 0.42);
+      --hero-bg: linear-gradient(135deg, rgba(54, 15, 74, 0.95), rgba(84, 22, 68, 0.9), rgba(32, 9, 48, 0.96));
+    }
+
+    body.season-muertos .postcard-card {
+      box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55), 0 0 18px rgba(255, 120, 0, 0.12);
+    }
+
+    body.season-muertos .postcard-card:hover {
+      border-color: #ff8800;
+      box-shadow: 0 20px 45px -10px rgba(255, 120, 0, 0.32);
+    }
+
     body.season-muertos .seasonal-counter-frame {
       background: linear-gradient(135deg, #2b0938 0%, #4a1259 50%, #1f0826 100%);
       border: 2px solid #ff7800;
@@ -144,14 +198,19 @@
       text-shadow: 0 0 8px rgba(255, 120, 0, 0.6);
     }
 
-    /* TEMA 2: Navidad Mágica (Se activa automáticamente pasando el 3 de Noviembre) */
-    body.season-navidad {
-      --bg-gradient: radial-gradient(circle at 50% 0%, #0f291e 0%, #1f0b12 52%, #070d0a 100%);
-      --card-border: rgba(220, 38, 38, 0.4);
+    /* ---------------------------------------------------------------------
+       TEMA 2: NAVIDAD MÁGICA (Del 4 de Noviembre hasta Enero)
+       --------------------------------------------------------------------- */
+    body.season-navidad:not(.light-mode) {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #0f3322 0%, #240b13 52%, #06120c 100%);
+      --card-bg: rgba(14, 34, 24, 0.86);
+      --card-border: rgba(239, 68, 68, 0.42);
+      --hero-bg: linear-gradient(135deg, rgba(16, 48, 32, 0.95), rgba(76, 17, 27, 0.9), rgba(12, 36, 24, 0.95));
     }
 
-    body.season-navidad:not(.light-mode) {
-      --hero-bg: linear-gradient(to right, rgba(20, 45, 32, 0.95), rgba(65, 15, 24, 0.9), rgba(15, 38, 26, 0.95));
+    body.season-navidad .postcard-card:hover {
+      border-color: #fbbf24;
+      box-shadow: 0 20px 45px -10px rgba(220, 38, 38, 0.3);
     }
 
     body.season-navidad .seasonal-counter-frame {
@@ -173,11 +232,85 @@
       color: #fef08a;
       text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
     }
+
+    /* ---------------------------------------------------------------------
+       TEMA 3: DÍA DEL AMOR / SAN VALENTÍN (Febrero hasta el 20 de Marzo)
+       --------------------------------------------------------------------- */
+    body.season-amor:not(.light-mode) {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #4c0519 0%, #2d0628 50%, #120210 100%);
+      --card-bg: rgba(45, 8, 28, 0.86);
+      --card-border: rgba(251, 113, 133, 0.45);
+      --hero-bg: linear-gradient(135deg, rgba(76, 5, 25, 0.95), rgba(112, 26, 71, 0.9), rgba(50, 7, 32, 0.95));
+    }
+
+    body.season-amor .postcard-card:hover {
+      border-color: #fb7185;
+      box-shadow: 0 20px 45px -10px rgba(244, 63, 94, 0.35);
+    }
+
+    body.season-amor .seasonal-counter-frame {
+      background: linear-gradient(135deg, #881337 0%, #be185d 52%, #4c0519 100%);
+      border: 2px solid #fda4af;
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.5), inset 0 0 12px rgba(255, 228, 230, 0.3);
+    }
+
+    body.season-amor .seasonal-counter-frame::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: repeating-linear-gradient(90deg, #f43f5e 0px, #f43f5e 8px, #fecdd3 8px, #fecdd3 16px, #ec4899 16px, #ec4899 24px, #fde047 24px, #fde047 32px);
+    }
+
+    body.season-amor .counter-unit-box {
+      background: rgba(40, 4, 18, 0.86);
+      border: 1px solid rgba(251, 113, 133, 0.65);
+      color: #ffe4e6;
+      text-shadow: 0 0 8px rgba(244, 63, 94, 0.65);
+    }
+
+    /* ---------------------------------------------------------------------
+       TEMA 4: PRIMAVERA FLORIDA (A partir del 21 de Marzo)
+       --------------------------------------------------------------------- */
+    body.season-primavera:not(.light-mode) {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #133829 0%, #24143d 52%, #091712 100%);
+      --card-bg: rgba(19, 38, 34, 0.86);
+      --card-border: rgba(52, 211, 153, 0.42);
+      --hero-bg: linear-gradient(135deg, rgba(17, 54, 41, 0.94), rgba(56, 26, 79, 0.88), rgba(15, 43, 34, 0.95));
+    }
+
+    body.season-primavera .postcard-card:hover {
+      border-color: #34d399;
+      box-shadow: 0 20px 45px -10px rgba(52, 211, 153, 0.3);
+    }
+
+    body.season-primavera .seasonal-counter-frame {
+      background: linear-gradient(135deg, #065f46 0%, #7e22ce 55%, #064e3b 100%);
+      border: 2px solid #f9a8d4;
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.4), inset 0 0 12px rgba(244, 114, 182, 0.3);
+    }
+
+    body.season-primavera .seasonal-counter-frame::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: repeating-linear-gradient(90deg, #34d399 0px, #34d399 8px, #f472b6 8px, #f472b6 16px, #fde047 16px, #fde047 24px, #a78bfa 24px, #a78bfa 32px);
+    }
+
+    body.season-primavera .counter-unit-box {
+      background: rgba(6, 32, 24, 0.86);
+      border: 1px solid rgba(110, 231, 183, 0.6);
+      color: #fef08a;
+      text-shadow: 0 0 8px rgba(52, 211, 153, 0.55);
+    }
   </style>
 </head>
 <body class="relative pb-24">
 
   <canvas id="bgDustCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- GUIRNALDA SUPERIOR Y ADORNOS EN ESPACIOS LIBRES SEGÚN LA TEMPORADA -->
+  <div id="seasonalTopGarland" class="seasonal-top-garland"></div>
+  <div id="seasonalAmbientOrnaments" class="pointer-events-none"></div>
 
   <div id="albumToast" class="album-toast px-5 py-3 rounded-2xl flex items-center gap-3 pointer-events-none">
     <span id="toastEmoji" class="text-xl">✨</span>
@@ -1433,39 +1566,195 @@
     }
 
     /* =====================================================================
-       CONTADOR EN TIEMPO REAL (DESDE 4 DE JULIO DE 2026) Y TEMPORADA AUTOMÁTICA
-       - Hasta el 3 de Noviembre: Día de Muertos / Halloween
-       - A partir del 4 de Noviembre: Temática Navideña en general
+       CONTADOR EN TIEMPO REAL (DESDE 4 DE JULIO DE 2026) Y MOTOR DE 4 TEMPORADAS:
+       1. Día de Muertos / Halloween: Octubre hasta el 3 de Noviembre
+       2. Navidad Mágica: Del 4 de Noviembre hasta el 31 de Enero
+       3. Día del Amor y la Amistad (San Valentín): Del 1 de Febrero al 20 de Marzo
+       4. Primavera Florida: A partir del 21 de Marzo
        ===================================================================== */
-    const RELATIONSHIP_START = new Date(2026, 6, 4, 0, 0, 0); // 4 de Julio 2026 (Mes 6 en JS)
-    let currentSeasonMode = 'muertos'; // 'muertos' | 'navidad'
+    const RELATIONSHIP_START = new Date(2026, 6, 4, 0, 0, 0); // 4 de Julio 2026
+    let currentSeasonMode = 'muertos'; // 'muertos' | 'navidad' | 'amor' | 'primavera'
+
+    function renderSeasonalPageDecorations(mode) {
+      const garlandEl = document.getElementById('seasonalTopGarland');
+      const ornamentsEl = document.getElementById('seasonalAmbientOrnaments');
+      if (!garlandEl || !ornamentsEl) return;
+
+      if (mode === 'muertos') {
+        // Guirnalda superior de Papel Picado y Cempasúchil + Adornos en los márgenes libres
+        garlandEl.innerHTML = `
+          <div class="w-full flex justify-between items-start px-1 sm:px-4 opacity-90">
+            ${Array.from({ length: 10 }).map((_, i) => {
+              const colors = [
+                'from-orange-500 to-amber-600 border-amber-300',
+                'from-purple-700 to-fuchsia-900 border-purple-300',
+                'from-pink-600 to-rose-700 border-pink-300',
+                'from-amber-500 to-yellow-600 border-yellow-200'
+              ];
+              const icons = ['💀', '🌼', '🎃', '🕯️', '🦇'];
+              const cls = colors[i % colors.length];
+              const icn = icons[i % icons.length];
+              return `<div class="flex-1 mx-0.5 h-6 sm:h-8 bg-gradient-to-b ${cls} border-t flex items-center justify-center text-[10px] sm:text-xs shadow-md" style="clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 100%, 50% 75%, 25% 100%, 0 75%);">${icn}</div>`;
+            }).join('')}
+          </div>
+        `;
+
+        ornamentsEl.innerHTML = `
+          <!-- Adornos flotantes discretos en los márgenes libres de la pantalla -->
+          <div class="seasonal-corner-ornament season-float top-20 left-2 sm:left-5 flex flex-col items-center gap-2">
+            <span class="text-xl sm:text-2xl" title="Cempasúchil">🌼</span>
+            <span class="text-lg sm:text-xl hidden lg:inline">🕯️</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float top-20 right-2 sm:right-5 flex flex-col items-center gap-2" style="animation-delay: 1.2s;">
+            <span class="text-xl sm:text-2xl" title="Halloween & Día de Muertos">🎃</span>
+            <span class="text-lg sm:text-xl hidden lg:inline">💀</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float bottom-20 left-3 sm:left-6 hidden xl:flex flex-col items-center gap-2" style="animation-delay: 0.7s;">
+            <span class="text-2xl">🦋</span>
+            <span class="text-lg">🌼</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float bottom-20 right-3 sm:right-6 hidden xl:flex flex-col items-center gap-2" style="animation-delay: 1.8s;">
+            <span class="text-2xl">🕯️</span>
+            <span class="text-lg">🧡</span>
+          </div>
+        `;
+      } else if (mode === 'navidad') {
+        // Guirnalda superior de foquitos navideños y pino
+        garlandEl.innerHTML = `
+          <div class="w-full h-3 bg-gradient-to-r from-emerald-950 via-green-900 to-emerald-950 border-b border-amber-400/50 flex justify-around items-center px-2 shadow-lg">
+            ${Array.from({ length: 18 }).map((_, i) => {
+              const bulbCols = ['bg-red-500 shadow-red-500', 'bg-amber-300 shadow-amber-300', 'bg-emerald-400 shadow-emerald-400', 'bg-sky-400 shadow-sky-400'];
+              const c = bulbCols[i % bulbCols.length];
+              return `<span class="w-2 h-2.5 rounded-full ${c} shadow-[0_0_8px]" style="animation: twinkleBulb ${1.4 + (i % 3) * 0.4}s infinite;"></span>`;
+            }).join('')}
+          </div>
+        `;
+
+        ornamentsEl.innerHTML = `
+          <div class="seasonal-corner-ornament season-float top-20 left-2 sm:left-5 flex flex-col items-center gap-2">
+            <span class="text-xl sm:text-2xl">🎄</span>
+            <span class="text-lg sm:text-xl hidden lg:inline">❄️</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float top-20 right-2 sm:right-5 flex flex-col items-center gap-2" style="animation-delay: 1s;">
+            <span class="text-xl sm:text-2xl">🎅</span>
+            <span class="text-lg sm:text-xl hidden lg:inline">🔔</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float bottom-20 left-3 sm:left-6 hidden xl:flex flex-col items-center gap-2">
+            <span class="text-2xl">⛄</span>
+            <span class="text-lg">🎁</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float bottom-20 right-3 sm:right-6 hidden xl:flex flex-col items-center gap-2">
+            <span class="text-2xl">🦌</span>
+            <span class="text-lg">✨</span>
+          </div>
+        `;
+      } else if (mode === 'amor') {
+        // Guirnalda de San Valentín / Día del Amor con corazones colgantes
+        garlandEl.innerHTML = `
+          <div class="w-full h-6 flex justify-around items-start px-2 opacity-90">
+            ${Array.from({ length: 14 }).map((_, i) => {
+              const hearts = ['💖', '💘', '💝', '🌹', '💕'];
+              return `<span class="text-xs sm:text-sm drop-shadow" style="animation: floatSlowSeason ${2.5 + (i % 3) * 0.5}s infinite;">${hearts[i % hearts.length]}</span>`;
+            }).join('')}
+          </div>
+        `;
+
+        ornamentsEl.innerHTML = `
+          <div class="seasonal-corner-ornament season-float top-20 left-2 sm:left-5 flex flex-col items-center gap-2">
+            <span class="text-xl sm:text-2xl">💘</span>
+            <span class="text-lg sm:text-xl hidden lg:inline">🌹</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float top-20 right-2 sm:right-5 flex flex-col items-center gap-2" style="animation-delay: 1s;">
+            <span class="text-xl sm:text-2xl">💝</span>
+            <span class="text-lg sm:text-xl hidden lg:inline">💌</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float bottom-20 left-3 sm:left-6 hidden xl:flex flex-col items-center gap-2">
+            <span class="text-2xl">🌷</span>
+            <span class="text-lg">💞</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float bottom-20 right-3 sm:right-6 hidden xl:flex flex-col items-center gap-2">
+            <span class="text-2xl">🧸</span>
+            <span class="text-lg">💖</span>
+          </div>
+        `;
+      } else if (mode === 'primavera') {
+        // Guirnalda de Primavera con flores y enredaderas
+        garlandEl.innerHTML = `
+          <div class="w-full h-6 flex justify-around items-start px-2 opacity-90">
+            ${Array.from({ length: 14 }).map((_, i) => {
+              const blooms = ['🌸', '🌿', '🌺', '🦋', '🌼', '🌷'];
+              return `<span class="text-xs sm:text-sm drop-shadow" style="animation: floatSlowSeason ${3 + (i % 3) * 0.5}s infinite;">${blooms[i % blooms.length]}</span>`;
+            }).join('')}
+          </div>
+        `;
+
+        ornamentsEl.innerHTML = `
+          <div class="seasonal-corner-ornament season-float top-20 left-2 sm:left-5 flex flex-col items-center gap-2">
+            <span class="text-xl sm:text-2xl">🌸</span>
+            <span class="text-lg sm:text-xl hidden lg:inline">🦋</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float top-20 right-2 sm:right-5 flex flex-col items-center gap-2" style="animation-delay: 1s;">
+            <span class="text-xl sm:text-2xl">🌺</span>
+            <span class="text-lg sm:text-xl hidden lg:inline">🌿</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float bottom-20 left-3 sm:left-6 hidden xl:flex flex-col items-center gap-2">
+            <span class="text-2xl">🌷</span>
+            <span class="text-lg">🐝</span>
+          </div>
+          <div class="seasonal-corner-ornament season-float bottom-20 right-3 sm:right-6 hidden xl:flex flex-col items-center gap-2">
+            <span class="text-2xl">🌻</span>
+            <span class="text-lg">🍃</span>
+          </div>
+        `;
+      }
+    }
 
     function checkAndApplySeasonTheme() {
       const now = new Date();
-      const month = now.getMonth(); // 0 = Ene ... 9 = Oct, 10 = Nov, 11 = Dic
+      const month = now.getMonth(); // 0 = Ene, 1 = Feb, 2 = Mar ... 9 = Oct, 10 = Nov, 11 = Dic
       const day = now.getDate();
 
-      // Si estamos en Noviembre después del día 3 (día >= 4) o en Diciembre (mes 11), activar Navidad
-      const isChristmasSeason = (month === 10 && day > 3) || (month === 11);
+      // Determinación automática de temporada según la fecha:
+      // 1. Primavera: Desde el 21 de Marzo (mes 2, día > 20) hasta Septiembre (mes 8)
+      // 2. Día del Amor (San Valentín): Todo Febrero (mes 1) hasta el 20 de Marzo (mes 2, día <= 20)
+      // 3. Día de Muertos / Halloween: Octubre (mes 9) hasta el 3 de Noviembre (mes 10, día <= 3)
+      // 4. Navidad: Desde el 4 de Noviembre (mes 10, día > 3), Diciembre (mes 11) y Enero (mes 0)
+      if ((month === 2 && day > 20) || (month >= 3 && month <= 8)) {
+        currentSeasonMode = 'primavera';
+      } else if (month === 1 || (month === 2 && day <= 20)) {
+        currentSeasonMode = 'amor';
+      } else if (month === 9 || (month === 10 && day <= 3)) {
+        currentSeasonMode = 'muertos';
+      } else {
+        currentSeasonMode = 'navidad';
+      }
 
-      document.body.classList.remove('season-muertos', 'season-navidad');
+      document.body.classList.remove('season-muertos', 'season-navidad', 'season-amor', 'season-primavera');
+      document.body.classList.add(`season-${currentSeasonMode}`);
+
       const iconL = document.getElementById('seasonIconLeft');
       const iconR = document.getElementById('seasonIconRight');
       const badgeIcon = document.getElementById('seasonalHeroBadgeIcon');
 
-      if (isChristmasSeason) {
-        currentSeasonMode = 'navidad';
-        document.body.classList.add('season-navidad');
+      if (currentSeasonMode === 'navidad') {
         if (iconL) iconL.textContent = '🎄❄️';
         if (iconR) iconR.textContent = '🎅✨';
         if (badgeIcon) badgeIcon.textContent = '🎄';
+      } else if (currentSeasonMode === 'amor') {
+        if (iconL) iconL.textContent = '💘🌹';
+        if (iconR) iconR.textContent = '💝✨';
+        if (badgeIcon) badgeIcon.textContent = '💖';
+      } else if (currentSeasonMode === 'primavera') {
+        if (iconL) iconL.textContent = '🌸🦋';
+        if (iconR) iconR.textContent = '🌷🌿';
+        if (badgeIcon) badgeIcon.textContent = '🌸';
       } else {
-        currentSeasonMode = 'muertos';
-        document.body.classList.add('season-muertos');
         if (iconL) iconL.textContent = '🌼🎃';
         if (iconR) iconR.textContent = '💀🕯️';
         if (badgeIcon) badgeIcon.textContent = '🌼';
       }
+
+      renderSeasonalPageDecorations(currentSeasonMode);
     }
 
     function updateRelationshipCounter() {
@@ -1543,16 +1832,41 @@
           if (p.x > w + 10) p.x = -10;
           if (p.x < -10) p.x = w + 10;
 
-          bCtx.beginPath();
-          bCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          bCtx.save();
+          bCtx.translate(p.x, p.y);
+
           if (currentSeasonMode === 'navidad') {
             // Copos de nieve blancos y destellos dorados navideños
-            bCtx.fillStyle = idx % 4 === 0 ? 'rgba(251, 191, 36, 0.55)' : 'rgba(255, 255, 255, 0.55)';
+            bCtx.beginPath();
+            bCtx.arc(0, 0, p.r, 0, Math.PI * 2);
+            bCtx.fillStyle = idx % 4 === 0 ? 'rgba(251, 191, 36, 0.6)' : 'rgba(255, 255, 255, 0.65)';
+            bCtx.fill();
+          } else if (currentSeasonMode === 'amor') {
+            // Pequeños corazones rosas y rubí flotando en los espacios libres
+            const s = p.r * 0.55;
+            bCtx.fillStyle = idx % 2 === 0 ? 'rgba(244, 63, 94, 0.55)' : 'rgba(251, 113, 133, 0.55)';
+            bCtx.beginPath();
+            bCtx.moveTo(0, 0);
+            bCtx.bezierCurveTo(-5 * s, -5 * s, -9 * s, 2 * s, 0, 7 * s);
+            bCtx.bezierCurveTo(9 * s, 2 * s, 5 * s, -5 * s, 0, 0);
+            bCtx.fill();
+          } else if (currentSeasonMode === 'primavera') {
+            // Pétalos de cerezo/primavera y polen dorado
+            bCtx.rotate(p.phase);
+            bCtx.beginPath();
+            bCtx.ellipse(0, 0, p.r * 0.7, p.r * 1.4, Math.PI / 4, 0, Math.PI * 2);
+            bCtx.fillStyle = idx % 3 === 0 ? 'rgba(244, 114, 182, 0.55)' : (idx % 2 === 0 ? 'rgba(52, 211, 153, 0.45)' : 'rgba(253, 224, 71, 0.5)');
+            bCtx.fill();
           } else {
-            // Pétalos de cempasúchil naranjas, morados y dorados
-            bCtx.fillStyle = idx % 3 === 0 ? 'rgba(255, 120, 0, 0.5)' : (idx % 2 === 0 ? 'rgba(247, 37, 133, 0.4)' : 'rgba(255, 190, 11, 0.45)');
+            // Pétalos de cempasúchil naranjas, morados y dorados de Día de Muertos
+            bCtx.rotate(p.phase);
+            bCtx.beginPath();
+            bCtx.ellipse(0, 0, p.r * 0.65, p.r * 1.35, Math.PI / 4, 0, Math.PI * 2);
+            bCtx.fillStyle = idx % 3 === 0 ? 'rgba(255, 120, 0, 0.58)' : (idx % 2 === 0 ? 'rgba(247, 37, 133, 0.45)' : 'rgba(255, 190, 11, 0.52)');
+            bCtx.fill();
           }
-          bCtx.fill();
+
+          bCtx.restore();
         });
         requestAnimationFrame(drawBgParticles);
       }
