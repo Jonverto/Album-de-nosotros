@@ -440,6 +440,30 @@
       text-decoration-color: #fbbf24;
       opacity: 0.75;
     }
+
+    @keyframes pulseAnniversaryBtn {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 18px rgba(244, 63, 94, 0.75), 0 0 36px rgba(251, 191, 36, 0.45); }
+      50% { transform: scale(1.03); box-shadow: 0 0 28px rgba(244, 63, 94, 1), 0 0 52px rgba(251, 191, 36, 0.85); }
+    }
+
+    .anniversary-special-btn {
+      background: linear-gradient(135deg, #e11d48 0%, #db2777 50%, #d97706 100%);
+      border: 2px solid #fef08a;
+      color: #ffffff;
+      animation: pulseAnniversaryBtn 2.2s infinite ease-in-out;
+    }
+
+    .heart-burst-fx {
+      position: fixed;
+      pointer-events: none;
+      z-index: 140;
+      animation: floatUpBurst 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes floatUpBurst {
+      0% { opacity: 1; transform: translate(0, 0) scale(0.8) rotate(0deg); }
+      100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.35) rotate(25deg); }
+    }
   </style>
 </head>
 <body class="relative pb-24">
@@ -506,6 +530,15 @@
           <p class="text-xs sm:text-sm opacity-85 mt-3 leading-relaxed">
             Aquí viven nuestros mundos, cartas secretas, fotografías y las notitas que nos vamos dejando en el camino.
           </p>
+
+          <!-- BOTÓN ESPECIAL SOLO POR HOY (4 DE NOVIEMBRE DE 2026): 4 MESES DESDE NUESTRO PRIMER BESO -->
+          <div id="fourMonthsSpecialWrap" class="hidden mt-5">
+            <button onclick="openFourMonthsCelebration(event)" class="anniversary-special-btn w-full sm:w-auto px-5 py-3.5 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2.5 shadow-2xl cursor-pointer">
+              <span class="text-xl animate-bounce">💋</span>
+              <span>¡Festejar 4 Meses de Nuestro Primer Beso! (Solo por hoy ✨)</span>
+              <span class="text-xl animate-pulse">💖</span>
+            </button>
+          </div>
         </div>
 
         <div class="shrink-0 flex flex-col items-center bg-black/35 p-3.5 rounded-2xl border border-amber-400/50 shadow-xl w-full sm:w-64">
@@ -696,10 +729,12 @@
             </div>
 
             <form id="bucketItemForm" onsubmit="handleAddBucketIdea(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 text-xs">
-              <div class="sm:col-span-3">
+              <div class="sm:col-span-4">
+                <label class="block text-[10px] text-amber-300 font-bold mb-1">✨ Idea o Plan de Cita</label>
                 <input id="bucketInputTitle" type="text" required placeholder="Ej: Ir a los bolos, Comer ramen..." class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40">
               </div>
-              <div class="sm:col-span-2">
+              <div class="sm:col-span-3">
+                <label class="block text-[10px] text-amber-300 font-bold mb-1">📂 Categoría</label>
                 <select id="bucketInputCategory" class="themed-input w-full px-2.5 py-2.5 rounded-xl border border-amber-500/40 font-bold">
                   <option value="Comer 🍔">🍔 Ir a Comer / Postre</option>
                   <option value="Jugar 🎮">🎮 Ir a Jugar / Arcade</option>
@@ -709,18 +744,24 @@
                 </select>
               </div>
               <div class="sm:col-span-3">
-                <input id="bucketInputPlace" type="text" placeholder="📍 Lugar o nota (opcional)" class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40">
+                <label class="block text-[10px] text-amber-300 font-bold mb-1">📍 Ubicación o Link de Maps</label>
+                <input id="bucketInputPlace" type="text" placeholder="Nombre del lugar, dirección o link Maps..." class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40">
               </div>
               <div class="sm:col-span-2">
+                <label class="block text-[10px] text-amber-300 font-bold mb-1">✍️ Propone</label>
                 <select id="bucketInputAuthor" class="themed-input w-full px-2.5 py-2.5 rounded-xl border border-amber-500/40 font-bold">
                   <option value="Tu Niño ❤️">👦 Tu Niño ❤️</option>
                   <option value="Mi Niña Linda 💖">👧 Mi Niña Linda 💖</option>
                   <option value="Los Dos ✨">💑 Los Dos ✨</option>
                 </select>
               </div>
-              <div class="sm:col-span-2">
-                <button type="submit" class="album-btn w-full h-full py-2.5 px-3 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-lg">
-                  <span>📌</span><span>Anotar Idea</span>
+              <div class="sm:col-span-9">
+                <label class="block text-[10px] text-rose-300 font-bold mb-1">📝 Descripción y Contexto de la Cita (Qué hacer, qué pedir o por qué queremos ir)</label>
+                <textarea id="bucketInputDescription" rows="2" placeholder="Ej: Vi que tienen postres súper ricos y mesas al aire libre, me encantaría ir contigo en la tarde..." class="themed-input w-full px-3 py-2 rounded-xl border border-amber-500/40"></textarea>
+              </div>
+              <div class="sm:col-span-3 flex items-end">
+                <button type="submit" class="album-btn w-full py-3 px-3 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-lg">
+                  <span>📌</span><span>Anotar en Tablero</span>
                 </button>
               </div>
             </form>
@@ -1042,6 +1083,42 @@
           <button id="submitMoreDatePhotosBtn" type="submit" class="album-btn flex-1 py-2 rounded-xl font-bold">Subir al Álbum</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL ESPECIAL DE CELEBRACIÓN: 4 MESES DESDE NUESTRO PRIMER BESO (ACTIVO SOLO HOY 04/11/2026) -->
+  <div id="fourMonthsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="themed-modal max-w-md w-full rounded-3xl p-6 sm:p-7 border-2 border-amber-300 shadow-[0_0_55px_rgba(244,63,94,0.65)] text-center relative overflow-hidden">
+      <div class="flex justify-center gap-2 text-3xl sm:text-4xl mb-2 animate-bounce">
+        <span>💋</span><span>💖</span><span>✨</span><span>🥂</span>
+      </div>
+      <span class="inline-block px-3.5 py-1 rounded-full bg-rose-500/25 border border-rose-400/60 text-amber-200 text-[10px] font-bold uppercase tracking-widest mb-2">
+        Edición Especial de Hoy · 4 de Julio ➔ 4 de Noviembre
+      </span>
+      <h3 class="text-2xl sm:text-3xl font-serif-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-rose-400 to-amber-200 leading-tight">
+        ¡Felices 4 Meses desde Nuestro Primer Beso!
+      </h3>
+
+      <div class="my-4 p-4 sm:p-5 rounded-2xl bg-black/45 border border-rose-400/40 text-left space-y-3 shadow-inner">
+        <p class="font-vt text-xl sm:text-2xl text-amber-50 leading-snug">
+          “Mi niña linda: hoy cumplimos <strong>4 meses desde aquel primer beso</strong> que cambió mi mundo por completo y encendió la historia más bonita de mi vida.”
+        </p>
+        <p class="font-vt text-xl sm:text-2xl text-rose-200 leading-snug">
+          “Hoy quiero agradecerte de todo corazón por todos estos días tan llenos de amor, de ternura, de risas y de una felicidad inmensa a tu lado. Espero con toda el alma que tengamos <strong>muchos, muchísimos más días felices juntos</strong>, tomados de la mano y amándonos cada día más.”
+        </p>
+        <p class="font-serif-title italic text-base sm:text-lg text-amber-300 text-center pt-2 font-bold">
+          ¡Te amo infinitamente, mi güerita hermosa! 💋❤️✨
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-2 justify-center">
+        <button onclick="triggerKissHeartShower(event)" class="anniversary-special-btn px-5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg">
+          <span>💋💖</span><span>Lluvia de Besos y Amor</span>
+        </button>
+        <button onclick="closeFourMonthsCelebration()" class="album-btn-ghost px-4 py-2.5 rounded-xl text-xs font-bold">
+          Guardar en el Corazón
+        </button>
+      </div>
     </div>
   </div>
 
@@ -2111,6 +2188,7 @@
         title: 'Ir a comer postres o cafecito bonito',
         category: 'Comer 🍔',
         place: 'Cafetería aesthetic que elijamos',
+        description: 'Sentarnos a platicar horas, pedir un postre rico para compartir y tomarnos fotos Polaroid juntos.',
         author: 'Los Dos ✨',
         isScheduled: false,
         scheduledDateStr: '',
@@ -2121,7 +2199,8 @@
         id: 'bucket_default_2',
         title: 'Tarde de juegos Arcade / Boliche juntos',
         category: 'Jugar 🎮',
-        place: 'Retarnos por un premio sorpresa',
+        place: 'Boliche / Arcade',
+        description: 'Retarnos en los juegos de arcade y boliche; quien gane elige el próximo postre o premio sorpresa.',
         author: 'Tu Niño ❤️',
         isScheduled: false,
         scheduledDateStr: '',
@@ -2229,6 +2308,7 @@
       const titleInput = document.getElementById('bucketInputTitle');
       const catInput = document.getElementById('bucketInputCategory');
       const placeInput = document.getElementById('bucketInputPlace');
+      const descInput = document.getElementById('bucketInputDescription');
       const authorInput = document.getElementById('bucketInputAuthor');
 
       const title = titleInput.value.trim();
@@ -2239,6 +2319,7 @@
         title,
         category: catInput.value || 'Comer 🍔',
         place: placeInput.value.trim(),
+        description: descInput ? descInput.value.trim() : '',
         author: authorInput.value || 'Los Dos ✨',
         isScheduled: false,
         scheduledDateStr: '',
@@ -2250,11 +2331,21 @@
       rebuildAllBucketIdeas();
       titleInput.value = '';
       placeInput.value = '';
+      if (descInput) descInput.value = '';
 
       if (window.saveBucketIdeaToCloud) {
         await window.saveBucketIdeaToCloud(newIdea);
       }
-      showToastNotification(`¡Idea "${title}" anotada en nuestro tablero! 🎯`, '📌');
+      showToastNotification(`¡Idea "${title}" anotada con su descripción y ubicación! 🎯`, '📌');
+    }
+
+    function buildLocationReviewUrl(placeStr) {
+      if (!placeStr) return '';
+      const trimmed = placeStr.trim();
+      if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+        return trimmed;
+      }
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
     }
 
     function scheduleBucketIdeaToCalendar(bucketId) {
@@ -2274,7 +2365,11 @@
       if (heading) heading.textContent = `📅 Agendar del Tablero: "${idea.title}"`;
       if (titleEl) titleEl.value = idea.title;
       if (placeEl) placeEl.value = idea.place || '';
-      if (notesEl) notesEl.value = `Idea de nuestro Tablero (${idea.category}) propuesta por ${idea.author}.`;
+      if (notesEl) {
+        notesEl.value = idea.description
+          ? `${idea.description} (Idea de nuestro Tablero propuesta por ${idea.author})`
+          : `Idea de nuestro Tablero (${idea.category}) propuesta por ${idea.author}.`;
+      }
 
       if (emojiEl) {
         if (idea.category.includes('Comer')) emojiEl.value = '🍽️';
@@ -2349,6 +2444,8 @@
             ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/30 border border-emerald-400 text-emerald-200">✓ Agendada en Calendario</span>`
             : `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 border border-amber-400/40 text-amber-300">✨ Idea Pendiente</span>`);
 
+        const mapUrl = idea.place ? buildLocationReviewUrl(idea.place) : '';
+
         return `
           <div class="bucket-card ${isDoneOrScheduled ? 'is-scheduled' : ''} rounded-2xl p-4 flex flex-col justify-between gap-3 shadow-lg">
             <div>
@@ -2365,7 +2462,23 @@
                   <h5 class="font-serif-title font-bold text-sm sm:text-base text-white leading-snug ${isDoneOrScheduled ? 'strike-scheduled' : ''}">
                     ${idea.title}
                   </h5>
-                  ${idea.place ? `<p class="text-[11px] text-amber-200/90 mt-1 ${isDoneOrScheduled ? 'line-through opacity-70' : ''}">📍 ${idea.place}</p>` : ''}
+
+                  ${idea.description ? `
+                    <p class="font-vt text-base sm:text-lg text-rose-100/95 bg-black/30 px-2.5 py-1.5 rounded-xl border-l-2 border-amber-400/70 mt-2 leading-snug ${isDoneOrScheduled ? 'line-through opacity-70' : ''}">
+                      “${idea.description}”
+                    </p>
+                  ` : ''}
+
+                  ${idea.place ? `
+                    <div class="flex flex-wrap items-center justify-between gap-2 mt-2.5 bg-amber-500/10 border border-amber-400/30 px-2.5 py-1.5 rounded-xl">
+                      <span class="text-[11px] text-amber-200 font-medium truncate max-w-[180px] ${isDoneOrScheduled ? 'line-through opacity-70' : ''}" title="${idea.place}">
+                        📍 ${idea.place}
+                      </span>
+                      <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-amber-500/25 hover:bg-amber-500/40 border border-amber-300/50 text-amber-200 text-[10px] font-bold flex items-center gap-1 transition shrink-0">
+                        <span>🗺️</span><span>Revisar Ubicación</span>
+                      </a>
+                    </div>
+                  ` : ''}
                 </div>
               </div>
             </div>
@@ -2922,7 +3035,14 @@
               </div>
             ` : ''}
 
-            ${item.place ? `<div class="text-[11px] text-amber-200/90">📍 <strong>Lugar:</strong> ${item.place}</div>` : ''}
+            ${item.place ? `
+              <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] text-amber-200/90 bg-black/25 px-2.5 py-1.5 rounded-xl border border-amber-500/20">
+                <span>📍 <strong>Ubicación:</strong> ${item.place}</span>
+                <a href="${buildLocationReviewUrl(item.place)}" target="_blank" rel="noopener noreferrer" class="px-2 py-0.5 rounded-lg bg-amber-500/20 border border-amber-400/40 text-amber-200 text-[10px] font-bold hover:bg-amber-500/35 transition">
+                  🗺️ Ver Mapa
+                </a>
+              </div>
+            ` : ''}
             ${item.notes ? `<p class="font-vt text-base text-rose-100 italic bg-black/25 px-2.5 py-1.5 rounded-xl">“${item.notes}”</p>` : ''}
 
             <div class="flex flex-wrap items-center justify-between gap-1.5 pt-2 border-t border-white/10">
@@ -3200,6 +3320,78 @@
       renderSeasonalPageDecorations(currentSeasonMode);
     }
 
+    /* =====================================================================
+       BOTÓN DE FESTEJO DE 4 MESES DESDE NUESTRO PRIMER BESO
+       Programado para mostrarse ÚNICAMENTE HOY (4 de Noviembre de 2026)
+       y ocultarse automáticamente mañana (5 de Noviembre en adelante).
+       ===================================================================== */
+    function checkFourMonthsSpecialDay() {
+      const now = new Date();
+      const wrap = document.getElementById('fourMonthsSpecialWrap');
+      if (!wrap) return;
+
+      // Mes 10 = Noviembre (0-indexado), Día 4, Año 2026
+      const isNov4th2026 = (now.getFullYear() === 2026 && now.getMonth() === 10 && now.getDate() === 4);
+      if (isNov4th2026) {
+        wrap.classList.remove('hidden');
+      } else {
+        wrap.classList.add('hidden');
+      }
+    }
+
+    function playRomanticKissChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const notes = [523.25, 659.25, 783.99, 1046.50, 987.77, 1046.50];
+        notes.forEach((freq, idx) => {
+          setTimeout(() => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            gain.gain.setValueAtTime(0.001, ctx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 0.03);
+            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.4);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 1.45);
+          }, idx * 140);
+        });
+      } catch (e) {}
+    }
+
+    function triggerKissHeartShower(event) {
+      const originX = event && event.clientX ? event.clientX : window.innerWidth / 2;
+      const originY = event && event.clientY ? event.clientY : window.innerHeight / 2;
+      const symbols = ['💋', '💖', '❤️', '✨', '🌹', '🥰', '💕'];
+
+      for (let i = 0; i < 24; i++) {
+        const el = document.createElement('div');
+        el.className = 'heart-burst-fx text-xl sm:text-2xl';
+        el.textContent = symbols[i % symbols.length];
+        el.style.left = `${originX}px`;
+        el.style.top = `${originY}px`;
+        el.style.setProperty('--dx', `${(Math.random() - 0.5) * 320}px`);
+        el.style.setProperty('--dy', `${(Math.random() - 0.75) * 280}px`);
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 2200);
+      }
+      playRomanticKissChime();
+    }
+
+    function openFourMonthsCelebration(event) {
+      triggerKissHeartShower(event);
+      const modal = document.getElementById('fourMonthsModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeFourMonthsCelebration() {
+      const modal = document.getElementById('fourMonthsModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
     function updateRelationshipCounter() {
       const now = new Date();
       if (now < RELATIONSHIP_START) return;
@@ -3318,6 +3510,7 @@
 
     window.onload = () => {
       checkAndApplySeasonTheme();
+      checkFourMonthsSpecialDay();
       applyThemeUI();
       renderAlbumGrid();
       animateHeroCoupleFullBody();
@@ -3325,7 +3518,10 @@
       rebuildAllCoupleDates();
       rebuildAllBucketIdeas();
       updateRelationshipCounter();
-      setInterval(updateRelationshipCounter, 1000);
+      setInterval(() => {
+        updateRelationshipCounter();
+        checkFourMonthsSpecialDay();
+      }, 1000);
       initSeasonalBackgroundParticles();
     };
   </script>
