@@ -418,6 +418,28 @@
     .floating-heart-badge {
       animation: floatMiniHeart 2.4s infinite ease-out;
     }
+
+    /* Estilos del Tablero de Posibles Citas (Bucket List) */
+    .bucket-card {
+      background: rgba(20, 10, 38, 0.78);
+      border: 1.5px solid rgba(251, 191, 36, 0.35);
+      transition: all 0.25s ease;
+    }
+    .bucket-card:hover {
+      border-color: rgba(251, 191, 36, 0.85);
+      transform: translateY(-2px);
+    }
+    .bucket-card.is-scheduled {
+      background: rgba(16, 38, 28, 0.55);
+      border-color: rgba(52, 211, 153, 0.45);
+      opacity: 0.82;
+    }
+    .strike-scheduled {
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: #fbbf24;
+      opacity: 0.75;
+    }
   </style>
 </head>
 <body class="relative pb-24">
@@ -564,6 +586,10 @@
               <span class="text-lg">💖</span>
               <span>¡Quiero Planear una Cita!</span>
             </button>
+            <button onclick="openBucketBoardTab()" class="album-btn-ghost w-full sm:w-auto px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 border-amber-400/60 text-amber-200 shadow-xl">
+              <span class="text-lg">🎯🍕</span>
+              <span>Tablero de Lugares & Ideas</span>
+            </button>
             <button onclick="toggleCalendarPanel()" id="toggleCalendarBtn" class="calendar-btn-prominent w-full sm:w-auto px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-xl">
               <span class="text-lg">🗓️📸</span>
               <span id="toggleCalendarBtnText">Abrir Calendario Polaroid</span>
@@ -573,7 +599,7 @@
         </div>
       </div>
 
-      <!-- PANEL DESPLEGABLE DEL CALENDARIO DE CITAS PASADAS Y PRÓXIMAS (ABIERTO Y VISTOSO POR DEFECTO) -->
+      <!-- PANEL DESPLEGABLE DEL CALENDARIO DE CITAS PASADAS Y PRÓXIMAS + PESTAÑA DE TABLERO DE POSIBLES CITAS -->
       <div id="coupleCalendarPanel" class="postcard-card rounded-3xl p-5 sm:p-7 border-2 border-amber-400/50 shadow-2xl">
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-500/30 pb-4 mb-5">
           <div class="flex items-center gap-3">
@@ -581,26 +607,43 @@
               🗓️📸
             </div>
             <div>
-              <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold block">Nuestra Agenda & Recuerdos Polaroid</span>
+              <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold block">Nuestra Agenda, Lugares por Visitar & Recuerdos Polaroid</span>
               <h3 class="text-lg sm:text-2xl font-serif-title font-bold text-amber-100">
-                Calendario de Nuestras Citas y Salidas
+                Calendario de Citas & Tablero de Deseos
               </h3>
             </div>
           </div>
+
+          <!-- PESTAÑAS PRINCIPALES DEL MÓDULO: CALENDARIO vs TABLERO DE POSIBLES CITAS -->
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="openDatePlannerModal('past')" class="album-btn px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg">
-              <span>📸</span><span>Subir Cita con Fotos Polaroid</span>
-            </button>
-            <button onclick="openDatePlannerModal('upcoming')" class="album-btn-ghost px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-1.5 border-amber-400/50">
-              <span>➕</span><span>Agendar Próxima Cita</span>
-            </button>
+            <div class="bg-black/35 p-1 rounded-2xl border border-amber-400/40 flex items-center gap-1">
+              <button onclick="switchCalendarSectionTab('calendar')" id="mainTabCalendarBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 text-black shadow flex items-center gap-1.5">
+                <span>🗓️📸</span><span>Calendario Polaroid</span>
+              </button>
+              <button onclick="switchCalendarSectionTab('bucket')" id="mainTabBucketBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-amber-200 opacity-85 hover:opacity-100 flex items-center gap-1.5">
+                <span>🎯🍔</span><span>Tablero de Posibles Citas</span>
+                <span id="bucketPendingBadge" class="px-1.5 py-0.2 rounded-full text-[10px] bg-rose-500 text-white font-bold">0</span>
+              </button>
+            </div>
+
             <button onclick="toggleCalendarPanel()" class="album-btn-ghost px-3 py-2 rounded-xl text-xs font-bold">
               Ocultar ▲
             </button>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- SUB-VISTA 1: CALENDARIO MENSUAL Y TARJETAS POLAROID -->
+        <div id="calendarSubView">
+          <div class="flex flex-wrap items-center justify-end gap-2 mb-4">
+            <button onclick="openDatePlannerModal('past')" class="album-btn px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg">
+              <span>📸</span><span>Subir Cita con Fotos Polaroid</span>
+            </button>
+            <button onclick="openDatePlannerModal('upcoming')" class="album-btn-ghost px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 border-amber-400/50">
+              <span>➕</span><span>Agendar Próxima Cita</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <!-- Columna Izquierda: Cuadrícula Grande del Mes con Miniaturas Polaroid -->
           <div class="lg:col-span-7 bg-black/35 p-4 sm:p-5 rounded-3xl border border-amber-500/30 shadow-inner">
             <div class="flex items-center justify-between mb-4">
@@ -633,6 +676,71 @@
 
             <div id="coupleDatesListContainer" class="space-y-3 max-h-[440px] overflow-y-auto pr-1"></div>
           </div>
+        </div>
+        </div>
+
+        <!-- SUB-VISTA 2: TABLERO ADICIONAL DE POSIBLES CITAS, LUGARES PARA COMER, JUGAR Y SALIR -->
+        <div id="bucketBoardSubView" class="hidden space-y-5">
+          <!-- Formulario rápido para anotar una idea o lugar al Tablero -->
+          <div class="bg-black/35 p-4 sm:p-5 rounded-3xl border border-amber-400/40 shadow-inner">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div>
+                <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold block">Nuestra Lista de Antojos, Juegos y Salidas</span>
+                <h4 class="text-base sm:text-lg font-serif-title font-bold text-amber-200">
+                  ✍️ Anotar Nuevo Lugar o Idea de Cita en el Tablero
+                </h4>
+              </div>
+              <span class="text-[11px] text-rose-200/90 italic">
+                Al agendar una idea al calendario se tachará automáticamente ✨
+              </span>
+            </div>
+
+            <form id="bucketItemForm" onsubmit="handleAddBucketIdea(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 text-xs">
+              <div class="sm:col-span-3">
+                <input id="bucketInputTitle" type="text" required placeholder="Ej: Ir a los bolos, Comer ramen..." class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40">
+              </div>
+              <div class="sm:col-span-2">
+                <select id="bucketInputCategory" class="themed-input w-full px-2.5 py-2.5 rounded-xl border border-amber-500/40 font-bold">
+                  <option value="Comer 🍔">🍔 Ir a Comer / Postre</option>
+                  <option value="Jugar 🎮">🎮 Ir a Jugar / Arcade</option>
+                  <option value="Pasear 🌳">🌳 Paseo / Lugar</option>
+                  <option value="Cine/Show 🍿">🍿 Cine / Concierto</option>
+                  <option value="Especial 💖">💖 Plan Especial</option>
+                </select>
+              </div>
+              <div class="sm:col-span-3">
+                <input id="bucketInputPlace" type="text" placeholder="📍 Lugar o nota (opcional)" class="themed-input w-full px-3 py-2.5 rounded-xl border border-amber-500/40">
+              </div>
+              <div class="sm:col-span-2">
+                <select id="bucketInputAuthor" class="themed-input w-full px-2.5 py-2.5 rounded-xl border border-amber-500/40 font-bold">
+                  <option value="Tu Niño ❤️">👦 Tu Niño ❤️</option>
+                  <option value="Mi Niña Linda 💖">👧 Mi Niña Linda 💖</option>
+                  <option value="Los Dos ✨">💑 Los Dos ✨</option>
+                </select>
+              </div>
+              <div class="sm:col-span-2">
+                <button type="submit" class="album-btn w-full h-full py-2.5 px-3 rounded-xl font-bold flex items-center justify-center gap-1.5 shadow-lg">
+                  <span>📌</span><span>Anotar Idea</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Filtros de categorías del Tablero -->
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <button onclick="setBucketFilter('ALL')" id="bfilter-ALL" class="filter-pill active px-3.5 py-1.5 rounded-xl text-xs border border-amber-400/30">✨ Todas las Ideas</button>
+              <button onclick="setBucketFilter('Comer 🍔')" id="bfilter-Comer 🍔" class="filter-pill px-3 py-1.5 rounded-xl text-xs album-btn-ghost">🍔 Comer</button>
+              <button onclick="setBucketFilter('Jugar 🎮')" id="bfilter-Jugar 🎮" class="filter-pill px-3 py-1.5 rounded-xl text-xs album-btn-ghost">🎮 Jugar</button>
+              <button onclick="setBucketFilter('Pasear 🌳')" id="bfilter-Pasear 🌳" class="filter-pill px-3 py-1.5 rounded-xl text-xs album-btn-ghost">🌳 Pasear</button>
+              <button onclick="setBucketFilter('Cine/Show 🍿')" id="bfilter-Cine/Show 🍿" class="filter-pill px-3 py-1.5 rounded-xl text-xs album-btn-ghost">🍿 Cine/Show</button>
+              <button onclick="setBucketFilter('Especial 💖')" id="bfilter-Especial 💖" class="filter-pill px-3 py-1.5 rounded-xl text-xs album-btn-ghost">💖 Especial</button>
+            </div>
+            <span id="bucketStatsLabel" class="text-[11px] text-amber-300 font-semibold">0 pendientes · 0 agendadas</span>
+          </div>
+
+          <!-- Cuadrícula de Tarjetas del Tablero de Posibles Citas -->
+          <div id="bucketIdeasGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
         </div>
       </div>
     </section>
@@ -997,8 +1105,40 @@
             window.applyRealtimeCoupleDates(list);
           }
         }, () => {});
+
+        // Canal en tiempo real exclusivo para el Tablero de Posibles Citas / Lugares (Bucket List)
+        const bucketRef = ref(rtdb, 'shared_album_bucketlist');
+        onValue(bucketRef, (snapshot) => {
+          const rawBucket = snapshot.val() || {};
+          const list = Object.values(rawBucket).filter(b => b && b.id && !b._deleted);
+          if (window.applyRealtimeBucketList) {
+            window.applyRealtimeBucketList(list);
+          }
+        }, () => {});
       } catch(e){}
     }
+
+    window.saveBucketIdeaToCloud = async function(item) {
+      if (rtdb) {
+        try { await set(ref(rtdb, 'shared_album_bucketlist/' + item.id), item); } catch(e){}
+      }
+      try {
+        await fetch(`${firebaseConfig.databaseURL}/shared_album_bucketlist/${item.id}.json`, {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(item)
+        });
+      } catch(e){}
+    };
+
+    window.deleteBucketIdeaFromCloud = async function(itemId) {
+      if (rtdb) {
+        try { await remove(ref(rtdb, 'shared_album_bucketlist/' + itemId)); } catch(e){}
+      }
+      try {
+        await fetch(`${firebaseConfig.databaseURL}/shared_album_bucketlist/${itemId}.json`, { method: 'DELETE' });
+      } catch(e){}
+    };
 
     window.saveCoupleDateToCloud = async function(dateItem) {
       if (rtdb) {
@@ -1960,6 +2100,38 @@
     let currentDateListTab = 'all'; // 'all' | 'upcoming' | 'past'
     let dateReminderTick = 0;
     let dateIdAddingPhotos = null;
+    let currentCalendarMainTab = 'calendar'; // 'calendar' | 'bucket'
+    let currentBucketCategoryFilter = 'ALL';
+    let bucketIdeaIdBeingScheduled = null;
+
+    // Ideas iniciales de muestra para el Tablero de Posibles Citas
+    const defaultBucketIdeas = [
+      {
+        id: 'bucket_default_1',
+        title: 'Ir a comer postres o cafecito bonito',
+        category: 'Comer 🍔',
+        place: 'Cafetería aesthetic que elijamos',
+        author: 'Los Dos ✨',
+        isScheduled: false,
+        scheduledDateStr: '',
+        linkedDateId: '',
+        createdAt: 1751587200000
+      },
+      {
+        id: 'bucket_default_2',
+        title: 'Tarde de juegos Arcade / Boliche juntos',
+        category: 'Jugar 🎮',
+        place: 'Retarnos por un premio sorpresa',
+        author: 'Tu Niño ❤️',
+        isScheduled: false,
+        scheduledDateStr: '',
+        linkedDateId: '',
+        createdAt: 1751587300000
+      }
+    ];
+
+    let cloudBucketIdeas = [];
+    let allBucketIdeas = [...defaultBucketIdeas];
 
     const rHearts = [
       { x: 39, y: 24, vy: 0.22, p: 0 },
@@ -1975,12 +2147,254 @@
       renderDateReminderBanner();
       renderCalendarMonthGrid();
       renderCoupleDatesList();
+      renderBucketIdeasBoard();
     }
 
     window.applyRealtimeCoupleDates = function(list) {
       cloudCoupleDates = list;
       rebuildAllCoupleDates();
     };
+
+    function rebuildAllBucketIdeas() {
+      const map = new Map();
+      defaultBucketIdeas.forEach(b => map.set(b.id, b));
+      cloudBucketIdeas.forEach(b => map.set(b.id, b));
+      // Ordenar: primero las pendientes y abajo las que ya están agendadas/tachadas
+      allBucketIdeas = Array.from(map.values()).sort((a, b) => {
+        if (Boolean(a.isScheduled) !== Boolean(b.isScheduled)) {
+          return a.isScheduled ? 1 : -1;
+        }
+        return (b.createdAt || 0) - (a.createdAt || 0);
+      });
+      renderBucketIdeasBoard();
+    }
+
+    window.applyRealtimeBucketList = function(list) {
+      cloudBucketIdeas = list;
+      rebuildAllBucketIdeas();
+    };
+
+    function switchCalendarSectionTab(tabName) {
+      currentCalendarMainTab = tabName;
+      const calView = document.getElementById('calendarSubView');
+      const bucketView = document.getElementById('bucketBoardSubView');
+      const calBtn = document.getElementById('mainTabCalendarBtn');
+      const bucketBtn = document.getElementById('mainTabBucketBtn');
+
+      if (!calView || !bucketView) return;
+
+      if (tabName === 'bucket') {
+        calView.classList.add('hidden');
+        bucketView.classList.remove('hidden');
+        if (bucketBtn) bucketBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 text-black shadow flex items-center gap-1.5';
+        if (calBtn) calBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-bold text-amber-200 opacity-85 hover:opacity-100 flex items-center gap-1.5';
+        renderBucketIdeasBoard();
+      } else {
+        bucketView.classList.add('hidden');
+        calView.classList.remove('hidden');
+        if (calBtn) calBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-500 text-black shadow flex items-center gap-1.5';
+        if (bucketBtn) bucketBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-bold text-amber-200 opacity-85 hover:opacity-100 flex items-center gap-1.5';
+        renderCalendarMonthGrid();
+        renderCoupleDatesList();
+      }
+    }
+
+    function openBucketBoardTab() {
+      const panel = document.getElementById('coupleCalendarPanel');
+      const btnText = document.getElementById('toggleCalendarBtnText');
+      if (panel) {
+        panel.classList.remove('hidden');
+        if (btnText) btnText.textContent = 'Ocultar Calendario';
+        switchCalendarSectionTab('bucket');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function setBucketFilter(cat) {
+      currentBucketCategoryFilter = cat;
+      ['ALL', 'Comer 🍔', 'Jugar 🎮', 'Pasear 🌳', 'Cine/Show 🍿', 'Especial 💖'].forEach(c => {
+        const btn = document.getElementById(`bfilter-${c}`);
+        if (!btn) return;
+        if (c === cat) {
+          btn.className = 'filter-pill active px-3.5 py-1.5 rounded-xl text-xs border border-amber-400/30';
+        } else {
+          btn.className = 'filter-pill px-3 py-1.5 rounded-xl text-xs album-btn-ghost';
+        }
+      });
+      renderBucketIdeasBoard();
+    }
+
+    async function handleAddBucketIdea(e) {
+      e.preventDefault();
+      const titleInput = document.getElementById('bucketInputTitle');
+      const catInput = document.getElementById('bucketInputCategory');
+      const placeInput = document.getElementById('bucketInputPlace');
+      const authorInput = document.getElementById('bucketInputAuthor');
+
+      const title = titleInput.value.trim();
+      if (!title) return;
+
+      const newIdea = {
+        id: 'bucket_' + Date.now() + '_' + Math.floor(Math.random() * 999),
+        title,
+        category: catInput.value || 'Comer 🍔',
+        place: placeInput.value.trim(),
+        author: authorInput.value || 'Los Dos ✨',
+        isScheduled: false,
+        scheduledDateStr: '',
+        linkedDateId: '',
+        createdAt: Date.now()
+      };
+
+      cloudBucketIdeas.push(newIdea);
+      rebuildAllBucketIdeas();
+      titleInput.value = '';
+      placeInput.value = '';
+
+      if (window.saveBucketIdeaToCloud) {
+        await window.saveBucketIdeaToCloud(newIdea);
+      }
+      showToastNotification(`¡Idea "${title}" anotada en nuestro tablero! 🎯`, '📌');
+    }
+
+    function scheduleBucketIdeaToCalendar(bucketId) {
+      const idea = allBucketIdeas.find(b => b.id === bucketId);
+      if (!idea) return;
+
+      bucketIdeaIdBeingScheduled = idea.id;
+      openDatePlannerModal('upcoming');
+
+      // Prellenar automáticamente el modal del calendario con los datos de la idea del tablero
+      const titleEl = document.getElementById('dateInputTitle');
+      const placeEl = document.getElementById('dateInputPlace');
+      const notesEl = document.getElementById('dateInputNotes');
+      const emojiEl = document.getElementById('dateInputEmoji');
+      const heading = document.getElementById('dateModalHeading');
+
+      if (heading) heading.textContent = `📅 Agendar del Tablero: "${idea.title}"`;
+      if (titleEl) titleEl.value = idea.title;
+      if (placeEl) placeEl.value = idea.place || '';
+      if (notesEl) notesEl.value = `Idea de nuestro Tablero (${idea.category}) propuesta por ${idea.author}.`;
+
+      if (emojiEl) {
+        if (idea.category.includes('Comer')) emojiEl.value = '🍽️';
+        else if (idea.category.includes('Cine')) emojiEl.value = '🍿';
+        else if (idea.category.includes('Pasear')) emojiEl.value = '🌳';
+        else emojiEl.value = '💖';
+      }
+    }
+
+    async function toggleBucketIdeaManualCheck(bucketId) {
+      const idea = allBucketIdeas.find(b => b.id === bucketId);
+      if (!idea) return;
+      idea.isScheduled = !idea.isScheduled;
+      if (!idea.isScheduled) {
+        idea.scheduledDateStr = '';
+      }
+
+      const idx = cloudBucketIdeas.findIndex(b => b.id === bucketId);
+      if (idx >= 0) cloudBucketIdeas[idx] = idea;
+      else cloudBucketIdeas.push(idea);
+
+      rebuildAllBucketIdeas();
+      if (window.saveBucketIdeaToCloud) await window.saveBucketIdeaToCloud(idea);
+    }
+
+    async function deleteBucketIdeaItem(bucketId) {
+      cloudBucketIdeas = cloudBucketIdeas.filter(b => b.id !== bucketId);
+      defaultBucketIdeas.forEach((d, idx) => {
+        if (d.id === bucketId) defaultBucketIdeas.splice(idx, 1);
+      });
+      rebuildAllBucketIdeas();
+      if (window.deleteBucketIdeaFromCloud) await window.deleteBucketIdeaFromCloud(bucketId);
+      showToastNotification('Idea quitada del tablero', '🗑️');
+    }
+
+    function renderBucketIdeasBoard() {
+      const grid = document.getElementById('bucketIdeasGrid');
+      const pendingBadge = document.getElementById('bucketPendingBadge');
+      const statsLabel = document.getElementById('bucketStatsLabel');
+      if (!grid) return;
+
+      const totalPending = allBucketIdeas.filter(b => !b.isScheduled).length;
+      const totalScheduled = allBucketIdeas.filter(b => b.isScheduled).length;
+
+      if (pendingBadge) pendingBadge.textContent = totalPending;
+      if (statsLabel) statsLabel.textContent = `${totalPending} por agendar · ${totalScheduled} agendada(s)/realizada(s)`;
+
+      const filtered = allBucketIdeas.filter(b => {
+        if (currentBucketCategoryFilter === 'ALL') return true;
+        return b.category === currentBucketCategoryFilter;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-10 px-4 rounded-3xl bg-black/25 border border-amber-500/20">
+            <div class="text-3xl mb-2">🎯🍕🎮</div>
+            <p class="text-xs sm:text-sm text-amber-200 font-bold">Aún no hay lugares o ideas en esta categoría</p>
+            <p class="text-[11px] opacity-75 mt-1">Usa la barra de arriba para anotar a dónde queremos ir a comer, jugar o pasear.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(idea => {
+        const linkedDate = allCoupleDates.find(d => d.id === idea.linkedDateId);
+        const isCompletedPast = linkedDate && linkedDate.status === 'past';
+        const isDoneOrScheduled = Boolean(idea.isScheduled || linkedDate);
+
+        const statusBadge = isCompletedPast
+          ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/30 border border-purple-400 text-purple-200">💜 ¡Ya fuimos! (Realizada)</span>`
+          : (isDoneOrScheduled
+            ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/30 border border-emerald-400 text-emerald-200">✓ Agendada en Calendario</span>`
+            : `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 border border-amber-400/40 text-amber-300">✨ Idea Pendiente</span>`);
+
+        return `
+          <div class="bucket-card ${isDoneOrScheduled ? 'is-scheduled' : ''} rounded-2xl p-4 flex flex-col justify-between gap-3 shadow-lg">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-lg bg-black/40 text-amber-300 border border-amber-500/30">
+                  ${idea.category || 'Cita ✨'}
+                </span>
+                ${statusBadge}
+              </div>
+
+              <div class="flex items-start gap-2.5 mt-1">
+                <input type="checkbox" ${isDoneOrScheduled ? 'checked' : ''} onchange="toggleBucketIdeaManualCheck('${idea.id}')" class="mt-1 w-4 h-4 accent-emerald-500 rounded cursor-pointer" title="Marcar o desmarcar">
+                <div class="flex-1">
+                  <h5 class="font-serif-title font-bold text-sm sm:text-base text-white leading-snug ${isDoneOrScheduled ? 'strike-scheduled' : ''}">
+                    ${idea.title}
+                  </h5>
+                  ${idea.place ? `<p class="text-[11px] text-amber-200/90 mt-1 ${isDoneOrScheduled ? 'line-through opacity-70' : ''}">📍 ${idea.place}</p>` : ''}
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2.5 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
+              <span class="text-[10px] text-rose-200/90 font-semibold">
+                ✍️ ${idea.author || 'Nosotros'}
+                ${idea.scheduledDateStr ? ` · 📅 ${formatPrettyDate(idea.scheduledDateStr)}` : ''}
+              </span>
+
+              <div class="flex items-center gap-1.5 ml-auto">
+                ${!isDoneOrScheduled ? `
+                  <button onclick="scheduleBucketIdeaToCalendar('${idea.id}')" class="album-btn px-3 py-1.5 rounded-xl text-[10px] font-bold flex items-center gap-1 shadow">
+                    <span>🗓️➕</span><span>Agendar al Calendario</span>
+                  </button>
+                ` : `
+                  <button onclick="switchCalendarSectionTab('calendar')" class="album-btn-ghost px-2.5 py-1 rounded-xl text-[10px] font-bold text-emerald-300 border-emerald-400/40">
+                    🗓️ Ver en Calendario
+                  </button>
+                `}
+                <button onclick="deleteBucketIdeaItem('${idea.id}')" class="px-2 py-1 rounded-lg bg-rose-500/20 text-rose-300 text-[10px]" title="Borrar idea">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
     function showToastNotification(msg, emoji = '💖') {
       const toast = document.getElementById('albumToast');
@@ -2132,6 +2546,10 @@
       const dateInput = document.getElementById('dateInputDate');
       const heading = document.getElementById('dateModalHeading');
 
+      if (!bucketIdeaIdBeingScheduled) {
+        document.getElementById('datePlannerForm').reset();
+      }
+
       if (statusSelect) statusSelect.value = defaultStatus;
       if (preselectedDateStr && dateInput) {
         dateInput.value = preselectedDateStr;
@@ -2150,6 +2568,7 @@
     }
 
     function closeDatePlannerModal() {
+      bucketIdeaIdBeingScheduled = null;
       document.getElementById('datePlannerModal').classList.add('hidden');
     }
 
@@ -2239,6 +2658,25 @@
       }
 
       cloudCoupleDates.push(newDateObj);
+
+      // Si esta cita provino del Tablero de Posibles Citas, marcarla automáticamente como Tachada y Agendada
+      if (bucketIdeaIdBeingScheduled) {
+        const idea = allBucketIdeas.find(b => b.id === bucketIdeaIdBeingScheduled);
+        if (idea) {
+          idea.isScheduled = true;
+          idea.scheduledDateStr = dateStr;
+          idea.linkedDateId = newDateObj.id;
+          const idx = cloudBucketIdeas.findIndex(b => b.id === idea.id);
+          if (idx >= 0) cloudBucketIdeas[idx] = idea;
+          else cloudBucketIdeas.push(idea);
+          rebuildAllBucketIdeas();
+          if (window.saveBucketIdeaToCloud) {
+            await window.saveBucketIdeaToCloud(idea);
+          }
+        }
+        bucketIdeaIdBeingScheduled = null;
+      }
+
       rebuildAllCoupleDates();
       closeDatePlannerModal();
       document.getElementById('datePlannerForm').reset();
@@ -2885,6 +3323,7 @@
       animateHeroCoupleFullBody();
       animateDateReminderPixelArt();
       rebuildAllCoupleDates();
+      rebuildAllBucketIdeas();
       updateRelationshipCounter();
       setInterval(updateRelationshipCounter, 1000);
       initSeasonalBackgroundParticles();
